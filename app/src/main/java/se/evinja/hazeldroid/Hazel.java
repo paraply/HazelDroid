@@ -10,7 +10,7 @@ public class Hazel extends Application {
         GET_USER_SCHEDULE,
         GET_COMPANY_SCHEDULE,
         ADD_WORKER,
-        GET_COWORKERS
+        DOWNLOAD_PERSONNEL
     }
 
     private boolean user_logged_out;
@@ -19,11 +19,19 @@ public class Hazel extends Application {
         eventListener.onConnected();
     }
 
+    public void download_personnel(){
+
+    }
+
     public boolean user_has_logged_out(){
         return user_logged_out;
     }
 
     public void cancel(){
+
+    }
+
+    public void disconnect_on_fail(){
 
     }
 

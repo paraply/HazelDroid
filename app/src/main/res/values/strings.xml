@@ -7,7 +7,8 @@
     <string name="username_is_missing">Username is missing</string>
     <string name="password_is_missing">Password is missing</string>
     <string name="please_wait">Please wait</string>
-    <string name="connecting">Connecting...</string>
+    <string name="connecting">Connecting…</string>
     <string name="connection_failed">Connection failed</string>
+    <string name="download_failed">Download failed</string>
 
 </resources>

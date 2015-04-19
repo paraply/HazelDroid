@@ -100,8 +100,16 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 
     @Override
     public void onConnectionError(Hazel.HazelCommand duringCommand, String errorMsg) {
+        switch (duringCommand){
+            case LOGIN:
+                Toast.makeText(this, getString(R.string.connection_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
+                break;
+            case DOWNLOAD_PERSONNEL:
+                Toast.makeText(this, getString(R.string.download_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
+                hazel.disconnect_on_fail();
+                break;
+        }
         restoreUI();
-        Toast.makeText(this, getString(R.string.connection_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
     }
 
 
@@ -119,6 +127,8 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
             editor.commit();
         }
         progress.setMessage("Downloading personnel");
+        hazel.download_personnel();
+
         //restoreUI();
         //Intent intent = new Intent(this,Activity_Main.class);
         //startActivity(intent);
