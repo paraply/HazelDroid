@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_dark">#5D4037</color>
+    <color name="primary">#795548</color>
+    <color name="accent">#8BC34A</color>
+    <color name="windowBackground">#CCCCCC</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="PRESSED_STATE_COLOR">#CCCCCC</color>
+    <color name="FOCUSED_STATE_COLOR">#DDDDDD</color>
+    <color name="NORMAL_STATE_COLOR">#5D4037</color>
+</resources>
