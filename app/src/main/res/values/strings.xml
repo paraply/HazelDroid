@@ -2,5 +2,12 @@
     <string name="app_name">HazelDroid</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="remember_me">Remember me</string>
+    <string name="username_is_missing">Username is missing</string>
+    <string name="password_is_missing">Password is missing</string>
+    <string name="please_wait">Please wait</string>
+    <string name="connecting">Connecting...</string>
+    <string name="connection_failed">Connection failed</string>
 
 </resources>
