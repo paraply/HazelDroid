@@ -10,5 +10,9 @@
     <string name="connecting">Connecting…</string>
     <string name="connection_failed">Connection failed</string>
     <string name="download_failed">Download failed</string>
+    <string name="downloading_personnel">Downloading personnel</string>
+    <string name="downloading_schedules">Downloading schedules</string>
+    <string name="download_user_schedule_fail">Downloading user schedule failed</string>
+    <string name="download_staff_schedule_fail">Downloading staff schedule failed</string>
 
 </resources>

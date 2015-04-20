@@ -3,7 +3,6 @@ package se.evinja.hazeldroid;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -106,7 +105,13 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
                 break;
             case DOWNLOAD_PERSONNEL:
                 Toast.makeText(this, getString(R.string.download_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
-                hazel.disconnect_on_fail();
+            //    hazel.disconnect_on_fail();
+                break;
+            case GET_USER_SCHEDULE:
+                Toast.makeText(this, getString(R.string.download_user_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
+                break;
+            case GET_STAFF_SCHEDULE:
+                Toast.makeText(this, getString(R.string.download_staff_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
                 break;
         }
         restoreUI();
@@ -126,13 +131,27 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
             editor.remove("password");
             editor.commit();
         }
-        progress.setMessage("Downloading personnel");
-        hazel.download_personnel();
+        progress.setMessage(getString(R.string.downloading_personnel));
 
         //restoreUI();
         //Intent intent = new Intent(this,Activity_Main.class);
         //startActivity(intent);
 //        finish();
+    }
+
+    @Override
+    public void onStaffDownloaded() {
+        progress.setMessage(getString(R.string.downloading_schedules));
+    }
+
+
+
+    @Override
+    public void onUserSchedule() {}
+
+    @Override
+    public void onStaffSchedule() {
+
     }
 
 
@@ -153,8 +172,4 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
     }
 
 
-    @Override
-    public void onPersonnelDownloaded() {
-
-    }
 }
