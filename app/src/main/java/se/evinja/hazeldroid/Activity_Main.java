@@ -1,24 +1,21 @@
 package se.evinja.hazeldroid;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.alamkanak.weekview.WeekView;
+import se.evinja.hazeldroid.navigation.Callback_Navigation;
+import se.evinja.hazeldroid.navigation.Fragment_Navigation;
 
 
-public class Activity_Main extends ActionBarActivity implements NavigationDrawerCallbacks {
-    private Toolbar mToolbar;
-    private NavigationDrawerFragment drawerFragment;
+public class Activity_Main extends ActionBarActivity implements Callback_Navigation {
+    private Toolbar toolbar;
+    private Fragment_Navigation fragment_navigation;
     private Hazel hazel;
 
     @Override
@@ -26,12 +23,12 @@ public class Activity_Main extends ActionBarActivity implements NavigationDrawer
         super.onCreate(savedInstanceState);
         hazel = (Hazel) getApplication();
         setContentView(R.layout.activity_main);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setElevation(10);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setElevation(10); //Nice shadow from toolbar, not for API < 21
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        drawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+        fragment_navigation = (Fragment_Navigation) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        fragment_navigation.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
     }
 

@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid;
+package se.evinja.hazeldroid.navigation;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -10,34 +10,31 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import se.evinja.hazeldroid.NavigationDrawerCallbacks;
 import se.evinja.hazeldroid.R;
 
-/**
- * Created by poliveira on 24/10/2014.
- */
-public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
 
-    private List<NavigationItem> mData;
-    private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
+public class Adapter_Navigation extends RecyclerView.Adapter<Adapter_Navigation.ViewHolder> {
+
+    private List<Item_Navigation> mData;
+    private Callback_Navigation mCallbackNavigation;
     private int mSelectedPosition;
     private int mTouchedPosition = -1;
 
-    public NavigationDrawerAdapter(List<NavigationItem> data) {
+    public Adapter_Navigation(List<Item_Navigation> data) {
         mData = data;
     }
 
-    public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
-        return mNavigationDrawerCallbacks;
+    public Callback_Navigation getNavigationDrawerCallbacks() {
+        return mCallbackNavigation;
     }
 
-    public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks navigationDrawerCallbacks) {
-        mNavigationDrawerCallbacks = navigationDrawerCallbacks;
+    public void setNavigationDrawerCallbacks(Callback_Navigation callbackNavigation) {
+        mCallbackNavigation = callbackNavigation;
     }
 
     @Override
-    public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.nav_drawer_row, viewGroup, false);
+    public Adapter_Navigation.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.navigation_row, viewGroup, false);
         final ViewHolder viewholder = new ViewHolder(v);
         viewholder.itemView.setOnTouchListener(new View.OnTouchListener() {
                                                    @Override
@@ -63,8 +60,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         viewholder.itemView.setOnClickListener(new View.OnClickListener() {
                                                    @Override
                                                    public void onClick(View v) {
-                                                       if (mNavigationDrawerCallbacks != null)
-                                                           mNavigationDrawerCallbacks.onNavigationDrawerItemSelected(viewholder.getAdapterPosition());
+                                                       if (mCallbackNavigation != null)
+                                                           mCallbackNavigation.onNavigationDrawerItemSelected(viewholder.getAdapterPosition());
                                                    }
                                                }
         );
@@ -72,9 +69,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     }
 
     @Override
-    public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, final int i) {
-        viewHolder.textView.setText(mData.get(i).getText());
-        viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(i).getDrawable(), null, null, null);
+    public void onBindViewHolder(Adapter_Navigation.ViewHolder viewHolder, final int i) {
+        viewHolder.textView.setText(mData.get(i).getTitle());
+        viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(i).getIcon(), null, null, null);
 
         //TODO: selected menu position, change layout accordingly
         if (mSelectedPosition == i || mTouchedPosition == i) {

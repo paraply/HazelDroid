@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid;
+package se.evinja.hazeldroid.navigation;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -21,19 +21,17 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by poliveira on 24/10/2014.
- */
-public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks {
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+import se.evinja.hazeldroid.R;
+
+
+public class Fragment_Navigation extends Fragment implements Callback_Navigation {
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREFERENCES_FILE = "my_app_settings"; //TODO: change this to your file
-    private NavigationDrawerCallbacks mCallbacks;
+    private Callback_Navigation mCallbacks;
     private RecyclerView mDrawerList;
     private View mFragmentContainerView;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
-    private boolean mUserLearnedDrawer;
     private boolean mFromSavedInstanceState;
     private int mCurrentSelectedPosition;
 
@@ -41,15 +39,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View view = inflater.inflate(R.layout.fragment_navigation, container, false);
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mDrawerList.setLayoutManager(layoutManager);
         mDrawerList.setHasFixedSize(true);
 
-        final List<NavigationItem> navigationItems = getMenu();
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(navigationItems);
+        final List<Item_Navigation> navigationItems = getMenu();
+        Adapter_Navigation adapter = new Adapter_Navigation(navigationItems);
         adapter.setNavigationDrawerCallbacks(this);
         mDrawerList.setAdapter(adapter);
         selectItem(mCurrentSelectedPosition);
@@ -59,7 +57,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "false"));
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
@@ -70,9 +67,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallbacks = (NavigationDrawerCallbacks) activity;
+            mCallbacks = (Callback_Navigation) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
+            throw new ClassCastException("Activity must implement Callback_Navigation.");
         }
     }
 
@@ -105,16 +102,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) return;
-                if (!mUserLearnedDrawer) {
-                    mUserLearnedDrawer = true;
-                    saveSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "true");
-                }
 
                 getActivity().invalidateOptionsMenu();
             }
         };
 
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState)
+        if (!mFromSavedInstanceState)
             mDrawerLayout.openDrawer(mFragmentContainerView);
 
         mDrawerLayout.post(new Runnable() {
@@ -141,13 +134,13 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mCallbacks = null;
     }
 
-    public List<NavigationItem> getMenu() {
-        List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("My schedule", getResources().getDrawable(R.drawable.my_schedule)));
-        items.add(new NavigationItem("Workplace schedule", getResources().getDrawable(R.drawable.work_schedule)));
-        items.add(new NavigationItem("Workers", getResources().getDrawable(R.drawable.workers)));
-        items.add(new NavigationItem("Tasks", getResources().getDrawable(R.drawable.tasks)));
-        items.add(new NavigationItem("Qualifications", getResources().getDrawable(R.drawable.qualifications)));
+    public List<Item_Navigation> getMenu() {
+        List<Item_Navigation> items = new ArrayList<Item_Navigation>();
+        items.add(new Item_Navigation("My schedule", getResources().getDrawable(R.drawable.my_schedule)));
+        items.add(new Item_Navigation("Workplace schedule", getResources().getDrawable(R.drawable.work_schedule)));
+        items.add(new Item_Navigation("Workers", getResources().getDrawable(R.drawable.workers)));
+        items.add(new Item_Navigation("Tasks", getResources().getDrawable(R.drawable.tasks)));
+        items.add(new Item_Navigation("Qualifications", getResources().getDrawable(R.drawable.qualifications)));
         return items;
     }
 
@@ -178,7 +171,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
-        ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
+        ((Adapter_Navigation) mDrawerList.getAdapter()).selectPosition(position);
     }
 
     public boolean isDrawerOpen() {
