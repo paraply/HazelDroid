@@ -1,55 +1,116 @@
 package se.evinja.hazeldroid;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Collections;
 import java.util.List;
 
-public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MyViewHolder> {
-    List<NavDrawerItem> data = Collections.emptyList();
-    private LayoutInflater inflater;
-    private Context context;
+import se.evinja.hazeldroid.NavigationDrawerCallbacks;
+import se.evinja.hazeldroid.R;
 
-    public NavigationDrawerAdapter(Context context, List<NavDrawerItem> data) {
-        this.context = context;
-        inflater = LayoutInflater.from(context);
-        this.data = data;
+/**
+ * Created by poliveira on 24/10/2014.
+ */
+public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
+
+    private List<NavigationItem> mData;
+    private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
+    private int mSelectedPosition;
+    private int mTouchedPosition = -1;
+
+    public NavigationDrawerAdapter(List<NavigationItem> data) {
+        mData = data;
     }
 
-    public void delete(int position) {
-        data.remove(position);
-        notifyItemRemoved(position);
+    public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
+        return mNavigationDrawerCallbacks;
+    }
+
+    public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks navigationDrawerCallbacks) {
+        mNavigationDrawerCallbacks = navigationDrawerCallbacks;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.nav_drawer_row, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+    public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.nav_drawer_row, viewGroup, false);
+        final ViewHolder viewholder = new ViewHolder(v);
+        viewholder.itemView.setOnTouchListener(new View.OnTouchListener() {
+                                                   @Override
+                                                   public boolean onTouch(View v, MotionEvent event) {
+
+                                                       switch (event.getAction()) {
+                                                           case MotionEvent.ACTION_DOWN:
+                                                               touchPosition(viewholder.getAdapterPosition());
+                                                               return false;
+                                                           case MotionEvent.ACTION_CANCEL:
+                                                               touchPosition(-1);
+                                                               return false;
+                                                           case MotionEvent.ACTION_MOVE:
+                                                               return false;
+                                                           case MotionEvent.ACTION_UP:
+                                                               touchPosition(-1);
+                                                               return false;
+                                                       }
+                                                       return true;
+                                                   }
+                                               }
+        );
+        viewholder.itemView.setOnClickListener(new View.OnClickListener() {
+                                                   @Override
+                                                   public void onClick(View v) {
+                                                       if (mNavigationDrawerCallbacks != null)
+                                                           mNavigationDrawerCallbacks.onNavigationDrawerItemSelected(viewholder.getAdapterPosition());
+                                                   }
+                                               }
+        );
+        return viewholder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        NavDrawerItem current = data.get(position);
-        holder.title.setText(current.getTitle());
+    public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, final int i) {
+        viewHolder.textView.setText(mData.get(i).getText());
+        viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(i).getDrawable(), null, null, null);
+
+        //TODO: selected menu position, change layout accordingly
+        if (mSelectedPosition == i || mTouchedPosition == i) {
+            viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getContext().getResources().getColor(R.color.accent));
+        } else {
+            viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
+        }
+    }
+
+    private void touchPosition(int position) {
+        int lastPosition = mTouchedPosition;
+        mTouchedPosition = position;
+        if (lastPosition >= 0)
+            notifyItemChanged(lastPosition);
+        if (position >= 0)
+            notifyItemChanged(position);
+    }
+
+    public void selectPosition(int position) {
+        int lastPosition = mSelectedPosition;
+        mSelectedPosition = position;
+        notifyItemChanged(lastPosition);
+        notifyItemChanged(position);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData != null ? mData.size() : 0;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView textView;
 
-        public MyViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
+            textView = (TextView) itemView.findViewById(R.id.item_name);
         }
     }
 }

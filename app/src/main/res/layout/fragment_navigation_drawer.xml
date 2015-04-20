@@ -9,24 +9,43 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_alignParentTop="true"
-        android:background="@color/primary">
+        android:background="@color/primary_dark">
 
         <ImageView
             android:layout_width="70dp"
+            android:id="@+id/navigation_logo"
             android:layout_height="70dp"
-            android:src="@drawable/hazellogo"
+            android:src="@drawable/account"
             android:scaleType="fitCenter"
-            android:layout_centerInParent="true" />
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FDFDFD"
+            android:layout_width="wrap_content"
+            android:text="Firstname Lastname"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/navigation_logo"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
 
     <android.support.v7.widget.RecyclerView
+        android:background="#CCCCCC"
         android:id="@+id/drawerList"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="vertical"
+        android:focusable="true"
+        android:fitsSystemWindows="true"
+        android:layout_height="match_parent"
         android:layout_below="@id/nav_header_container"
-        android:layout_marginTop="15dp" />
+         />
 
 
 </RelativeLayout>
