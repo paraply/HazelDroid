@@ -3,6 +3,7 @@ package se.evinja.hazeldroid;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 
 public class Activity_Login extends ActionBarActivity implements HazelEvents {
-//    private Toolbar mToolbar;
     EditText login_username, login_password;
     CheckBox login_remember;
     SharedPreferences sharedPref;
@@ -44,22 +44,16 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
                 login(username, password);
             }
         }
-
-
-//        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-//        setSupportActionBar(mToolbar);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     public void login_btn_clicked(View v){
         String username = login_username.getText().toString();
         String password = login_password.getText().toString();
         if (username.isEmpty()){
-            Toast.makeText(v.getContext(), getString(R.string.username_is_missing), Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), getString(R.string.username_is_missing), Toast.LENGTH_LONG).show();
             login_username.requestFocus();
         }else if (password.isEmpty()){
-            Toast.makeText(v.getContext(), getString(R.string.password_is_missing), Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), getString(R.string.password_is_missing), Toast.LENGTH_LONG).show();
             login_password.requestFocus();
         }else{
             login(username, password);
@@ -98,7 +92,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
     }
 
     @Override
-    public void onConnectionError(Hazel.HazelCommand duringCommand, String errorMsg) {
+    public void onError(Hazel.HazelCommand duringCommand, String errorMsg) {
         switch (duringCommand){
             case LOGIN:
                 Toast.makeText(this, getString(R.string.connection_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
@@ -107,10 +101,10 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
                 Toast.makeText(this, getString(R.string.download_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
             //    hazel.disconnect_on_fail();
                 break;
-            case GET_USER_SCHEDULE:
+            case DOWNLOAD_USER_SCHEDULE:
                 Toast.makeText(this, getString(R.string.download_user_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
                 break;
-            case GET_STAFF_SCHEDULE:
+            case DOWNLOAD_STAFF_SCHEDULE:
                 Toast.makeText(this, getString(R.string.download_staff_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
                 break;
         }
@@ -133,10 +127,6 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
         }
         progress.setMessage(getString(R.string.downloading_personnel));
 
-        //restoreUI();
-        //Intent intent = new Intent(this,Activity_Main.class);
-        //startActivity(intent);
-//        finish();
     }
 
     @Override
@@ -151,7 +141,10 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 
     @Override
     public void onStaffSchedule() {
-
+        restoreUI();
+        Intent intent = new Intent(this,Activity_Main.class);
+        startActivity(intent);
+        finish();
     }
 
 
