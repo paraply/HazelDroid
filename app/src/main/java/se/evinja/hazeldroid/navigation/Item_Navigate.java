@@ -3,11 +3,11 @@ package se.evinja.hazeldroid.navigation;
 import android.graphics.drawable.Drawable;
 
 
-public class Item_Navigation {
+public class Item_Navigate {
     private String title;
     private Drawable icon;
 
-    public Item_Navigation(String title, Drawable icon) {
+    public Item_Navigate(String title, Drawable icon) {
         this.title = title;
         this.icon = icon;
     }

@@ -21,10 +21,8 @@
     <string name="my_schedule">My schedule</string>
 
 
-    <array name="drawer_values">
-        <item>My schedule</item>
-        <item>Staff schedule</item>
-        <item>Personnel</item>
-    </array>
+
+
+
 
 </resources>

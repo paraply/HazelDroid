@@ -5,4 +5,8 @@
     <color name="accent">#8BC34A</color>
     <color name="windowBackground">#CCCCCC</color>
     <color name="navigationBarColor">#000000</color>
+    <color name="navigate_selected">#717171</color>
+    <color name="drawer_background">#CCCCCC</color>
+    <color name="white_text">#FDFDFD</color>
+
 </resources>

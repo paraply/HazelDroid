@@ -2,8 +2,6 @@ package se.evinja.hazeldroid;
 
 import java.util.EventListener;
 
-import se.evinja.hazeldroid.Hazel;
-
 public interface HazelEvents extends EventListener {
     void onError(Hazel.HazelCommand duringCommand, String errorMsg);
     void onConnected();

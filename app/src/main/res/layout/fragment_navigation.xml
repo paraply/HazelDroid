@@ -23,7 +23,7 @@
         <TextView
             android:layout_marginTop="3dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FDFDFD"
+            android:textColor="@color/white_text"
             android:layout_width="wrap_content"
             android:text="Firstname Lastname"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:background="#CCCCCC"
+        android:background="@color/drawer_background"
         android:id="@+id/drawerList"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

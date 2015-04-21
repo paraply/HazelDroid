@@ -84,6 +84,10 @@ public class Hazel extends Application {
         execute(HazelCommand.CANCEL,null);
     }
 
+    public boolean access_userlevel(){
+        return access == AccessStatus.USER;
+    }
+
     private void raise_error(String error_msg){
         Log.i("###### ERROR", currentCommand.toString() + " - " + error_msg);
         if (login_procedure){ // if during login/first downloading set as disconnected

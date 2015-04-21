@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
-import se.evinja.hazeldroid.navigation.Callback_Navigation;
-import se.evinja.hazeldroid.navigation.Fragment_Navigation;
+import se.evinja.hazeldroid.navigation.Callback_Navigate;
+import se.evinja.hazeldroid.navigation.Fragment_Navigate;
 
 
-public class Activity_Main extends ActionBarActivity implements Callback_Navigation {
-    private Toolbar toolbar;
-    private Fragment_Navigation fragment_navigation;
+public class Activity_Main extends ActionBarActivity implements Callback_Navigate {
     private Hazel hazel;
 
     @Override
@@ -23,11 +23,22 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         super.onCreate(savedInstanceState);
         hazel = (Hazel) getApplication();
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                }
+                return false;
+            }
+        });
+
         setSupportActionBar(toolbar); //Toolbar is only for lollipop, set it as an actionbar for older systems
         getSupportActionBar().setElevation(10); //Nice shadow from toolbar, not for API < 21
         getSupportActionBar().setDisplayShowHomeEnabled(true); //Show home button
-        fragment_navigation = (Fragment_Navigation) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        Fragment_Navigate fragment_navigation = (Fragment_Navigate) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragment_navigation.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
     }
@@ -42,7 +53,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_log_out){
+        if (id == R.id.action_log_out){ //Menu item log out, only menu item for main activity - fragments will override and use own methods
             hazel.logout();
             Intent intent = new Intent(this, Activity_Login.class);
             startActivity(intent);
