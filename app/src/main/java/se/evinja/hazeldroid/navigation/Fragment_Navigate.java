@@ -3,7 +3,9 @@ package se.evinja.hazeldroid.navigation;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +29,6 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Callback_Navigate drawer_callbacks;
     private int current_selected_position;
-    private boolean from_saved_instance;
     private Hazel hazel;
 
     @Override
@@ -36,7 +37,6 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
         hazel = (Hazel) getActivity().getApplication();
         if (savedInstanceState != null) {
             current_selected_position = savedInstanceState.getInt(STATE_SELECTED_POSITION); //Get selected position from stored preferences
-            from_saved_instance = true;
         }
     }
 
@@ -77,6 +77,7 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) { //Called from mainActivity
         containerView =getActivity().findViewById(fragmentId);
         this.drawerLayout = drawerLayout;
+        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -140,4 +141,17 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     public void onNavigationDrawerItemSelected(int position) {
         select_item(position);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle state){
+        super.onSaveInstanceState(state);
+        state.putInt(STATE_SELECTED_POSITION, current_selected_position);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig); // Forward the new configuration the drawer toggle component.
+    }
+
 }
