@@ -28,11 +28,14 @@ public class Hazel extends Application {
     ConnectionStatus connectionStatus;
 
     private boolean user_logged_out, login_procedure;
+    private String username, password;
     private HazelEvents eventListener;
 
     public void login(String username, String password, HazelEvents eventListener){
         access = AccessStatus.USER; //Reset before login
         login_procedure = true; // downloads needs to know that we are in login mode
+        this.username = username;
+        this.password = password;
         this.eventListener = eventListener;
         execute(HazelCommand.LOGIN, null);
         eventListener.onConnected(); //TODO MOVE
@@ -41,6 +44,10 @@ public class Hazel extends Application {
 
     public void logout(){
         user_logged_out = true;
+    }
+
+    public String getFullName(){
+        return username;
     }
 
     public void download_personnel(){

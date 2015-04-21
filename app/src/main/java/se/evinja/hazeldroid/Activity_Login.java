@@ -46,7 +46,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
         }
     }
 
-    public void login_btn_clicked(View v){
+    public void login_btn_clicked(View v){ //Called from onClick
         String username = login_username.getText().toString();
         String password = login_password.getText().toString();
         if (username.isEmpty()){

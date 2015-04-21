@@ -24,9 +24,9 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         hazel = (Hazel) getApplication();
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar); //Toolbar is only for lollipop, set it as an actionbar for older systems
         getSupportActionBar().setElevation(10); //Nice shadow from toolbar, not for API < 21
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true); //Show home button
         fragment_navigation = (Fragment_Navigation) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragment_navigation.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 

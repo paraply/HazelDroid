@@ -26,7 +26,7 @@ import se.evinja.hazeldroid.R;
 
 public class Fragment_Navigation extends Fragment implements Callback_Navigation {
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-    private static final String PREFERENCES_FILE = "my_app_settings"; //TODO: change this to your file
+    //private static final String PREFERENCES_FILE = "my_app_settings"; //TODO: change this to your file
     private Callback_Navigation mCallbacks;
     private RecyclerView mDrawerList;
     private View mFragmentContainerView;
@@ -120,13 +120,13 @@ public class Fragment_Navigation extends Fragment implements Callback_Navigation
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
 
-    public void openDrawer() {
-        mDrawerLayout.openDrawer(mFragmentContainerView);
-    }
-
-    public void closeDrawer() {
-        mDrawerLayout.closeDrawer(mFragmentContainerView);
-    }
+//    public void openDrawer() {
+//        mDrawerLayout.openDrawer(mFragmentContainerView);
+//    }
+//
+//    public void closeDrawer() {
+//        mDrawerLayout.closeDrawer(mFragmentContainerView);
+//    }
 
     @Override
     public void onDetach() {
@@ -174,9 +174,9 @@ public class Fragment_Navigation extends Fragment implements Callback_Navigation
         ((Adapter_Navigation) mDrawerList.getAdapter()).selectPosition(position);
     }
 
-    public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
-    }
+//    public boolean isDrawerOpen() {
+//        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+//    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -195,23 +195,23 @@ public class Fragment_Navigation extends Fragment implements Callback_Navigation
         selectItem(position);
     }
 
-    public DrawerLayout getDrawerLayout() {
-        return mDrawerLayout;
-    }
-
-    public void setDrawerLayout(DrawerLayout drawerLayout) {
-        mDrawerLayout = drawerLayout;
-    }
-
-    public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {
-        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(settingName, settingValue);
-        editor.apply();
-    }
-
-    public static String readSharedSetting(Context ctx, String settingName, String defaultValue) {
-        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-        return sharedPref.getString(settingName, defaultValue);
-    }
+//    public DrawerLayout getDrawerLayout() {
+//        return mDrawerLayout;
+//    }
+//
+//    public void setDrawerLayout(DrawerLayout drawerLayout) {
+//        mDrawerLayout = drawerLayout;
+//    }
+//
+//    public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {
+//        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString(settingName, settingValue);
+//        editor.apply();
+//    }
+//
+//    public static String readSharedSetting(Context ctx, String settingName, String defaultValue) {
+//        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+//        return sharedPref.getString(settingName, defaultValue);
+//    }
 }
