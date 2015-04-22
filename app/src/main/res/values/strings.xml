@@ -14,15 +14,15 @@
     <string name="downloading_schedules">Downloading schedules</string>
     <string name="download_user_schedule_fail">Downloading user schedule failed</string>
     <string name="download_staff_schedule_fail">Downloading staff schedule failed</string>
-    <string name="title_activity_main">Main</string>
     <string name="log_out">Log out</string>
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string name="my_schedule">My schedule</string>
-
-
-
-
+    <string name="work_schedule">Work schedule</string>
+    <string name="user_schedule">My schedule</string>
+    <string name="workers">Workers</string>
+    <string name="qualifications">Qualifications</string>
+    <string name="tasks">Tasks</string>
 
 
 </resources>

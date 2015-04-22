@@ -38,6 +38,7 @@ public class Hazel extends Application {
         this.password = password;
         this.eventListener = eventListener;
         execute(HazelCommand.LOGIN, null);
+        access = AccessStatus.ADMIN; //TODO REMOVE
         eventListener.onConnected(); //TODO MOVE
         download_personnel();
     }
@@ -47,7 +48,7 @@ public class Hazel extends Application {
     }
 
     public String getFullName(){
-        return username;
+        return username + " - " + access; //TODO FIX REAL
     }
 
     public void download_personnel(){

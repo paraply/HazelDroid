@@ -1,5 +1,6 @@
 package se.evinja.hazeldroid;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -9,15 +10,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import se.evinja.hazeldroid.navigation.Callback_Navigate;
 import se.evinja.hazeldroid.navigation.Fragment_Navigate;
+import se.evinja.hazeldroid.schedules.Fragment_Qualifications;
+import se.evinja.hazeldroid.schedules.Fragment_Tasks;
+import se.evinja.hazeldroid.schedules.Fragment_User_Schedule;
+import se.evinja.hazeldroid.schedules.Fragment_Work_Schedule;
+import se.evinja.hazeldroid.schedules.Fragment_Workers;
 
 
 public class Activity_Main extends ActionBarActivity implements Callback_Navigate {
     private Hazel hazel;
     private Fragment_Navigate fragment_navigation;
+    private CharSequence title;
+
+    private Fragment_User_Schedule frag_user_schedule;
+    private Fragment_Work_Schedule frag_work_schedule;
+    private Fragment_Workers frag_workers;
+    private Fragment_Tasks frag_tasks;
+    private Fragment_Qualifications frag_qualifications;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +60,6 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu); //inflate menu_main.xml
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_log_out){ //Menu item log out, only menu item for main activity - fragments will override and use own methods
@@ -66,37 +74,86 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     @Override
     public void onBackPressed(){
         if (fragment_navigation.isOpen()){
-            fragment_navigation.close();
+            fragment_navigation.close(); //Close navigation if open
         }else{
-            super.onBackPressed();
+            super.onBackPressed(); // Else go back or close app
         }
     }
 
-//    @Override
-//    public void onDrawerItemSelected(View view, int position) {
-//        display_fragment(position);
-//    }
-//
-//    private void display_fragment(int position){
-//        Fragment fragment = null;
-//        String title = getString(R.string.app_name);
-//        switch (position) {
-//            case 0:
-//                fragment = new Fragment_User_Schedule();
-//                title = getString(R.string.my_schedule);
-//                break;
-//        }
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.container_body, fragment);
-//        fragmentTransaction.commit();
-//
-//
-//        getSupportActionBar().setTitle(title); // set the toolbar title
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!fragment_navigation.isOpen()) {
+            // Only show items in the action bar relevant to this screen
+            // if the drawer is not showing. Otherwise, let the drawer
+            // decide what to show in the action bar.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            getSupportActionBar().setTitle(title);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+        if (hazel.access_rootlevel()){
+            position -= 1; //Root has not my schedule item
+        }
+        switch (position){
+            case 0:
+                show_my_schedule();
+                break;
+            case 1:
+                show_workplace_schedule();
+                break;
+            case 2:
+                show_workers();
+                break;
+            case 3:
+                show_tasks();
+                break;
+            case 4:
+                show_qualifications();
+                break;
+        }
+
+
+    }
+
+
+    private void fragment_replace(Fragment fragment){
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack("")
+                .commit();
+    }
+
+    private void show_my_schedule(){
+        frag_user_schedule = Fragment_User_Schedule.newInstance();
+        fragment_replace(frag_user_schedule);
+    }
+
+    private void show_workplace_schedule(){
+        frag_work_schedule = Fragment_Work_Schedule.newInstance();
+        fragment_replace(frag_work_schedule);
+    }
+
+    private void show_workers(){
+        frag_workers = Fragment_Workers.newInstance();
+        fragment_replace(frag_workers);
+    }
+
+    private void show_tasks(){
+        frag_tasks = Fragment_Tasks.newInstance();
+        fragment_replace(frag_tasks);
+    }
+
+    private void show_qualifications(){
+        frag_qualifications= Fragment_Qualifications.newInstance();
+        fragment_replace(frag_qualifications);
+    }
+
+    public void set_title(String new_title){
+        title = new_title;
     }
 }
