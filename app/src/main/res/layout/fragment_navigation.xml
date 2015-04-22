@@ -21,6 +21,7 @@
             android:layout_centerHorizontal="true" />
 
         <TextView
+            android:id="@+id/navigation_name"
             android:layout_marginTop="3dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white_text"

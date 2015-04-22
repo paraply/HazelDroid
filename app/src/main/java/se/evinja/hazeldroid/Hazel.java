@@ -54,7 +54,7 @@ public class Hazel extends Application {
         execute(HazelCommand.DOWNLOAD_PERSONNEL, null);
         eventListener.onStaffDownloaded(); //TODO MOVE
         if (login_procedure){
-            if (access == AccessStatus.USER) {
+            if (access != AccessStatus.ROOT) {
                 download_user_schedule();
             }else{
                 download_staff_schedule();
