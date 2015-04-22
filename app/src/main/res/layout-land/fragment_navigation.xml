@@ -7,8 +7,10 @@
     <RelativeLayout
         android:id="@+id/nav_header_container"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
+        android:visibility="invisible"
+
         android:background="@drawable/gradient">
 
         <ImageView
@@ -46,7 +48,7 @@
         android:fitsSystemWindows="true"
         android:layout_height="match_parent"
         android:layout_below="@id/nav_header_container"
-         />
+        />
 
 
 </RelativeLayout>

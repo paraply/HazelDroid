@@ -76,7 +76,7 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     }
 
     public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) { //Called from mainActivity
-        containerView =getActivity().findViewById(fragmentId);
+        containerView = getActivity().findViewById(fragmentId);
         this.drawerLayout = drawerLayout;
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -115,12 +115,12 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
 
     private List<Item_Navigate> get_navigation_items(){
         List<Item_Navigate> items = new ArrayList<>();
-        if (hazel.access_userlevel()){
+        if (!hazel.access_rootlevel()){ //Root has no schedule
             items.add(new Item_Navigate("My schedule", getResources().getDrawable(R.drawable.my_schedule)));
         }
         items.add(new Item_Navigate("Workplace schedule", getResources().getDrawable(R.drawable.work_schedule)));
         items.add(new Item_Navigate("Workers", getResources().getDrawable(R.drawable.workers)));
-        if (!hazel.access_userlevel()) {
+        if (hazel.access_adminlevel()) { //Only admin can edit tasks and qualifications
             items.add(new Item_Navigate("Tasks", getResources().getDrawable(R.drawable.tasks)));
             items.add(new Item_Navigate("Qualifications", getResources().getDrawable(R.drawable.qualifications)));
         }

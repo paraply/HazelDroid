@@ -87,6 +87,12 @@ public class Hazel extends Application {
     public boolean access_userlevel(){
         return access == AccessStatus.USER;
     }
+    public boolean access_adminlevel(){
+        return access == AccessStatus.ADMIN;
+    }
+    public boolean access_rootlevel(){
+        return access == AccessStatus.ROOT;
+    }
 
     private void raise_error(String error_msg){
         Log.i("###### ERROR", currentCommand.toString() + " - " + error_msg);
