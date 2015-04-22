@@ -105,11 +105,15 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
 
-    public void openDrawer() {
+    public void open() {
         drawerLayout.openDrawer(containerView);
     }
 
-    public void closeDrawer() {
+    public boolean isOpen(){
+        return drawerLayout != null && drawerLayout.isDrawerOpen(containerView);
+    }
+
+    public void close() {
         drawerLayout.closeDrawer(containerView);
     }
 

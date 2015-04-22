@@ -17,6 +17,7 @@ import se.evinja.hazeldroid.navigation.Fragment_Navigate;
 
 public class Activity_Main extends ActionBarActivity implements Callback_Navigate {
     private Hazel hazel;
+    private Fragment_Navigate fragment_navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         setSupportActionBar(toolbar); //Toolbar is only for lollipop, set it as an actionbar for older systems
         getSupportActionBar().setElevation(10); //Nice shadow from toolbar, not for API < 21
         getSupportActionBar().setDisplayShowHomeEnabled(true); //Show home button
-        Fragment_Navigate fragment_navigation = (Fragment_Navigate) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        fragment_navigation = (Fragment_Navigate) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragment_navigation.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
     }
@@ -60,6 +61,15 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
             finish(); //Kill this activity
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (fragment_navigation.isOpen()){
+            fragment_navigation.close();
+        }else{
+            super.onBackPressed();
+        }
     }
 
 //    @Override
