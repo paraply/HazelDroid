@@ -44,7 +44,7 @@ public class Fragment_Qualifications extends Fragment {
         qualifications.add(new Object_Qualification("A-körkort", 3));
         qualifications.add(new Object_Qualification("Pratar Hindi", 993263520));
         adapter_qualifications.notifyDataSetChanged();
-        return  view;
+        return view;
     }
 
     @Override
