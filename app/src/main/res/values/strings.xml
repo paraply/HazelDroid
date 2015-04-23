@@ -26,6 +26,8 @@
     <string name="add_new">Add new</string>
     <string name="add_qualification">Add qualification</string>
     <string name="edit_qualification">Edit qualification</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,7 +44,7 @@ public class Fragment_Qualifications extends Fragment {
         hazel.download_qualifications(parent);
         qualifications_listview.setAdapter(hazel.getAdapter_qualifications());
 
-        registerForContextMenu(qualifications_listview);
+
 
         qualifications_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -51,6 +52,7 @@ public class Fragment_Qualifications extends Fragment {
                 show_edit_dialog(position);
             }
         });
+        registerForContextMenu(qualifications_listview);
 
         return view;
     }
@@ -112,4 +114,25 @@ public class Fragment_Qualifications extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.qualifications_long_click, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int id = item.getItemId();
+        if (id == R.id.long_click_edit_qualification) {
+            show_edit_dialog(info.position);
+        }
+        else if (id == R.id.long_click_delete_qualification) {
+            hazel.delete_qualification(info.position);
+        }
+        return false;
+    }
+
 }

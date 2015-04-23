@@ -163,6 +163,11 @@ public class Hazel extends Application {
         adapter_qualifications.notifyDataSetChanged();
     }
 
+    public void delete_qualification(int position){
+        qualifications.remove(position);
+        adapter_qualifications.notifyDataSetChanged();
+    }
+
     public void update_qualification(int position, String new_title){
         qualifications.get(position).title = new_title;
         adapter_qualifications.notifyDataSetChanged();
