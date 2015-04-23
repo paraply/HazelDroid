@@ -24,6 +24,8 @@
     <string name="qualifications">Qualifications</string>
     <string name="tasks">Tasks</string>
     <string name="add_new">Add new</string>
+    <string name="add_qualification">Add qualification</string>
+    <string name="edit_qualification">Edit qualification</string>
 
 
 </resources>

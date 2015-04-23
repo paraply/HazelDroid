@@ -158,6 +158,16 @@ public class Hazel extends Application {
         }
     }
 
+    public void add_qualification(String title){
+        qualifications.add(new Object_Qualification(title, 3));
+        adapter_qualifications.notifyDataSetChanged();
+    }
+
+    public void update_qualification(int position, String new_title){
+        qualifications.get(position).title = new_title;
+        adapter_qualifications.notifyDataSetChanged();
+    }
+
     public Adapter_Qualifications getAdapter_qualifications(){
         return adapter_qualifications;
     }
