@@ -13,12 +13,11 @@ import android.view.View;
 
 import se.evinja.hazeldroid.navigation.Callback_Navigate;
 import se.evinja.hazeldroid.navigation.Fragment_Navigate;
-import se.evinja.hazeldroid.schedules.Fragment_Qualifications;
+import se.evinja.hazeldroid.personnel.Fragment_Qualifications;
 import se.evinja.hazeldroid.schedules.Fragment_Tasks;
 import se.evinja.hazeldroid.schedules.Fragment_User_Schedule;
 import se.evinja.hazeldroid.schedules.Fragment_Work_Schedule;
-import se.evinja.hazeldroid.schedules.Fragment_Workers;
-
+import se.evinja.hazeldroid.personnel.Fragment_Workers;
 
 public class Activity_Main extends ActionBarActivity implements Callback_Navigate {
     private Hazel hazel;

@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid.schedules;
+package se.evinja.hazeldroid.personnel;
 
 import android.app.Activity;
 import android.app.Fragment;
