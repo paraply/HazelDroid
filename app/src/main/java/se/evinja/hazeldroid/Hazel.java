@@ -1,9 +1,16 @@
 package se.evinja.hazeldroid;
 
+import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import se.evinja.hazeldroid.personnel.Adapter_Qualifications;
+import se.evinja.hazeldroid.personnel.Object_Qualification;
 
 public class Hazel extends Application {
     public enum HazelCommand {
@@ -30,6 +37,9 @@ public class Hazel extends Application {
     private boolean user_logged_out, login_procedure;
     private String username, password;
     private HazelEvents eventListener;
+
+    private List<Object_Qualification> qualifications = new ArrayList<>();
+    private Adapter_Qualifications adapter_qualifications;
 
     public void login(String username, String password, HazelEvents eventListener){
         access = AccessStatus.USER; //Reset before login
@@ -136,4 +146,24 @@ public class Hazel extends Application {
                 return;
         }
     }
+
+    public void download_qualifications(Activity parent){
+        if (adapter_qualifications == null){
+            adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
+        }
+        if (qualifications.size() == 0 ){
+            qualifications.add(new Object_Qualification("A-körkort", 3));
+            qualifications.add(new Object_Qualification("Pratar Hindi", 993263520));
+            adapter_qualifications.notifyDataSetChanged();
+        }
+    }
+
+    public Adapter_Qualifications getAdapter_qualifications(){
+        return adapter_qualifications;
+    }
+
+    public List<Object_Qualification> get_qualifications(){
+        return qualifications;
+    }
+
 }

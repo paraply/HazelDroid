@@ -23,6 +23,7 @@
     <string name="workers">Workers</string>
     <string name="qualifications">Qualifications</string>
     <string name="tasks">Tasks</string>
+    <string name="add_new">Add new</string>
 
 
 </resources>
