@@ -31,7 +31,6 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     private Fragment_Qualifications frag_qualifications;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +53,6 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         getSupportActionBar().setDisplayShowHomeEnabled(true); //Show home button
         fragment_navigation = (Fragment_Navigate) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragment_navigation.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-
     }
 
 

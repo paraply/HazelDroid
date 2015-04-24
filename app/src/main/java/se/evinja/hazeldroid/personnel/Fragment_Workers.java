@@ -7,6 +7,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,7 +44,7 @@ public class Fragment_Workers extends Fragment {
         workers_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //  show_edit_dialog(position);
+                show_edit_fragment(position);
             }
         });
         if (hazel.access_adminlevel()) {
@@ -74,6 +75,23 @@ public class Fragment_Workers extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.qualifications_long_click, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int id = item.getItemId();
+        if (id == R.id.long_click_edit_worker) {
+            show_edit_fragment(info.position);
+        }
+        else if (id == R.id.long_click_delete_worker) {
+            hazel.delete_worker(info.position);
+        }
+        return false;
+    }
+
+    private void show_edit_fragment(int position){
+
     }
 
 }

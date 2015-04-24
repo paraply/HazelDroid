@@ -205,4 +205,22 @@ public class Hazel extends Application {
         return adapter_workers;
     }
 
+    public void add_worker(Object_Worker new_worker){
+        workers.add(new_worker);
+        adapter_workers.notifyDataSetChanged();
+    }
+
+    public void delete_worker(int position){
+        workers.remove(position);
+        adapter_workers.notifyDataSetChanged();
+    }
+
+    public void update_worker_list(){
+        adapter_workers.notifyDataSetChanged();
+    }
+
+    public Object_Worker get_worker(int position){
+        return workers.get(position);
+    }
+
 }
