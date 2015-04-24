@@ -32,6 +32,9 @@
     <string name="phone">Phone</string>
     <string name="mail">Email</string>
     <string name="person_number">Person number</string>
+    <string name="login_credentials">Login credentials</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
 
 
 </resources>

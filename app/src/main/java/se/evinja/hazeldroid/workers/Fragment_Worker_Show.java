@@ -1,9 +1,7 @@
-package se.evinja.hazeldroid.personnel;
+package se.evinja.hazeldroid.workers;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,24 +9,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 
-public class Fragment_Show_Worker extends Fragment{
+public class Fragment_Worker_Show extends Fragment{
 
     private Activity_Main parent;
     private Hazel hazel;
     private Object_Worker w;
 
-    public Fragment_Show_Worker(){}
+    public Fragment_Worker_Show(){}
 
-    public static Fragment_Show_Worker newInstance(int person_position) {
-        Fragment_Show_Worker fragment = new Fragment_Show_Worker();
+    public static Fragment_Worker_Show newInstance(int person_position) {
+        Fragment_Worker_Show fragment = new Fragment_Worker_Show();
         Bundle args = new Bundle();
         args.putInt("worker_position", person_position);
         fragment.setArguments(args);
@@ -96,7 +92,7 @@ public class Fragment_Show_Worker extends Fragment{
     }
 
     private void show_edit_fragment(int position){
-        Fragment_Edit_Worker edit_w = Fragment_Edit_Worker.newInstance(position);
+        Fragment_Worker_Edit edit_w = Fragment_Worker_Edit.newInstance(position);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, edit_w)
                 .addToBackStack("worker edit")

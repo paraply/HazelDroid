@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid.personnel;
+package se.evinja.hazeldroid.workers;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -99,7 +99,7 @@ public class Fragment_Workers extends Fragment {
     }
 
     private void show_show_worker_fragment(int position){
-        Fragment_Show_Worker show_w = Fragment_Show_Worker.newInstance(position);
+        Fragment_Worker_Show show_w = Fragment_Worker_Show.newInstance(position);
         getActivity().getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, show_w)
                 .addToBackStack("worker show")
@@ -108,7 +108,7 @@ public class Fragment_Workers extends Fragment {
 
 
     private void show_edit_fragment(int position){
-        Fragment_Edit_Worker edit_w = Fragment_Edit_Worker.newInstance(position);
+        Fragment_Worker_Edit edit_w = Fragment_Worker_Edit.newInstance(position);
         getActivity().getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, edit_w)
                 .addToBackStack("worker edit")
@@ -116,7 +116,7 @@ public class Fragment_Workers extends Fragment {
     }
 
     private void show_add_fragment(){
-        Fragment_Add_Worker add_w = Fragment_Add_Worker.newInstance();
+        Fragment_Worker_Add add_w = Fragment_Worker_Add.newInstance();
         getActivity().getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, add_w)
                 .addToBackStack("worker add")

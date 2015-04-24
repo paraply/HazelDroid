@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid.personnel;
+package se.evinja.hazeldroid.workers;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 
-public class Fragment_Edit_Worker extends Fragment{
+public class Fragment_Worker_Edit extends Fragment{
     private Hazel hazel;
     private Object_Worker w;
 
-    public static Fragment_Edit_Worker newInstance(int person_position) {
-        Fragment_Edit_Worker fragment = new Fragment_Edit_Worker();
+    public static Fragment_Worker_Edit newInstance(int person_position) {
+        Fragment_Worker_Edit fragment = new Fragment_Worker_Edit();
         Bundle args = new Bundle();
         args.putInt("worker_position", person_position);
         fragment.setArguments(args);

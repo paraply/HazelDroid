@@ -9,10 +9,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.evinja.hazeldroid.personnel.Adapter_Qualifications;
-import se.evinja.hazeldroid.personnel.Adapter_Workers;
-import se.evinja.hazeldroid.personnel.Object_Qualification;
-import se.evinja.hazeldroid.personnel.Object_Worker;
+import se.evinja.hazeldroid.qualifications.Adapter_Qualifications;
+import se.evinja.hazeldroid.workers.Adapter_Workers;
+import se.evinja.hazeldroid.qualifications.Object_Qualification;
+import se.evinja.hazeldroid.workers.Object_Worker;
 
 public class Hazel extends Application {
     public enum HazelCommand {

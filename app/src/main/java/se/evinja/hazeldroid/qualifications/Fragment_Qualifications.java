@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid.personnel;
+package se.evinja.hazeldroid.qualifications;
 
 import android.app.Activity;
 import android.app.AlertDialog;

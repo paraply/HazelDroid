@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid.personnel;
+package se.evinja.hazeldroid.workers;
 
 
 import android.app.Activity;
@@ -12,13 +12,13 @@ import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 
-public class Fragment_Add_Worker extends Fragment{
+public class Fragment_Worker_Add extends Fragment{
     private Hazel hazel;
     private Object_Worker new_worker = new Object_Worker();
     private  Activity_Main parent;
 
-    public static Fragment_Add_Worker newInstance() {
-        Fragment_Add_Worker fragment = new Fragment_Add_Worker();
+    public static Fragment_Worker_Add newInstance() {
+        Fragment_Worker_Add fragment = new Fragment_Worker_Add();
         return fragment;
     }
 

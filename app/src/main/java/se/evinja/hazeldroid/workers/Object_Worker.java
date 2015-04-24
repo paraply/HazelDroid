@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid.personnel;
+package se.evinja.hazeldroid.workers;
 
 import java.util.List;
 

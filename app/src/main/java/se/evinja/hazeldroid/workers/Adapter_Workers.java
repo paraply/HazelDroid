@@ -1,4 +1,4 @@
-package se.evinja.hazeldroid.personnel;
+package se.evinja.hazeldroid.workers;
 
 
 import android.app.Activity;
@@ -13,36 +13,37 @@ import java.util.List;
 
 import se.evinja.hazeldroid.R;
 
-public class Adapter_Qualifications extends BaseAdapter {
-    private List<Object_Qualification> qualifications_list;
+public class Adapter_Workers extends BaseAdapter{
+    private List<Object_Worker> worker_list;
     private LayoutInflater inflater;
     private final Activity activity;
 
-    public Adapter_Qualifications(Activity activity, List<Object_Qualification> qualifications_list){
+    public Adapter_Workers(Activity activity, List<Object_Worker> worker_list){
 
         this.activity = activity;
-        this.qualifications_list = qualifications_list;
+        this.worker_list = worker_list;
     }
 
     //Uses viewholder to optimize listview
     static class ViewHolder{
-        TextView title;
-        TextView workers;
+        TextView fullname;
+        TextView position;
     }
+
 
     @Override
     public int getCount() {
-        return qualifications_list == null ? 0 : qualifications_list.size();
+         return worker_list == null ? 0 : worker_list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return qualifications_list.get(position);
+        return worker_list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+            return position;
     }
 
     @Override
@@ -53,19 +54,19 @@ public class Adapter_Qualifications extends BaseAdapter {
             if (inflater == null){
                 inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             }
-            convertView = inflater.inflate(R.layout.item_qualification, null);
+            convertView = inflater.inflate(R.layout.item_worker, null);
             holder = new ViewHolder();
-            holder.title = (TextView) convertView.findViewById(R.id.qualification_title);
-            holder.workers = (TextView) convertView.findViewById(R.id.qualification_workers);
+            holder.fullname = (TextView) convertView.findViewById(R.id.worker_fullname);
+            holder.position = (TextView) convertView.findViewById(R.id.worker_position);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Object_Qualification oq = qualifications_list.get(position);
+        Object_Worker ow = worker_list.get(position);
 
-        holder.title.setText(oq.title);
-        holder.workers.setText(oq.getWorkerString());
+        holder.fullname.setText(ow.get_fullName());
+        holder.position.setText(ow.position);
 
         return convertView;
     }
