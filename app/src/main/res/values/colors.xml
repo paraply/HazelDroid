@@ -8,5 +8,6 @@
     <color name="navigate_selected">#717171</color>
     <color name="drawer_background">#CCCCCC</color>
     <color name="white_text">#FDFDFD</color>
+    <color name="black_text">#ff0f0f0f</color>
 
 </resources>

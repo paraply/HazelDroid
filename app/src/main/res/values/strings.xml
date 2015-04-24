@@ -28,6 +28,10 @@
     <string name="edit_qualification">Edit qualification</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="position">Position</string>
+    <string name="phone">Phone</string>
+    <string name="mail">Email</string>
+    <string name="person_number">Person number</string>
 
 
 </resources>

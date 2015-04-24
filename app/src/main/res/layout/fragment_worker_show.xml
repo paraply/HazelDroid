@@ -1,6 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="se.evinja.hazeldroid.personnel.Fragment_Show_Worker"
+    >
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/show_worker_picture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_account_box_grey600_48dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/show_worker_fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Förnamn Efternamn"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:background="@color/accent"
+        android:textColor="@color/white_text"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_below="@+id/show_worker_picture"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/show_worker_lbl_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/position"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_fullname"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/show_worker_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black_text"
+        android:text="Quality Manager"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_lbl_position"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <TextView
+        android:id="@+id/show_worker_lbl_qualifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/qualifications"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/show_worker_position"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/show_worker_qualifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/black_text"
+        android:text="Apa, Bepa, Cepa"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_lbl_qualifications"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/show_worker_lbl_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/phone"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/show_worker_qualifications"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/show_worker_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black_text"
+        android:text="031998877"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_lbl_phone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/show_worker_lbl_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/mail"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/show_worker_phone"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/show_worker_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black_text"
+        android:text="apa@bepa.ce"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_lbl_mail"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/show_worker_lbl_personnr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/person_number"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/show_worker_mail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/show_worker_personnr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black_text"
+        android:text="840207-1234"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_lbl_personnr"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout >
