@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.evinja.hazeldroid.personnel.Adapter_Qualifications;
+import se.evinja.hazeldroid.personnel.Adapter_Workers;
 import se.evinja.hazeldroid.personnel.Object_Qualification;
+import se.evinja.hazeldroid.personnel.Object_Worker;
 
 public class Hazel extends Application {
     public enum HazelCommand {
@@ -40,6 +42,9 @@ public class Hazel extends Application {
 
     private List<Object_Qualification> qualifications = new ArrayList<>();
     private Adapter_Qualifications adapter_qualifications;
+
+    private List<Object_Worker> workers = new ArrayList<>();
+    private Adapter_Workers adapter_workers;
 
     public void login(String username, String password, HazelEvents eventListener){
         access = AccessStatus.USER; //Reset before login
@@ -179,6 +184,25 @@ public class Hazel extends Application {
 
     public List<Object_Qualification> get_qualifications(){
         return qualifications;
+    }
+
+
+    public void download_workers(Activity parent){
+        if (adapter_workers == null){
+            adapter_workers = new Adapter_Workers(parent, workers);
+        }
+        if (workers.size() == 0 ){
+            Object_Worker p = new Object_Worker();
+            p.firstName = "Bänkt";
+            p.lastName = "Olof";
+            p.position = "Skurk";
+            workers.add(p);
+            adapter_workers.notifyDataSetChanged();
+        }
+    }
+
+    public Adapter_Workers getAdapter_workers(){
+        return adapter_workers;
     }
 
 }

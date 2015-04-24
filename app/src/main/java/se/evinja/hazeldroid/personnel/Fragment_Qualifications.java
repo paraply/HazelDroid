@@ -52,8 +52,9 @@ public class Fragment_Qualifications extends Fragment {
                 show_edit_dialog(position);
             }
         });
-        registerForContextMenu(qualifications_listview);
-
+        if (hazel.access_adminlevel()) {
+            registerForContextMenu(qualifications_listview);
+        }
         return view;
     }
 

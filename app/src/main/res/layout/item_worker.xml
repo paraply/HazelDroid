@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/worker_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/ic_account_box_grey600_48dp" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/worker_fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Torulf"
+        android:textSize="16sp"
+        android:layout_alignTop="@+id/worker_icon"
+        android:layout_toRightOf="@+id/worker_icon"
+        android:layout_marginTop="5dp">
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/worker_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DJ på excet"
+        android:textSize="30px"
+        android:layout_below="@+id/worker_fullname"
+        android:layout_alignLeft="@+id/worker_fullname"
+        android:layout_alignStart="@+id/worker_fullname">
+    </TextView>
+
+
+
+</RelativeLayout>
