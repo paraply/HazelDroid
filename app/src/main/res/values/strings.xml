@@ -31,10 +31,13 @@
     <string name="position">Position</string>
     <string name="phone">Phone</string>
     <string name="mail">Email</string>
-    <string name="person_number">Person number</string>
+    <string name="person_number">Personnumber</string>
     <string name="login_credentials">Login credentials</string>
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>
+    <string name="add_worker">Add worker</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 
 
 </resources>

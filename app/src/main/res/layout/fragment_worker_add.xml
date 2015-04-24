@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="se.evinja.hazeldroid.workers.Fragment_Worker_Add">
+
         <View android:id="@+id/fake"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -44,27 +45,22 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:hint="@string/username"
             android:layout_below="@+id/worker_add_lbl_login"
             android:layout_alignRight="@id/fake"
-            android:layout_alignParentLeft="true"
-            />
+            android:layout_alignParentLeft="true" />
 
         <EditText
             android:id="@+id/worker_add_password"
             android:inputType="textPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.0"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:hint="@string/password"
             android:layout_below="@+id/worker_add_lbl_login"
             android:layout_alignLeft="@id/fake"
-            android:layout_alignParentRight="true"
-            />
-
-
-
+            android:layout_alignParentRight="true" />
 
         <TextView
             android:id="@+id/worker_add_lbl_firstname"
@@ -73,6 +69,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/firstname"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="10dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
@@ -84,8 +82,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000"
+            android:textColor="@color/black_text"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lbl_firstname"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -99,6 +98,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/lastname"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_firstname"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000"
+            android:textColor="@color/black_text"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lbl_lastname"
@@ -129,13 +129,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-
         <EditText
             android:id="@+id/worker_add_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000"
+            android:textColor="@color/black_text"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lbl_position"
@@ -151,6 +150,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/qualifications"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/worker_add_position"
             android:layout_alignParentLeft="true"
@@ -163,8 +163,6 @@
             android:spinnerMode="dialog"
             android:layout_below="@+id/worker_add_lbl_qualifications" />
 
-
-
         <TextView
             android:id="@+id/worker_add_lbl_phone"
             android:layout_width="wrap_content"
@@ -173,8 +171,7 @@
             android:text="@string/phone"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_below="@+id/worker_add_qualifications"
-            />
+            android:layout_below="@+id/worker_add_qualifications" />
 
         <EditText
             android:id="@+id/worker_add_phone"
@@ -188,8 +185,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/worker_add_lbl_mail"
@@ -198,8 +194,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/mail"
             android:paddingLeft="10dp"
-            android:layout_below="@+id/worker_add_phone"
-            />
+            android:paddingRight="10dp"
+            android:layout_below="@+id/worker_add_phone" />
 
         <EditText
             android:id="@+id/worker_add_mail"
@@ -208,12 +204,12 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lbl_mail"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/worker_add_lbl_birthday"
@@ -222,8 +218,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/person_number"
             android:paddingLeft="10dp"
-            android:layout_below="@+id/worker_add_mail"
-            />
+            android:layout_below="@+id/worker_add_mail" />
 
         <EditText
             android:id="@+id/worker_add_birthday"
@@ -232,6 +227,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lbl_birthday"
             android:layout_toLeftOf="@+id/worker_add_last4"
             android:layout_alignParentLeft="true"
@@ -244,6 +240,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_alignTop="@+id/worker_add_birthday"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
