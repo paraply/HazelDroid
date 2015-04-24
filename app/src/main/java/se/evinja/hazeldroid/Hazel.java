@@ -196,7 +196,12 @@ public class Hazel extends Application {
             p.firstName = "Bänkt";
             p.lastName = "Olof";
             p.position = "Skurk";
+            p.company = "Skurkinc";
+            Object_Worker z = new Object_Worker();
+            z.firstName = "Nee";
+            z.position = "Eeee";
             workers.add(p);
+            workers.add(z);
             adapter_workers.notifyDataSetChanged();
         }
     }

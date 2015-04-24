@@ -78,6 +78,14 @@ public class Fragment_Workers extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add_new_worker){
+            show_add_fragment();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int id = item.getItemId();
@@ -104,6 +112,14 @@ public class Fragment_Workers extends Fragment {
         getActivity().getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, edit_w)
                 .addToBackStack("worker edit")
+                .commit();
+    }
+
+    private void show_add_fragment(){
+        Fragment_Add_Worker add_w = Fragment_Add_Worker.newInstance();
+        getActivity().getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, add_w)
+                .addToBackStack("worker add")
                 .commit();
     }
 

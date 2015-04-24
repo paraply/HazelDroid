@@ -1,6 +1,8 @@
 package se.evinja.hazeldroid;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -55,6 +57,27 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         fragment_navigation.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (fragment_navigation.isOpen()){
+            fragment_navigation.close(); //Close navigation if open
+        }else{
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            // check to see if stack is empty
+            if (fm.getBackStackEntryCount() > 0) {
+                fm.popBackStack();
+                ft.commit();
+            }
+            else {
+                super.onBackPressed();
+            }
+        }
+
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -68,14 +91,6 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed(){
-        if (fragment_navigation.isOpen()){
-            fragment_navigation.close(); //Close navigation if open
-        }else{
-            super.onBackPressed(); // Else go back or close app
-        }
-    }
 
 
     public boolean navigation_open(){
@@ -98,6 +113,11 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        FragmentManager fm = getFragmentManager(); //Clear the backstack when menu item pressed
+        for (int i = 0; i < fm.getBackStackEntryCount(); i++){
+            fm.popBackStack();
+        }
+
         if (hazel.access_rootlevel()){
             position -= 1; //Root has not my schedule item
         }
@@ -126,7 +146,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     private void fragment_replace(Fragment fragment){
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .addToBackStack("")
+//                .addToBackStack("")
                 .commit();
     }
 
