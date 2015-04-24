@@ -44,7 +44,7 @@ public class Fragment_Workers extends Fragment {
         workers_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                show_edit_fragment(position);
+                show_show_worker_fragment(position);
             }
         });
         if (hazel.access_adminlevel()) {
@@ -74,7 +74,7 @@ public class Fragment_Workers extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.qualifications_long_click, menu);
+        inflater.inflate(R.menu.workers_long_click, menu);
     }
 
     @Override
@@ -90,8 +90,22 @@ public class Fragment_Workers extends Fragment {
         return false;
     }
 
-    private void show_edit_fragment(int position){
-
+    private void show_show_worker_fragment(int position){
+        Fragment_Show_Worker show_w = Fragment_Show_Worker.newInstance(position);
+        getActivity().getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, show_w)
+                .addToBackStack("worker show")
+                .commit();
     }
+
+
+    private void show_edit_fragment(int position){
+        Fragment_Edit_Worker edit_w = Fragment_Edit_Worker.newInstance(position);
+        getActivity().getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, edit_w)
+                .addToBackStack("worker edit")
+                .commit();
+    }
+
 
 }

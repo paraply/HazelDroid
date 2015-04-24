@@ -65,7 +65,7 @@ public class Adapter_Workers extends BaseAdapter{
 
         Object_Worker ow = worker_list.get(position);
 
-        holder.fullname.setText(ow.get_FullName());
+        holder.fullname.setText(ow.get_fullName());
         holder.position.setText(ow.position);
 
         return convertView;

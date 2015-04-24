@@ -8,11 +8,11 @@ public class Object_Worker {
 
     public Object_Worker(){}
 
-    public String get_FullName(){
+    public String get_fullName(){
         return  firstName + " " + lastName;
     }
 
-    public String get_Personnumber(){
+    public String get_personnumber(){
         if (birthday != null) {
             return birthday + " - " + last4;
         }else{
@@ -20,6 +20,9 @@ public class Object_Worker {
         }
     }
 
+    public String get_worker_qualifications(){
+        return "none yet";
+    }
 
 
 }
