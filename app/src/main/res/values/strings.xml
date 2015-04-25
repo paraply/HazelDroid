@@ -38,6 +38,7 @@
     <string name="add_worker">Add worker</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="edit_worker">Edit worker</string>
 
 
 </resources>

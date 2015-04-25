@@ -1,66 +1,112 @@
 package se.evinja.hazeldroid.workers;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 
 public class Fragment_Worker_Edit extends Fragment{
     private Hazel hazel;
-    private Object_Worker person;
+    private Object_Worker worker;
+    private Activity_Main parent;
 
-    EditText ep_firstName, ep_lastName, ep_workPosition, ep_phone, ep_mail, ep_birthdate, ep_last4;
-    Spinner ep_Competences;
+    private EditText firstname, lastname, position, phone, mail, birthdate, last4;
+    private Spinner qualifications;
 
 
-    public static Fragment_Worker_Edit newInstance(int person_position) {
+    public static Fragment_Worker_Edit newInstance(int worker_position) {
         Fragment_Worker_Edit fragment = new Fragment_Worker_Edit();
         Bundle args = new Bundle();
-        args.putInt("worker_position", person_position);
+        args.putInt("worker_position", worker_position);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        parent = (Activity_Main) activity;
+        parent.set_title(activity.getString(R.string.edit_worker));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!parent.navigation_open()) {
+            inflater.inflate(R.menu.worker_edit, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_worker_edit, container, false);
         hazel = (Hazel) getActivity().getApplication();
-        person = hazel.get_worker(getArguments().getInt("worker_position"));
+        worker = hazel.get_worker(getArguments().getInt("worker_position"));
 
-        ep_Competences = (Spinner) view.findViewById(R.id.worker_edit_qualifications);
+        qualifications = (Spinner) view.findViewById(R.id.worker_edit_qualifications);
 
-//        ep_Competences.setItems(hazelServer.getCompetences()); //TODO
+//        qualifications.setItems(hazelServer.getCompetences()); //TODO
 
-//        person = hazelServer.getPersonList().get(pos);
-        ep_firstName = (EditText) view.findViewById(R.id.worker_edit_firstname);
-        ep_lastName = (EditText) view.findViewById(R.id.worker_edit_lastname);
-        ep_workPosition = (EditText) view.findViewById(R.id.worker_edit_position);
-        ep_phone = (EditText) view.findViewById(R.id.worker_edit_phone);
-        ep_mail = (EditText) view.findViewById(R.id.worker_edit_mail);
-        ep_birthdate = (EditText) view.findViewById(R.id.worker_edit_birthday);
-        ep_last4 = (EditText) view.findViewById(R.id.worker_edit_last4);
+//        worker = hazelServer.getPersonList().get(pos);
+        firstname = (EditText) view.findViewById(R.id.worker_edit_firstname);
+        lastname = (EditText) view.findViewById(R.id.worker_edit_lastname);
+        position = (EditText) view.findViewById(R.id.worker_edit_position);
+        phone = (EditText) view.findViewById(R.id.worker_edit_phone);
+        mail = (EditText) view.findViewById(R.id.worker_edit_mail);
+        birthdate = (EditText) view.findViewById(R.id.worker_edit_birthday);
+        last4 = (EditText) view.findViewById(R.id.worker_edit_last4);
 
-//        if (person.hasCompetences()){
-//            ep_Competences.setSelection(person.getQualifications()); //TODO
+//        if (worker.hasCompetences()){
+//            qualifications.setSelection(worker.getQualifications()); //TODO
 //        }
 
-        //ep_Competences.get_proxyAdapter().notifyDataSetChanged();
-        ep_firstName.setText(person.firstName);
-        ep_lastName.setText(person.lastName);
-        ep_workPosition.setText(person.position);
-        ep_phone.setText(person.phoneNr);
-        ep_mail.setText(person.mailAddress);
-        ep_birthdate.setText(person.birthday);
-        ep_last4.setText(person.last4);
-
+        //qualifications.get_proxyAdapter().notifyDataSetChanged();
+        firstname.setText(worker.firstName);
+        lastname.setText(worker.lastName);
+        position.setText(worker.position);
+        phone.setText(worker.phoneNr);
+        mail.setText(worker.mailAddress);
+        birthdate.setText(worker.birthday);
+        last4.setText(worker.last4);
 
         return view;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_worker_edit_save){
+            validate_and_save();
+        }else if (id == R.id.action_worker_edit_cancel){
+            parent.onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void validate_and_save(){
+        Object_Worker person = hazel.get_worker(getArguments().getInt("worker_position"));
+        //TODO VALIDATE
+        person.lastName = lastname.getText().toString();
+        person.firstName = firstname.getText().toString();
+        person.position = position.getText().toString();
+//        person.setQualifications(qualifications.getSelectedStrings());
+        person.phoneNr = phone.getText().toString();
+        person.mailAddress = mail.getText().toString();
+        person.birthday = birthdate.getText().toString();
+        person.last4 = last4.getText().toString();
+
+        parent.onBackPressed();
     }
 
 

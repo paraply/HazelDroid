@@ -37,7 +37,6 @@ public class Fragment_Worker_Show extends Fragment{
         setHasOptionsMenu(true);
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (!((Activity_Main) getActivity()).navigation_open()) {
@@ -47,9 +46,6 @@ public class Fragment_Worker_Show extends Fragment{
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -65,14 +61,12 @@ public class Fragment_Worker_Show extends Fragment{
         return false;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         hazel = (Hazel) parent.getApplication();
         View view = inflater.inflate(R.layout.fragment_worker_show, container, false);
 
         w = hazel.get_worker(getArguments().getInt("worker_position"));
-
 
         ((TextView) view.findViewById(R.id.show_worker_fullname)).setText(w.get_fullName());
         ((TextView) view.findViewById(R.id.show_worker_position)).setText(w.position);
