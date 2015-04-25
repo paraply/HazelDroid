@@ -95,16 +95,15 @@ public class Fragment_Worker_Edit extends Fragment{
     }
 
     private void validate_and_save(){
-        Object_Worker person = hazel.get_worker(getArguments().getInt("worker_position"));
         //TODO VALIDATE
-        person.lastName = lastname.getText().toString();
-        person.firstName = firstname.getText().toString();
-        person.position = position.getText().toString();
+        worker.lastName = lastname.getText().toString();
+        worker.firstName = firstname.getText().toString();
+        worker.position = position.getText().toString();
 //        person.setQualifications(qualifications.getSelectedStrings());
-        person.phoneNr = phone.getText().toString();
-        person.mailAddress = mail.getText().toString();
-        person.birthday = birthdate.getText().toString();
-        person.last4 = last4.getText().toString();
+        worker.phoneNr = phone.getText().toString();
+        worker.mailAddress = mail.getText().toString();
+        worker.birthday = birthdate.getText().toString();
+        worker.last4 = last4.getText().toString();
 
         parent.onBackPressed();
     }

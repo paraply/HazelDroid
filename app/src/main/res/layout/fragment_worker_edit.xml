@@ -186,6 +186,7 @@
 
         <EditText
             android:id="@+id/worker_edit_birthday"
+            android:hint="YYYYMMDD"
             android:inputType="date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -200,6 +201,7 @@
         <EditText
             android:id="@+id/worker_edit_last4"
             android:inputType="number"
+            android:hint="XXXX"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

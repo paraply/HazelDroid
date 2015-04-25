@@ -119,7 +119,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         }
 
         if (hazel.access_rootlevel()){
-            position -= 1; //Root has not my schedule item
+            position -= 1; //Root has not "my schedule" item
         }
         switch (position){
             case 0:
