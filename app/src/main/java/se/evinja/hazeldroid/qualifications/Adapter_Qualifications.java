@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 
 public class Adapter_Qualifications extends BaseAdapter {

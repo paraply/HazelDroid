@@ -16,16 +16,16 @@ import android.widget.Spinner;
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
+import se.evinja.hazeldroid.qualifications.Qualifications_Selector;
 
 public class Fragment_Worker_Add extends Fragment{
     private Hazel hazel;
     private  Activity_Main parent;
 
     EditText username, password, firstname, lastname, position, phone, mail, birthdate, last4;
-    Spinner qualifications;
+    Qualifications_Selector qualifications;
 
     public static Fragment_Worker_Add newInstance() {
-//        Fragment_Worker_Add fragment = new Fragment_Worker_Add();
         return new Fragment_Worker_Add();
     }
 
@@ -37,7 +37,8 @@ public class Fragment_Worker_Add extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        hazel = (Hazel) getActivity().getApplication();
+        hazel = (Hazel) parent.getApplication();
+        hazel.download_qualifications(parent);
         final View view = inflater.inflate(R.layout.fragment_worker_add, container, false);
 
         username = (EditText) view.findViewById(R.id.worker_add_username);
@@ -45,13 +46,13 @@ public class Fragment_Worker_Add extends Fragment{
         firstname = (EditText) view.findViewById(R.id.worker_add_firstname);
         lastname = (EditText) view.findViewById(R.id.worker_add_lastname);
         position = (EditText) view.findViewById(R.id.worker_add_position);
-        qualifications = (Spinner) view.findViewById(R.id.worker_add_qualifications);
+        qualifications = (Qualifications_Selector) view.findViewById(R.id.worker_add_qualifications);
         phone = (EditText) view.findViewById(R.id.worker_add_phone);
         mail = (EditText) view.findViewById(R.id.worker_add_mail);
         birthdate = (EditText) view.findViewById(R.id.worker_add_birthday);
         last4 = (EditText) view.findViewById(R.id.worker_add_last4);
 
-//        qualifications.setItems(hazelServer.getCompetences());
+        qualifications.setQualifications(hazel.get_qualifications());
 
         return view;
     }
@@ -83,20 +84,21 @@ public class Fragment_Worker_Add extends Fragment{
     }
 
     private void validate_and_save(){
-        Object_Worker person = new Object_Worker();
+        Object_Worker worker = new Object_Worker();
         //TODO VALIDATE
-        person.username = username.getText().toString();
-        person.password = password.getText().toString();
-        person.lastName = lastname.getText().toString();
-        person.firstName = firstname.getText().toString();
-        person.position = position.getText().toString();
-//        person.setQualifications(qualifications.getSelectedStrings());
-        person.phoneNr = phone.getText().toString();
-        person.mailAddress = mail.getText().toString();
-        person.birthday = birthdate.getText().toString();
-        person.last4 = last4.getText().toString();
+        worker.username = username.getText().toString();
+        worker.password = password.getText().toString();
+        worker.lastName = lastname.getText().toString();
+        worker.firstName = firstname.getText().toString();
+        worker.position = position.getText().toString();
+        worker.qualifications = qualifications.getSelectedStrings();
 
-        hazel.add_worker(person);
+        worker.phoneNr = phone.getText().toString();
+        worker.mailAddress = mail.getText().toString();
+        worker.birthday = birthdate.getText().toString();
+        worker.last4 = last4.getText().toString();
+
+        hazel.add_worker(worker);
         parent.onBackPressed();
     }
 }

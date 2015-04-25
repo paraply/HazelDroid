@@ -73,7 +73,7 @@ public class Fragment_Worker_Show extends Fragment{
         ((TextView) view.findViewById(R.id.show_worker_mail)).setText(w.mailAddress);
         ((TextView) view.findViewById(R.id.show_worker_phone)).setText(w.phoneNr);
         ((TextView) view.findViewById(R.id.show_worker_personnr)).setText(w.get_personnumber());
-        ((TextView) view.findViewById(R.id.show_worker_qualifications)).setText(w.get_worker_qualifications());
+        ((TextView) view.findViewById(R.id.show_worker_qualifications)).setText(w.get_worker_qualifications(parent));
 
         return view;
     }

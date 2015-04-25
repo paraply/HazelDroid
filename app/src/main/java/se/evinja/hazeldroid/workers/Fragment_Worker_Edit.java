@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
+import se.evinja.hazeldroid.qualifications.Qualifications_Selector;
 
 public class Fragment_Worker_Edit extends Fragment{
     private Hazel hazel;
@@ -22,7 +23,7 @@ public class Fragment_Worker_Edit extends Fragment{
     private Activity_Main parent;
 
     private EditText firstname, lastname, position, phone, mail, birthdate, last4;
-    private Spinner qualifications;
+    private Qualifications_Selector qualifications;
 
 
     public static Fragment_Worker_Edit newInstance(int worker_position) {
@@ -32,6 +33,13 @@ public class Fragment_Worker_Edit extends Fragment{
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
 
     @Override
     public void onAttach(Activity activity){
@@ -52,13 +60,12 @@ public class Fragment_Worker_Edit extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_worker_edit, container, false);
         hazel = (Hazel) getActivity().getApplication();
+        hazel.download_qualifications(parent); //Download qualifications if not already downloaded. Automatically fills Selector
         worker = hazel.get_worker(getArguments().getInt("worker_position"));
 
-        qualifications = (Spinner) view.findViewById(R.id.worker_edit_qualifications);
+        qualifications = (Qualifications_Selector) view.findViewById(R.id.worker_edit_qualifications);
+        qualifications.setQualifications(hazel.get_qualifications());
 
-//        qualifications.setItems(hazelServer.getCompetences()); //TODO
-
-//        worker = hazelServer.getPersonList().get(pos);
         firstname = (EditText) view.findViewById(R.id.worker_edit_firstname);
         lastname = (EditText) view.findViewById(R.id.worker_edit_lastname);
         position = (EditText) view.findViewById(R.id.worker_edit_position);
@@ -67,11 +74,11 @@ public class Fragment_Worker_Edit extends Fragment{
         birthdate = (EditText) view.findViewById(R.id.worker_edit_birthday);
         last4 = (EditText) view.findViewById(R.id.worker_edit_last4);
 
-//        if (worker.hasCompetences()){
-//            qualifications.setSelection(worker.getQualifications()); //TODO
-//        }
+        if (worker.has_qualifications()){
+            qualifications.setSelection(worker.qualifications);
+        }
+        qualifications.update();
 
-        //qualifications.get_proxyAdapter().notifyDataSetChanged();
         firstname.setText(worker.firstName);
         lastname.setText(worker.lastName);
         position.setText(worker.position);
@@ -99,14 +106,18 @@ public class Fragment_Worker_Edit extends Fragment{
         worker.lastName = lastname.getText().toString();
         worker.firstName = firstname.getText().toString();
         worker.position = position.getText().toString();
-//        person.setQualifications(qualifications.getSelectedStrings());
+        worker.qualifications = qualifications.getSelectedStrings();
+
         worker.phoneNr = phone.getText().toString();
         worker.mailAddress = mail.getText().toString();
         worker.birthday = birthdate.getText().toString();
         worker.last4 = last4.getText().toString();
+        hazel.update_worker_list();
 
         parent.onBackPressed();
     }
+
+
 
 
 }

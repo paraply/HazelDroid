@@ -39,6 +39,10 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="edit_worker">Edit worker</string>
+    <string name="no_qualifications">No qualifications</string>
+    <string name="workers_has_qualification">" workers has this qualification"</string>
+    <string name="no_worker_has_qualification">no worker has this qualification</string>
+    <string name="one_worker_has_qualification">1 worker has this qualification</string>
 
 
 </resources>

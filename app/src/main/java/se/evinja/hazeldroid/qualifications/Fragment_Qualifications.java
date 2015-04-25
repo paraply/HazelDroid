@@ -103,7 +103,7 @@ public class Fragment_Qualifications extends Fragment {
                     .setView(q_title)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            hazel.add_qualification(q_title.getText().toString());
+                            hazel.add_qualification(q_title.getText().toString(), parent);
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

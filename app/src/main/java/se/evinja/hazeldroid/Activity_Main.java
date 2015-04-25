@@ -21,7 +21,7 @@ import se.evinja.hazeldroid.schedules.Fragment_User_Schedule;
 import se.evinja.hazeldroid.schedules.Fragment_Work_Schedule;
 import se.evinja.hazeldroid.workers.Fragment_Workers;
 
-public class Activity_Main extends ActionBarActivity implements Callback_Navigate {
+public class Activity_Main extends ActionBarActivity implements Callback_Navigate, HazelEvents {
     private Hazel hazel;
     private Fragment_Navigate fragment_navigation;
     private CharSequence title;
@@ -74,8 +74,6 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
                 super.onBackPressed();
             }
         }
-
-
     }
 
 
@@ -138,15 +136,12 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
                 show_qualifications();
                 break;
         }
-
-
     }
 
 
     private void fragment_replace(Fragment fragment){
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-//                .addToBackStack("")
                 .commit();
     }
 
@@ -178,4 +173,30 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     public void set_title(String new_title){
         title = new_title;
     }
+
+    @Override
+    public void onError(Hazel.HazelCommand duringCommand, String errorMsg) {
+
+    }
+
+    @Override
+    public void onConnected() {
+
+    }
+
+    @Override
+    public void onUserSchedule() {
+
+    }
+
+    @Override
+    public void onStaffSchedule() {
+
+    }
+
+    @Override
+    public void onStaffDownloaded() {
+
+    }
+
 }

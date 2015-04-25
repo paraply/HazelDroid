@@ -157,14 +157,26 @@ public class Hazel extends Application {
             adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
         }
         if (qualifications.size() == 0 ){
-            qualifications.add(new Object_Qualification("A-körkort", 3));
-            qualifications.add(new Object_Qualification("Pratar Hindi", 993263520));
+            qualifications.add(new Object_Qualification("A-körkort",parent, this));
+            qualifications.add(new Object_Qualification("Pratar Hindi",parent, this));
             adapter_qualifications.notifyDataSetChanged();
         }
     }
 
-    public void add_qualification(String title){
-        qualifications.add(new Object_Qualification(title, 3));
+    public int get_worker_has_qualification(String qualification){
+        int amount = 0;
+        for (Object_Worker w : workers){
+            if (w.has_qualifications()){
+                if (w.qualifications.contains(qualification)){
+                    amount++;
+                }
+            }
+        }
+        return amount;
+    }
+
+    public void add_qualification(String title, Activity parent){
+        qualifications.add(new Object_Qualification(title, parent, this));
         adapter_qualifications.notifyDataSetChanged();
     }
 
@@ -197,6 +209,7 @@ public class Hazel extends Application {
             p.lastName = "Olof";
             p.position = "Skurk";
             p.company = "Skurkinc";
+            p.add_qualification("A-körkort");
             Object_Worker z = new Object_Worker();
             z.firstName = "Nee";
             z.position = "Eeee";
