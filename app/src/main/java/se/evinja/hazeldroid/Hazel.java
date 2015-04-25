@@ -45,6 +45,7 @@ public class Hazel extends Application {
 
     private List<Object_Worker> workers = new ArrayList<>();
     private Adapter_Workers adapter_workers;
+    private boolean workers_are_invalid;
 
     public void login(String username, String password, HazelEvents eventListener){
         access = AccessStatus.USER; //Reset before login
@@ -183,6 +184,7 @@ public class Hazel extends Application {
     public void delete_qualification(int position){
         qualifications.remove(position);
         adapter_qualifications.notifyDataSetChanged();
+        workers_are_invalid = true; //Workers are now not valid since one could contain the deleted qualification
     }
 
     public void update_qualification(int position, String new_title){
@@ -203,19 +205,20 @@ public class Hazel extends Application {
         if (adapter_workers == null){
             adapter_workers = new Adapter_Workers(parent, workers);
         }
-        if (workers.size() == 0 ){
+        if (workers.size() == 0 || workers_are_invalid ){
+            workers.clear();
             Object_Worker p = new Object_Worker();
             p.firstName = "Bänkt";
             p.lastName = "Olof";
             p.position = "Skurk";
             p.company = "Skurkinc";
-//            p.add_qualification("A-körkort");
             Object_Worker z = new Object_Worker();
             z.firstName = "Nee";
             z.position = "Eeee";
             workers.add(p);
             workers.add(z);
             adapter_workers.notifyDataSetChanged();
+            workers_are_invalid = false;
         }
     }
 

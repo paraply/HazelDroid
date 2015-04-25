@@ -11,7 +11,6 @@ import se.evinja.hazeldroid.qualifications.Object_Qualification;
 
 public class Object_Worker {
     public String id , firstName, lastName, position, mailAddress,birthday, last4, phoneNr, username, password, company;
-//    public List<String> qualifications = new ArrayList<>(); //TODO CHANGE TO List<Object_Qualification> CANT RENAME QUALIFICATION NOW!!!!!!!!!!!
     public List<Object_Qualification> qualifications;
 
     public Object_Worker(){}
