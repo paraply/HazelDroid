@@ -106,7 +106,7 @@ public class Fragment_Worker_Edit extends Fragment{
         worker.lastName = lastname.getText().toString();
         worker.firstName = firstname.getText().toString();
         worker.position = position.getText().toString();
-        worker.qualifications = qualifications.getSelectedStrings();
+        worker.qualifications = qualifications.getSelected();
 
         worker.phoneNr = phone.getText().toString();
         worker.mailAddress = mail.getText().toString();

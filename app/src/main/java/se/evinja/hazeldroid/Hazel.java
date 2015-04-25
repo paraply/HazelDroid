@@ -163,11 +163,11 @@ public class Hazel extends Application {
         }
     }
 
-    public int get_worker_has_qualification(String qualification){
+    public int get_worker_has_qualification(Object_Qualification qualification){
         int amount = 0;
         for (Object_Worker w : workers){
             if (w.has_qualifications()){
-                if (w.qualifications.contains(qualification)){
+                if (w.has_qualification(qualification)){
                     amount++;
                 }
             }
@@ -209,7 +209,7 @@ public class Hazel extends Application {
             p.lastName = "Olof";
             p.position = "Skurk";
             p.company = "Skurkinc";
-            p.add_qualification("A-körkort");
+//            p.add_qualification("A-körkort");
             Object_Worker z = new Object_Worker();
             z.firstName = "Nee";
             z.position = "Eeee";
