@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/next_run_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="10"
+        android:textSize="40sp"
+        android:padding="10dp"
+        android:background="@color/accent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/task_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Do something"
+        android:textSize="20sp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/black_text"
+        android:layout_toRightOf="@+id/next_run_date"
+        android:layout_toEndOf="@+id/next_run_date">
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/task_description"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Somewhere somehow s3df21 s3d21f 3s2d1f3 s2d1f32s1d f32s1d32f 1sweffffffffffffffffffffff sdf sdf sdf df"
+        android:textSize="30px"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/task_name"
+        android:layout_toRightOf="@+id/next_run_date"
+        android:layout_toEndOf="@+id/next_run_date"
+        android:layout_alignBottom="@+id/next_run_date">
+    </TextView>
+
+
+
+
+</RelativeLayout>

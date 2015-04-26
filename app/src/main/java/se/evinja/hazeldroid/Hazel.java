@@ -28,7 +28,9 @@ public class Hazel extends Application implements Http_Events {
         ADD_QUALIFICATION,
         DOWNLOAD_QUALIFICATIONS,
         ADD_WORKER,
-        DOWNLOAD_WORKERS
+        DOWNLOAD_WORKERS,
+        ADD_TASK,
+        DOWNLOAD_TASKS
     }
     HazelCommand currentCommand,commandBefore;
 
@@ -156,12 +158,19 @@ public class Hazel extends Application implements Http_Events {
             case DOWNLOAD_WORKERS:
                 http.GET("worker");
                 break;
+
             case ADD_WORKER:
               //  http_post("user", jsonData);
                 break;
+
             case DOWNLOAD_QUALIFICATIONS:
                 http.GET("qual");
                 break;
+
+            case DOWNLOAD_TASKS:
+                http.GET("task");
+                break;
+
             default:
                 return;
         }
@@ -267,6 +276,10 @@ public class Hazel extends Application implements Http_Events {
 
     public Object_Worker get_worker(int position){
         return workers.get(position);
+    }
+
+    public void download_tasks(Activity parent){
+        execute(HazelCommand.DOWNLOAD_TASKS, null);
     }
 
 

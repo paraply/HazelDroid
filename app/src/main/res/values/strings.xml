@@ -28,10 +28,10 @@
     <string name="edit_qualification">Edit qualification</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-    <string name="position">Position</string>
+    <string name="position">Position</string>-
     <string name="phone">Phone</string>
     <string name="mail">Email</string>
-    <string name="person_number">Personnumber</string>
+    <string name="person_number">Personal number</string>
     <string name="login_credentials">Login credentials</string>
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>

@@ -17,7 +17,7 @@ import android.widget.Toast;
 import se.evinja.hazeldroid.navigation.Callback_Navigate;
 import se.evinja.hazeldroid.navigation.Fragment_Navigate;
 import se.evinja.hazeldroid.qualifications.Fragment_Qualifications;
-import se.evinja.hazeldroid.schedules.Fragment_Tasks;
+import se.evinja.hazeldroid.tasks.Fragment_Tasks;
 import se.evinja.hazeldroid.schedules.Fragment_User_Schedule;
 import se.evinja.hazeldroid.schedules.Fragment_Work_Schedule;
 import se.evinja.hazeldroid.workers.Fragment_Workers;
