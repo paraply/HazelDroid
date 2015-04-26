@@ -25,6 +25,7 @@ public class Hazel extends Application implements Http_Events {
         DOWNLOAD_USER_SCHEDULE,
         DOWNLOAD_STAFF_SCHEDULE,
         ADD_WORKER,
+        DOWNLOAD_QUALIFICATIONS,
         DOWNLOAD_PERSONNEL
     }
     HazelCommand currentCommand,commandBefore;
@@ -66,6 +67,7 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void logout(){
+        execute(HazelCommand.LOGOUT, null);
         user_logged_out = true;
     }
 
@@ -94,7 +96,7 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void download_staff_schedule(){
-        execute(HazelCommand.DOWNLOAD_STAFF_SCHEDULE,null);
+        execute(HazelCommand.DOWNLOAD_STAFF_SCHEDULE, null);
         eventListener.onStaffSchedule();
 //        login_procedure = false; // Login procedure finished
     }
@@ -137,7 +139,7 @@ public class Hazel extends Application implements Http_Events {
                 break;
             case LOGOUT:
                 if (connectionStatus != ConnectionStatus.NOT_CONNECTED) {
-                    //httpGet("logout");
+                    http.GET("logout");
                     user_logged_out = true;
                     connectionStatus = ConnectionStatus.NOT_CONNECTED;
                 }
@@ -287,6 +289,11 @@ public class Hazel extends Application implements Http_Events {
                     onError("parsing login reponse");
                 }
                 break;
+
+            case LOGOUT:
+                //Doesnt need to do anything
+                break;
+
             default:
                 onError("Received data on no command");
         }

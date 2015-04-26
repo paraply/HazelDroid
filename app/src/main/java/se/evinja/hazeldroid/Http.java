@@ -76,7 +76,6 @@ public class Http {
 
         }
         Http_Getter get = new Http_Getter(); // Must be after the class
-//        get.execute("http://178.62.213.135:3000/DJTunafish/login", "DJTunafish", "Tuna");
         get.execute(BASE_PATH + username + "/" +  server_path, username, password);
 
     }
