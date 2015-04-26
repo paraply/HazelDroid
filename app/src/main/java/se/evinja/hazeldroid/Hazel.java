@@ -252,11 +252,16 @@ public class Hazel extends Application implements Http_Events {
     @Override
     public void onError(String error_msg) {
         Log.i("###### ERROR", error_msg);
+        eventListener.onError(currentCommand, error_msg);
     }
 
     @Override
     public void onData(String data) {
-        Log.i("###### DATA", data);
+        switch (currentCommand){
+            case LOGIN:
+                eventListener.onConnected();
+                break;
+        }
     }
 
 

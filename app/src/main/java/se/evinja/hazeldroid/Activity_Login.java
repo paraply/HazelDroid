@@ -115,7 +115,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 
     @Override
     public void onConnected() {
-        if (login_remember.isChecked() && !from_saved_info){ //Shall save data to preferences
+        if (login_remember.isChecked()){ //Shall save data to preferences, save even if has saved before if has been changed...
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("username", login_username.getText().toString());
             editor.putString("password", login_password.getText().toString());

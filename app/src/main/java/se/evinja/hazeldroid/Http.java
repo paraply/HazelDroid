@@ -43,17 +43,17 @@ public class Http {
             String backgroundErrors = "";
             @Override
             protected String doInBackground(String... params) {
+                try {
                 HttpGet httpGet = new HttpGet(params[0]);
                 httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(params[1], params[2]), "UTF-8", false));
                 String result = "";
-                try {
+
                     HttpResponse response = httpClient.execute(httpGet);
                     InputStream is = response.getEntity().getContent();
 
                     if (is != null){
                         result = convertStreamToString(is);
-                        Log.i("###### GET DATA", result);
-                        eventListener.onData(result);
+                        return result;
 
                     }else{
                         Log.i("###### GET GOT NULL", "");
@@ -71,6 +71,7 @@ public class Http {
                 if (!backgroundErrors.isEmpty()){
                     eventListener.onError("Error in GET: " + backgroundErrors);
                 }
+                eventListener.onData(result);
             }
 
         }
