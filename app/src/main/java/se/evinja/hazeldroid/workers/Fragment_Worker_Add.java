@@ -38,7 +38,7 @@ public class Fragment_Worker_Add extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         hazel = (Hazel) parent.getApplication();
-        hazel.download_qualifications(parent);
+        hazel.download_qualifications_and_workers(parent);
         final View view = inflater.inflate(R.layout.fragment_worker_add, container, false);
 
         username = (EditText) view.findViewById(R.id.worker_add_username);

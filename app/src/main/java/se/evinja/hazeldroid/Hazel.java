@@ -167,18 +167,15 @@ public class Hazel extends Application implements Http_Events {
         }
     }
 
-    public void download_qualifications(Activity parent){
-        if (adapter_qualifications == null){
-            adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
-        }
-        if (qualifications.size() == 0 ){
-            this.parent = parent;
-            execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
-//            qualifications.add(new Object_Qualification("A-körkort",parent, this));
-//            qualifications.add(new Object_Qualification("Pratar Hindi",parent, this));
-//            adapter_qualifications.notifyDataSetChanged();
-        }
-    }
+//    private void download_qualifications(Activity parent){
+//        if (adapter_qualifications == null){
+//            adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
+//        }
+//        if (qualifications.size() == 0 ){
+//            this.parent = parent;
+//            execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
+//        }
+//    }
 
     public int get_worker_has_qualification(Object_Qualification qualification){
         int amount = 0;
@@ -208,6 +205,15 @@ public class Hazel extends Application implements Http_Events {
         adapter_qualifications.notifyDataSetChanged();
     }
 
+    public Object_Qualification get_qualification(String str){
+        for (Object_Qualification q : qualifications){
+            if (q.title.equals(str)){
+                return q;
+            }
+        }
+        return null;
+    }
+
     public Adapter_Qualifications getAdapter_qualifications(){
         return adapter_qualifications;
     }
@@ -216,27 +222,27 @@ public class Hazel extends Application implements Http_Events {
         return qualifications;
     }
 
+    public void download_qualifications_and_workers(Activity parent){
+        this.parent = parent;
+        if (adapter_qualifications == null){
+            adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
+        }
+        if (qualifications.size() == 0 ){
+            this.parent = parent;
+            execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
+        }else{
+            download_workers(parent);
+        }
+    }
 
-    public void download_workers(Activity parent){
+    private void download_workers(Activity parent){ //This will download qualifications if not already downloaded.
         if (adapter_workers == null){
             adapter_workers = new Adapter_Workers(parent, workers);
         }
         if (workers.size() == 0 || workers_are_invalid ){ // Do not download if has valid worker list. It is automatically called from fragments needing it. No reason redownloading.
             workers.clear();
             this.parent = parent;
-
-//            Object_Worker p = new Object_Worker();
-//            p.firstName = "Bänkt";
-//            p.lastName = "Olof";
-//            p.position = "Skurk";
-//            p.company = "Skurkinc";
-//            Object_Worker z = new Object_Worker();
-//            z.firstName = "Nee";
-//            z.position = "Eeee";
-//            workers.add(p);
-//            workers.add(z);
             execute(HazelCommand.DOWNLOAD_WORKERS, null);
-//            adapter_workers.notifyDataSetChanged();
             workers_are_invalid = false;
         }
     }
@@ -313,6 +319,7 @@ public class Hazel extends Application implements Http_Events {
                         Log.i("###### QUALIFICATION", jo.toString());
                     }
                     adapter_qualifications.notifyDataSetChanged();
+                    download_workers(parent); //Download workers when qualifications has been downloaded. NOT THE OTHER WAY AROUND. Workers need qualifications to generate objects.
                 } catch (JSONException e) {
                     onError("parsing qualifications");
                 }
@@ -323,7 +330,7 @@ public class Hazel extends Application implements Http_Events {
                     JSONArray ja = new JSONArray(data);
                     for (int i = 0; i < ja.length(); i++){
                         JSONObject jo = ja.getJSONObject(i);
-                        workers.add(new Object_Worker(jo));
+                        workers.add(new Object_Worker(jo, this));
                         Log.i("###### WORKER", jo.toString());
                     }
                     adapter_workers.notifyDataSetChanged();

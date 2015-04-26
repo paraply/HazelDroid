@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 import se.evinja.hazeldroid.qualifications.Object_Qualification;
 
@@ -18,7 +19,7 @@ public class Object_Worker {
 
     public Object_Worker(){}
 
-    public Object_Worker(JSONObject jobj){
+    public Object_Worker(JSONObject jobj,Hazel hazel){ //Need hazel reference to get qualification from string
             try {
                 id = jobj.getString("id");
                 firstName = jobj.getString("fstname");
@@ -31,13 +32,15 @@ public class Object_Worker {
                 id = jobj.getString("id");
 
 
-//                JSONArray jArr = jobj.getJSONArray("qualifications");
-//                if (jArr != null){
-//                    for (int i = 0; i < jArr.length(); i++){
-//                        qualifications.add();
-//                    }
-//                }
-
+                JSONArray jArr = jobj.getJSONArray("qualifications");
+                if (jArr != null){
+                    for (int i = 0; i < jArr.length(); i++){
+                        Object_Qualification q = hazel.get_qualification(jArr.getString(i));
+                        if (q != null){
+                            qualifications.add(q);
+                        }
+                    }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

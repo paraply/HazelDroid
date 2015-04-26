@@ -41,10 +41,8 @@ public class Fragment_Qualifications extends Fragment {
         hazel = (Hazel) parent.getApplication();
         View view = inflater.inflate(R.layout.fragment_qualifications, container, false);
         ListView qualifications_listview = (ListView) view.findViewById(R.id.qualifications_list);
-        hazel.download_qualifications(parent);
+        hazel.download_qualifications_and_workers(parent);
         qualifications_listview.setAdapter(hazel.getAdapter_qualifications());
-
-
 
         qualifications_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
