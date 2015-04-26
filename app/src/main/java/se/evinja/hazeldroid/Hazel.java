@@ -14,7 +14,9 @@ import se.evinja.hazeldroid.workers.Adapter_Workers;
 import se.evinja.hazeldroid.qualifications.Object_Qualification;
 import se.evinja.hazeldroid.workers.Object_Worker;
 
-public class Hazel extends Application {
+public class Hazel extends Application implements Http_Events {
+
+
     public enum HazelCommand {
         LOGIN,
         LOGOUT,
@@ -39,6 +41,7 @@ public class Hazel extends Application {
     private boolean user_logged_out, login_procedure;
     private String username, password;
     private HazelEvents eventListener;
+    private Http http;
 
     private List<Object_Qualification> qualifications = new ArrayList<>();
     private Adapter_Qualifications adapter_qualifications;
@@ -53,10 +56,11 @@ public class Hazel extends Application {
         this.username = username;
         this.password = password;
         this.eventListener = eventListener;
+        http = new Http(this, username,password);
         execute(HazelCommand.LOGIN, null);
-        access = AccessStatus.ADMIN; //TODO REMOVE
-        eventListener.onConnected(); //TODO MOVE
-        download_personnel();
+//        access = AccessStatus.ADMIN; //TODO REMOVE
+//        eventListener.onConnected(); //TODO MOVE
+//        download_personnel();
     }
 
     public void logout(){
@@ -127,7 +131,7 @@ public class Hazel extends Application {
         switch (cmd){
             case LOGIN:
                 access = AccessStatus.USER; //Reset to make sure we are not in admin mode
-                //httpGet("login");
+                http.GET("login");
                 break;
             case LOGOUT:
                 if (connectionStatus != ConnectionStatus.NOT_CONNECTED) {
@@ -243,5 +247,17 @@ public class Hazel extends Application {
     public Object_Worker get_worker(int position){
         return workers.get(position);
     }
+
+
+    @Override
+    public void onError(String error_msg) {
+        Log.i("###### ERROR", error_msg);
+    }
+
+    @Override
+    public void onData(String data) {
+        Log.i("###### DATA", data);
+    }
+
 
 }

@@ -48,7 +48,9 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 
     public void login_btn_clicked(View v){ //Called from onClick from LOGIN button
         String username = login_username.getText().toString();
+        username = username.trim(); // Trim accidental whitespace
         String password = login_password.getText().toString();
+        password = password.trim();
         if (username.isEmpty()){
             Toast.makeText(v.getContext(), getString(R.string.username_is_missing), Toast.LENGTH_LONG).show();
             login_username.requestFocus();
@@ -84,6 +86,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
     }
 
     private void restoreUI(){
+        progress.dismiss();
         login_btn.setEnabled(true);
         login_username.setEnabled(true);
         login_password.setEnabled(true);
