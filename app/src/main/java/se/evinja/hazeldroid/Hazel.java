@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,9 +25,10 @@ public class Hazel extends Application implements Http_Events {
         CANCEL,
         DOWNLOAD_USER_SCHEDULE,
         DOWNLOAD_STAFF_SCHEDULE,
-        ADD_WORKER,
+        ADD_QUALIFICATION,
         DOWNLOAD_QUALIFICATIONS,
-        DOWNLOAD_PERSONNEL
+        ADD_WORKER,
+        DOWNLOAD_WORKERS
     }
     HazelCommand currentCommand,commandBefore;
 
@@ -52,6 +54,7 @@ public class Hazel extends Application implements Http_Events {
     private List<Object_Worker> workers = new ArrayList<>();
     private Adapter_Workers adapter_workers;
     private boolean workers_are_invalid;
+    private Activity parent;
 
     public void login(String username, String password, HazelEvents eventListener){
         access = AccessStatus.USER; //Reset before login
@@ -76,7 +79,7 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void download_personnel(){
-        execute(HazelCommand.DOWNLOAD_PERSONNEL, null);
+        execute(HazelCommand.DOWNLOAD_WORKERS, null);
         eventListener.onStaffDownloaded(); //TODO MOVE
 //        if (login_procedure){
 //            if (access != AccessStatus.ROOT) {
@@ -119,14 +122,14 @@ public class Hazel extends Application implements Http_Events {
         return access == AccessStatus.ROOT;
     }
 
-    private void raise_error(String error_msg){
-        Log.i("###### ERROR", currentCommand.toString() + " - " + error_msg);
-        if (login_procedure){ // if during login/first downloading set as disconnected
-            connectionStatus = ConnectionStatus.NOT_CONNECTED;
-            login_procedure = false;
-        }
-        eventListener.onError(currentCommand, error_msg);
-    }
+//    private void raise_error(String error_msg){
+//        Log.i("###### ERROR", currentCommand.toString() + " - " + error_msg);
+//        if (login_procedure){ // if during login/first downloading set as disconnected
+//            connectionStatus = ConnectionStatus.NOT_CONNECTED;
+//            login_procedure = false;
+//        }
+//        eventListener.onError(currentCommand, error_msg);
+//    }
 
     private void execute(HazelCommand cmd, JSONObject jsonData){
         Log.i("###### EXECUTE", cmd.toString());
@@ -150,11 +153,14 @@ public class Hazel extends Application implements Http_Events {
                     login_procedure = false;
                 }
                 break;
-            case DOWNLOAD_PERSONNEL:
-               // httpGet("worker");
+            case DOWNLOAD_WORKERS:
+                http.GET("worker");
                 break;
             case ADD_WORKER:
               //  http_post("user", jsonData);
+                break;
+            case DOWNLOAD_QUALIFICATIONS:
+                http.GET("qual");
                 break;
             default:
                 return;
@@ -166,9 +172,11 @@ public class Hazel extends Application implements Http_Events {
             adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
         }
         if (qualifications.size() == 0 ){
-            qualifications.add(new Object_Qualification("A-körkort",parent, this));
-            qualifications.add(new Object_Qualification("Pratar Hindi",parent, this));
-            adapter_qualifications.notifyDataSetChanged();
+            this.parent = parent;
+            execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
+//            qualifications.add(new Object_Qualification("A-körkort",parent, this));
+//            qualifications.add(new Object_Qualification("Pratar Hindi",parent, this));
+//            adapter_qualifications.notifyDataSetChanged();
         }
     }
 
@@ -213,19 +221,22 @@ public class Hazel extends Application implements Http_Events {
         if (adapter_workers == null){
             adapter_workers = new Adapter_Workers(parent, workers);
         }
-        if (workers.size() == 0 || workers_are_invalid ){
+        if (workers.size() == 0 || workers_are_invalid ){ // Do not download if has valid worker list. It is automatically called from fragments needing it. No reason redownloading.
             workers.clear();
-            Object_Worker p = new Object_Worker();
-            p.firstName = "Bänkt";
-            p.lastName = "Olof";
-            p.position = "Skurk";
-            p.company = "Skurkinc";
-            Object_Worker z = new Object_Worker();
-            z.firstName = "Nee";
-            z.position = "Eeee";
-            workers.add(p);
-            workers.add(z);
-            adapter_workers.notifyDataSetChanged();
+            this.parent = parent;
+
+//            Object_Worker p = new Object_Worker();
+//            p.firstName = "Bänkt";
+//            p.lastName = "Olof";
+//            p.position = "Skurk";
+//            p.company = "Skurkinc";
+//            Object_Worker z = new Object_Worker();
+//            z.firstName = "Nee";
+//            z.position = "Eeee";
+//            workers.add(p);
+//            workers.add(z);
+            execute(HazelCommand.DOWNLOAD_WORKERS, null);
+//            adapter_workers.notifyDataSetChanged();
             workers_are_invalid = false;
         }
     }
@@ -280,7 +291,6 @@ public class Hazel extends Application implements Http_Events {
                         connectionStatus = ConnectionStatus.CONNECTED;
                         hasLoggedOut = false;
                         eventListener.onConnected();
-
                     }else{
                         onError("Bad status code");
                         connectionStatus = ConnectionStatus.NOT_CONNECTED;
@@ -292,6 +302,36 @@ public class Hazel extends Application implements Http_Events {
 
             case LOGOUT:
                 //Doesnt need to do anything
+                break;
+
+            case DOWNLOAD_QUALIFICATIONS:
+                try {
+                    JSONArray ja = new JSONArray(data);
+                    for (int i = 0; i < ja.length(); i++){
+                        JSONObject jo = ja.getJSONObject(i);
+                        add_qualification(jo.getString("qualname"), parent);
+                        Log.i("###### QUALIFICATION", jo.toString());
+                    }
+                    adapter_qualifications.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    onError("parsing qualifications");
+                }
+                break;
+
+            case DOWNLOAD_WORKERS:
+                try {
+                    JSONArray ja = new JSONArray(data);
+                    for (int i = 0; i < ja.length(); i++){
+                        JSONObject jo = ja.getJSONObject(i);
+                        workers.add(new Object_Worker(jo));
+                        Log.i("###### WORKER", jo.toString());
+                    }
+                    adapter_workers.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    onError("parsing workers");
+                }
+
                 break;
 
             default:

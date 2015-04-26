@@ -99,7 +99,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
             case LOGIN:
                 Toast.makeText(this, getString(R.string.connection_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
                 break;
-            case DOWNLOAD_PERSONNEL:
+            case DOWNLOAD_WORKERS:
                 Toast.makeText(this, getString(R.string.download_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
                 break;
             case DOWNLOAD_USER_SCHEDULE:
@@ -135,7 +135,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 
     @Override
     public void onStaffDownloaded() {
-        progress.setMessage(getString(R.string.downloading_schedules));
+//        progress.setMessage(getString(R.string.downloading_schedules));
     }
 
     @Override

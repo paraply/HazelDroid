@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import se.evinja.hazeldroid.navigation.Callback_Navigate;
 import se.evinja.hazeldroid.navigation.Fragment_Navigate;
@@ -176,7 +177,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
 
     @Override
     public void onError(Hazel.HazelCommand duringCommand, String errorMsg) {
-
+        Toast.makeText(this,"Error during: " + duringCommand + " message: " + errorMsg, Toast.LENGTH_LONG ).show();
     }
 
     @Override
