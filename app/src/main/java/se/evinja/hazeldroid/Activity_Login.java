@@ -126,7 +126,11 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
             editor.remove("password");
             editor.apply();
         }
-        progress.setMessage(getString(R.string.downloading_personnel));
+        restoreUI();
+        Intent intent = new Intent(this,Activity_Main.class);
+        startActivity(intent);
+        finish();
+//        progress.setMessage(getString(R.string.downloading_personnel));
     }
 
     @Override
@@ -139,10 +143,10 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 
     @Override
     public void onStaffSchedule() { //Everything is downloaded now, proceed to next activity
-        restoreUI();
-        Intent intent = new Intent(this,Activity_Main.class);
-        startActivity(intent);
-        finish();
+//        restoreUI();
+//        Intent intent = new Intent(this,Activity_Main.class);
+//        startActivity(intent);
+//        finish();
     }
 
 

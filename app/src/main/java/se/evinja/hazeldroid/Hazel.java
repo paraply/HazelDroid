@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class Hazel extends Application implements Http_Events {
 
     private boolean user_logged_out, login_procedure;
     private String username, password;
+    private boolean hasLoggedOut;
     private HazelEvents eventListener;
     private Http http;
 
@@ -74,27 +76,27 @@ public class Hazel extends Application implements Http_Events {
     public void download_personnel(){
         execute(HazelCommand.DOWNLOAD_PERSONNEL, null);
         eventListener.onStaffDownloaded(); //TODO MOVE
-        if (login_procedure){
-            if (access != AccessStatus.ROOT) {
-                download_user_schedule();
-            }else{
-                download_staff_schedule();
-            }
-        }
+//        if (login_procedure){
+//            if (access != AccessStatus.ROOT) {
+//                download_user_schedule();
+//            }else{
+//                download_staff_schedule();
+//            }
+//        }
     }
 
     public void download_user_schedule(){
         execute(HazelCommand.DOWNLOAD_USER_SCHEDULE, null);
         eventListener.onUserSchedule(); //TODO MOVE
-        if (login_procedure){
-            download_staff_schedule();
-        }
+//        if (login_procedure){
+//            download_staff_schedule();
+//        }
     }
 
     public void download_staff_schedule(){
         execute(HazelCommand.DOWNLOAD_STAFF_SCHEDULE,null);
         eventListener.onStaffSchedule();
-        login_procedure = false; // Login procedure finished
+//        login_procedure = false; // Login procedure finished
     }
 
     public boolean user_has_logged_out(){
@@ -257,10 +259,36 @@ public class Hazel extends Application implements Http_Events {
 
     @Override
     public void onData(String data) {
+        Log.i("###### GOT DATA", data);
         switch (currentCommand){
             case LOGIN:
-                eventListener.onConnected();
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("status_code").equals("200")){
+                        String level = jo.getString("message");
+                        if (level.equals("1")){
+                            access = AccessStatus.USER;
+                        }else if (level.equals("2")){
+                            access = AccessStatus.ADMIN;
+                        }else if (level.equals("3")){
+                            access = AccessStatus.ADMIN; //TODO CHANGE TO ROOT
+                        }else{
+                            onError("Bad login message");
+                        }
+                        connectionStatus = ConnectionStatus.CONNECTED;
+                        hasLoggedOut = false;
+                        eventListener.onConnected();
+
+                    }else{
+                        onError("Bad status code");
+                        connectionStatus = ConnectionStatus.NOT_CONNECTED;
+                    }
+                } catch (JSONException e) {
+                    onError("parsing login reponse");
+                }
                 break;
+            default:
+                onError("Received data on no command");
         }
     }
 
