@@ -139,6 +139,11 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
     }
 
     @Override
+    public void onWorkerAdded() {
+        Toast.makeText(this, getString(R.string.worker_added_successfully), Toast.LENGTH_LONG ).show();
+    }
+
+    @Override
     public void onUserSchedule() {}
 
     @Override

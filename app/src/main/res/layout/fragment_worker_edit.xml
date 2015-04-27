@@ -183,9 +183,10 @@
             android:layout_below="@+id/worker_edit_mail"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/worker_edit_birthday"
             android:hint="YYYYMMDD"
+            style="@android:style/Widget.EditText"
             android:inputType="date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

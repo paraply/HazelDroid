@@ -43,6 +43,7 @@
     <string name="workers_has_qualification">" workers has this qualification"</string>
     <string name="no_worker_has_qualification">no worker has this qualification</string>
     <string name="one_worker_has_qualification">1 worker has this qualification</string>
+    <string name="worker_added_successfully">Worker added successfully</string>
 
 
 </resources>

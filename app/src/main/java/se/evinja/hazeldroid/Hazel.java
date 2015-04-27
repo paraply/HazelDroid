@@ -67,9 +67,6 @@ public class Hazel extends Application implements Http_Events {
         this.eventListener = eventListener;
         http = new Http(this, username,password);
         execute(HazelCommand.LOGIN, null);
-//        access = AccessStatus.ADMIN; //TODO REMOVE
-//        eventListener.onConnected(); //TODO MOVE
-//        download_personnel();
     }
 
     public void set_new_eventListener(HazelEvents eventListener){
@@ -85,17 +82,7 @@ public class Hazel extends Application implements Http_Events {
         return username + " - " + access; //TODO FIX REAL
     }
 
-    public void download_personnel(){
-        execute(HazelCommand.DOWNLOAD_WORKERS, null);
-        eventListener.onStaffDownloaded(); //TODO MOVE
-//        if (login_procedure){
-//            if (access != AccessStatus.ROOT) {
-//                download_user_schedule();
-//            }else{
-//                download_staff_schedule();
-//            }
-//        }
-    }
+
 
     public void download_user_schedule(){
         execute(HazelCommand.DOWNLOAD_USER_SCHEDULE, null);
@@ -128,15 +115,6 @@ public class Hazel extends Application implements Http_Events {
     public boolean access_rootlevel(){
         return access == AccessStatus.ROOT;
     }
-
-//    private void raise_error(String error_msg){
-//        Log.i("###### ERROR", currentCommand.toString() + " - " + error_msg);
-//        if (login_procedure){ // if during login/first downloading set as disconnected
-//            connectionStatus = ConnectionStatus.NOT_CONNECTED;
-//            login_procedure = false;
-//        }
-//        eventListener.onError(currentCommand, error_msg);
-//    }
 
     private void execute(HazelCommand cmd, JSONObject jsonData){
         Log.i("###### EXECUTE", cmd.toString());
@@ -295,7 +273,7 @@ public class Hazel extends Application implements Http_Events {
 
     @Override
     public void onError(String error_msg) {
-        Log.i("###### ERROR", error_msg);
+        Log.i("###### ERROR", currentCommand.toString() + " - " + error_msg);
         eventListener.onError(currentCommand, error_msg);
     }
 
@@ -321,7 +299,7 @@ public class Hazel extends Application implements Http_Events {
                         hasLoggedOut = false;
                         eventListener.onConnected();
                     }else{
-                        onError("Bad status code");
+                        onError("Login ailed");
                         connectionStatus = ConnectionStatus.NOT_CONNECTED;
                     }
                 } catch (JSONException e) {
@@ -364,8 +342,18 @@ public class Hazel extends Application implements Http_Events {
                 }
 
                 break;
-            case ADD_WORKER:
-                onError("Add worker returned: " + data); //TODO FIX REFRESH OR ADD
+            case ADD_WORKER: //{"message":"Ok","status_code":200}
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+                        eventListener.onWorkerAdded();
+                    }
+                } catch (JSONException e) {
+                    onError("Add worker failed");
+                }
+                //TODO ADD_WORKER SHOULD RETURN ID, WONT HAVE TO DOWNLOAD LIST AGAIN..
+                workers.clear();            //TODO REMOVE PROBABLY
+                download_workers(parent); //TODO REMOVE PROBABLY
                 break;
 
             default:

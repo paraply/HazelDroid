@@ -219,9 +219,11 @@
             android:paddingLeft="10dp"
             android:layout_below="@+id/worker_add_mail" />
 
-        <EditText
+        <TextView
+            style="@android:style/Widget.EditText"
+            android:clickable="true"
+            android:inputType="none"
             android:id="@+id/worker_add_birthday"
-            android:inputType="date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

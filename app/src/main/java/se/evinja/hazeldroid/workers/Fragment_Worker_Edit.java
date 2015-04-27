@@ -1,6 +1,7 @@
 package se.evinja.hazeldroid.workers;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
@@ -22,9 +30,11 @@ public class Fragment_Worker_Edit extends Fragment{
     private Object_Worker worker;
     private Activity_Main parent;
 
-    private EditText firstname, lastname, position, phone, mail, birthdate, last4;
+    private EditText firstname, lastname, position, phone, mail, last4;
+    private TextView birthdate;
     private Qualifications_Selector qualifications;
-
+    private Calendar birthdate_calendar = Calendar.getInstance();
+    private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static Fragment_Worker_Edit newInstance(int worker_position) {
         Fragment_Worker_Edit fragment = new Fragment_Worker_Edit();
@@ -71,7 +81,28 @@ public class Fragment_Worker_Edit extends Fragment{
         position = (EditText) view.findViewById(R.id.worker_edit_position);
         phone = (EditText) view.findViewById(R.id.worker_edit_phone);
         mail = (EditText) view.findViewById(R.id.worker_edit_mail);
-        birthdate = (EditText) view.findViewById(R.id.worker_edit_birthday);
+        birthdate = (TextView) view.findViewById(R.id.worker_edit_birthday);
+
+        birthdate.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                birthdate_calendar.set(Calendar.YEAR, year);
+                                birthdate_calendar.set(Calendar.MONTH, monthOfYear);
+                                birthdate_calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                                birthdate.setText(dateformat.format(birthdate_calendar.getTime()));
+                            }
+                        }, birthdate_calendar.get(Calendar.YEAR), birthdate_calendar.get(Calendar.MONTH), birthdate_calendar.get(Calendar.DAY_OF_MONTH));
+                dpd.show();
+            }
+
+        });
+
         last4 = (EditText) view.findViewById(R.id.worker_edit_last4);
 
         if (worker.has_qualifications()){
