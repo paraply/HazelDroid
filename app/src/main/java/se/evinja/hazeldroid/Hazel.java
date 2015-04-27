@@ -165,6 +165,7 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case ADD_WORKER:
+                Log.i("##### POST", jsonData.toString());
                 http.POST("user", jsonData);
                 break;
 
@@ -364,7 +365,7 @@ public class Hazel extends Application implements Http_Events {
 
                 break;
             case ADD_WORKER:
-                onError("Add worker returned: " + data);
+                onError("Add worker returned: " + data); //TODO FIX REFRESH OR ADD
                 break;
 
             default:
