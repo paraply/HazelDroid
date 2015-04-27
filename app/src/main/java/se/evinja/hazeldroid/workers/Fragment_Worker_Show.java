@@ -74,7 +74,7 @@ public class Fragment_Worker_Show extends Fragment{
         ((TextView) view.findViewById(R.id.show_worker_phone)).setText(w.phoneNr);
         ((TextView) view.findViewById(R.id.show_worker_personnr)).setText(w.get_personnumber());
         ((TextView) view.findViewById(R.id.show_worker_qualifications)).setText(w.get_qualificationstring(parent));
-
+        parent.set_title(w.firstName);
         return view;
     }
 
@@ -82,7 +82,7 @@ public class Fragment_Worker_Show extends Fragment{
     public void onAttach(Activity activity){
         super.onAttach(activity);
         parent = (Activity_Main) activity;
-        parent.set_title(getString(R.string.edit));
+
     }
 
     private void show_edit_fragment(int position){

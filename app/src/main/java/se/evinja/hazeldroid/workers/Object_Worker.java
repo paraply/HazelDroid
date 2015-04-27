@@ -18,7 +18,7 @@ import se.evinja.hazeldroid.qualifications.Object_Qualification;
 
 public class Object_Worker {
     public String id , firstName, lastName, position, mailAddress,birthday, last4, phoneNr, username, password, company;
-    public List<Object_Qualification> qualifications;
+    public List<Object_Qualification> qualifications = new ArrayList<>();
 
     public Object_Worker(){}
 
@@ -45,7 +45,7 @@ public class Object_Worker {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.i("##### ERROR WRK JSON", e.getMessage());
             }
 
     }
@@ -56,7 +56,7 @@ public class Object_Worker {
         JSONArray ja = new JSONArray();
         try {
             jo_outer.put("username", username);
-            jo_outer.put("password", Base64.encodeToString((username + ":" + password).getBytes(), Base64.DEFAULT)); //Encode as base64
+            jo_outer.put("password", Base64.encodeToString((username + ":" + password).getBytes(), Base64.NO_WRAP)); //Encode as base64
             jo_outer.put("access_lvl", access_level);
             jo_outer.put("client", client_name);
             jo_outer.put("work_id", JSONObject.NULL); //Not my problem
@@ -76,12 +76,10 @@ public class Object_Worker {
             }
 
             jo_inner.put("qualifications", ja);
-
             jo_outer.put("worker", jo_inner);
 
         } catch (JSONException e) {
             Log.i("##### WRK JSON CREATE", e.getMessage());
-            e.printStackTrace();
         }
 
         return jo_outer;

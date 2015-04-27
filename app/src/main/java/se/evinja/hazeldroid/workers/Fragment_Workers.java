@@ -51,6 +51,7 @@ public class Fragment_Workers extends Fragment {
         if (hazel.access_adminlevel()) {
             registerForContextMenu(workers_listview);
         }
+        parent.set_title(getString(R.string.workers));
         return view;
     }
 
@@ -58,7 +59,7 @@ public class Fragment_Workers extends Fragment {
     public void onAttach(Activity activity){
         super.onAttach(activity);
         parent = (Activity_Main) activity;
-        parent.set_title(getString(R.string.workers));
+
     }
 
     @Override

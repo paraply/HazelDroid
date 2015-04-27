@@ -120,7 +120,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
             editor.putString("username", login_username.getText().toString());
             editor.putString("password", login_password.getText().toString());
             editor.apply();
-        }else if (!login_remember.isChecked() && from_saved_info){
+        }else if (from_saved_info){
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.remove("username");
             editor.remove("password");
@@ -152,6 +152,12 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 //        Intent intent = new Intent(this,Activity_Main.class);
 //        startActivity(intent);
 //        finish();
+    }
+
+    @Override
+    public void onTasksDownloaded() {
+
+
     }
 
 

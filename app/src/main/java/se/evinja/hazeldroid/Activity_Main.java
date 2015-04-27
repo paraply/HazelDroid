@@ -57,6 +57,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
         getSupportActionBar().setDisplayShowHomeEnabled(true); //Show home button
         fragment_navigation = (Fragment_Navigate) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragment_navigation.setup(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
+        Toast.makeText(this, "Welcome to Hazel @ " + hazel.get_client_name(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -194,6 +195,11 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     @Override
     public void onStaffSchedule() {
 
+    }
+
+    @Override
+    public void onTasksDownloaded() {
+        Toast.makeText(this, "Downloaded tasks", Toast.LENGTH_LONG ).show();
     }
 
     @Override

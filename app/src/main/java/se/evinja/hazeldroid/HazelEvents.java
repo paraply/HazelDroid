@@ -7,6 +7,7 @@ public interface HazelEvents extends EventListener {
     void onConnected();
     void onUserSchedule();
     void onStaffSchedule();
+    void onTasksDownloaded();
     void onStaffDownloaded();
     void onWorkerAdded();
 }
