@@ -38,6 +38,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hazel = (Hazel) getApplication();
+        hazel.set_new_eventListener(this); //Take over from Activity_Login
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 

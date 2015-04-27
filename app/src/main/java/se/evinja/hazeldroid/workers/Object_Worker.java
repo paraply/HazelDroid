@@ -2,8 +2,11 @@ package se.evinja.hazeldroid.workers;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,7 +32,6 @@ public class Object_Worker {
                 phoneNr = jobj.getString("phoneNr");
                 birthday = jobj.getString("birthday");
                 last4 = jobj.getString("last4");
-                id = jobj.getString("id");
 
 
                 JSONArray jArr = jobj.getJSONArray("qualifications");
@@ -46,6 +48,43 @@ public class Object_Worker {
                 e.printStackTrace();
             }
 
+    }
+
+    public JSONObject getJSON(String client_name, int access_level){
+        JSONObject jo_outer = new JSONObject();
+        JSONObject jo_inner = new JSONObject();
+        JSONArray ja = new JSONArray();
+        try {
+            jo_outer.put("username", username);
+            jo_outer.put("password", Base64.encodeToString((username + ":" + password).getBytes(), Base64.DEFAULT)); //Encode as base64
+            jo_outer.put("access_lvl", access_level);
+            jo_outer.put("client", client_name);
+            jo_outer.put("work_id", JSONObject.NULL); //Not my problem
+
+            jo_inner.put("id", JSONObject.NULL); //Should never put ID..
+            jo_inner.put("client", client_name);
+            jo_inner.put("fstname", firstName);
+            jo_inner.put("lstname", lastName);
+            jo_inner.put("position", position);
+            jo_inner.put("mail", mailAddress);
+            jo_inner.put("phoneNr", phoneNr);
+            jo_inner.put("birthday", birthday);
+            jo_inner.put("last4", last4);
+
+            for (Object_Qualification q : qualifications ){
+                ja.put(q.title);
+            }
+
+            jo_inner.put("qualifications", ja);
+
+            jo_outer.put("worker", jo_inner);
+
+        } catch (JSONException e) {
+            Log.i("##### WRK JSON CREATE", e.getMessage());
+            e.printStackTrace();
+        }
+
+        return jo_outer;
     }
 
     public String get_fullName(){

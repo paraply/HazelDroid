@@ -57,6 +57,7 @@ public class Hazel extends Application implements Http_Events {
     private Adapter_Workers adapter_workers;
     private boolean workers_are_invalid;
     private Activity parent;
+    private String company = "Hunny inc";
 
     public void login(String username, String password, HazelEvents eventListener){
         access = AccessStatus.USER; //Reset before login
@@ -69,6 +70,10 @@ public class Hazel extends Application implements Http_Events {
 //        access = AccessStatus.ADMIN; //TODO REMOVE
 //        eventListener.onConnected(); //TODO MOVE
 //        download_personnel();
+    }
+
+    public void set_new_eventListener(HazelEvents eventListener){
+        this.eventListener = eventListener;
     }
 
     public void logout(){
@@ -160,7 +165,7 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case ADD_WORKER:
-              //  http_post("user", jsonData);
+                http.POST("user", jsonData);
                 break;
 
             case DOWNLOAD_QUALIFICATIONS:
@@ -256,13 +261,17 @@ public class Hazel extends Application implements Http_Events {
         }
     }
 
-    public Adapter_Workers getAdapter_workers(){
+    public Adapter_Workers getAdapter_workers(Activity parent){
+        if (adapter_workers == null){
+            adapter_workers = new Adapter_Workers(parent, workers);
+        }
         return adapter_workers;
     }
 
     public void add_worker(Object_Worker new_worker){
-        workers.add(new_worker);
-        adapter_workers.notifyDataSetChanged();
+        execute(HazelCommand.ADD_WORKER, new_worker.getJSON(company, 2));
+//        workers.add(new_worker);
+//        adapter_workers.notifyDataSetChanged();
     }
 
     public void delete_worker(int position){
@@ -348,10 +357,14 @@ public class Hazel extends Application implements Http_Events {
                     }
                     adapter_workers.notifyDataSetChanged();
 
+
                 } catch (JSONException e) {
                     onError("parsing workers");
                 }
 
+                break;
+            case ADD_WORKER:
+                onError("Add worker returned: " + data);
                 break;
 
             default:

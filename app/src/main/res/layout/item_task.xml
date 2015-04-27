@@ -11,10 +11,25 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="10"
         android:textSize="40sp"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
         android:background="@color/accent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/next_run_month"
+        android:background="@color/accent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Januari"
+        android:layout_alignLeft="@+id/next_run_date"
+        android:layout_below="@+id/next_run_date"
+        android:layout_alignRight="@+id/next_run_date"
+        android:gravity="center"
+ />
 
     <TextView
         android:id="@+id/task_name"
@@ -37,13 +52,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Somewhere somehow s3df21 s3d21f 3s2d1f3 s2d1f32s1d f32s1d32f 1sweffffffffffffffffffffff sdf sdf sdf df"
-        android:textSize="30px"
+        android:textSize="14sp"
         android:layout_alignParentRight="true"
         android:paddingRight="10dp"
         android:layout_below="@+id/task_name"
         android:layout_toRightOf="@+id/next_run_date"
         android:layout_toEndOf="@+id/next_run_date"
-        android:layout_alignBottom="@+id/next_run_date">
+        android:layout_alignBottom="@+id/next_run_month">
     </TextView>
 
 
