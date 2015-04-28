@@ -120,13 +120,13 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     private List<Item_Navigate> get_navigation_items(){
         List<Item_Navigate> items = new ArrayList<>();
         if (!hazel.access_rootlevel()){ //Root has no schedule
-            items.add(new Item_Navigate("My schedule", getResources().getDrawable(R.drawable.my_schedule)));
+            items.add(new Item_Navigate("My schedule", getResources().getDrawable(R.mipmap.my_schedule)));
         }
-        items.add(new Item_Navigate("Workplace schedule", getResources().getDrawable(R.drawable.work_schedule)));
-        items.add(new Item_Navigate("Workers", getResources().getDrawable(R.drawable.workers)));
+        items.add(new Item_Navigate("Workplace schedule", getResources().getDrawable(R.mipmap.work_schedule)));
+        items.add(new Item_Navigate("Workers", getResources().getDrawable(R.mipmap.workers)));
         if (hazel.access_adminlevel()) { //Only admin can edit tasks and qualifications
-            items.add(new Item_Navigate("Tasks", getResources().getDrawable(R.drawable.tasks)));
-            items.add(new Item_Navigate("Qualifications", getResources().getDrawable(R.drawable.qualifications)));
+            items.add(new Item_Navigate("Tasks", getResources().getDrawable(R.mipmap.tasks)));
+            items.add(new Item_Navigate("Qualifications", getResources().getDrawable(R.mipmap.qualifications)));
         }
         return items;
     }

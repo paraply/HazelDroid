@@ -22,7 +22,7 @@
             android:id="@+id/worker_add_picture"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@mipmap/ic_account_box_grey600_48dp"
+            android:src="@mipmap/worker"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:layout_centerHorizontal="true" />
@@ -221,6 +221,7 @@
 
         <TextView
             style="@android:style/Widget.EditText"
+            android:hint="YYYY-MM-DD"
             android:clickable="true"
             android:inputType="none"
             android:id="@+id/worker_add_birthday"
@@ -236,6 +237,7 @@
 
         <EditText
             android:id="@+id/worker_add_last4"
+            android:hint="XXXX"
             android:inputType="number"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

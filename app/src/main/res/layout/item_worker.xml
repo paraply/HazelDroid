@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="8dp"
-        android:src="@mipmap/ic_account_box_grey600_48dp" >
+        android:src="@mipmap/worker" >
     </ImageView>
 
     <TextView
@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Torulf"
+        android:textColor="@color/black_text"
         android:textSize="16sp"
         android:layout_alignTop="@+id/worker_icon"
         android:layout_toRightOf="@+id/worker_icon"
@@ -31,7 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DJ på excet"
-        android:textSize="30px"
+        android:textSize="14sp"
+        android:paddingTop="2dp"
         android:layout_below="@+id/worker_fullname"
         android:layout_alignLeft="@+id/worker_fullname"
         android:layout_alignStart="@+id/worker_fullname">

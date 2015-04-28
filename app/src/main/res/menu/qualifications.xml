@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_add_new_qualification"
         android:title="@string/add_new"
-        android:icon="@drawable/ic_action_new"
+        android:icon="@mipmap/ic_action_new"
         android:orderInCategory="0"
         app:showAsAction="always"
         />

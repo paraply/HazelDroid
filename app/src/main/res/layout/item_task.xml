@@ -58,10 +58,29 @@
         android:layout_below="@+id/task_name"
         android:layout_toRightOf="@+id/next_run_date"
         android:layout_toEndOf="@+id/next_run_date"
-        android:layout_alignBottom="@+id/next_run_month">
+        android:layout_above="@+id/next_run_month">
     </TextView>
 
+    <TextView
+        android:id="@+id/task_workers"
+        android:textColor="@color/black_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="1 worker"
+        android:layout_below="@+id/next_run_date"
+        android:layout_toRightOf="@+id/next_run_date"
+        android:layout_toEndOf="@+id/next_run_date" />
 
+    <TextView
+        android:id="@+id/task_repeats"
+        android:textColor="@color/black_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Repeats weekly"
+        android:layout_below="@+id/next_run_date"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
