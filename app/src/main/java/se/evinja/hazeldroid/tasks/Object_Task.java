@@ -4,11 +4,14 @@ package se.evinja.hazeldroid.tasks;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.evinja.hazeldroid.qualifications.Object_Qualification;
 import se.evinja.hazeldroid.workers.Object_Worker;
 
 public class Object_Task {
     public String title, description;
+    public int min_workers, max_workers;
     private List<Object_Worker> task_workers = new ArrayList<>();
+    private List<Object_Qualification> task_qualifications = new ArrayList<>();
 
     private enum repeat_types{
         ONCE,
@@ -17,6 +20,15 @@ public class Object_Task {
         MONTHLY
     }
     repeat_types repeat;
+
+
+    public void set_repeats_weekly(){
+        repeat = repeat_types.WEEKLY;
+    }
+
+    public void set_repeats_monthly(){
+        repeat = repeat_types.MONTHLY;
+    }
 
     public String get_worker_amount_string(){
         if (task_workers.size() == 0){

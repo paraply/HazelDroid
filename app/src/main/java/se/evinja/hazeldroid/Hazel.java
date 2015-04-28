@@ -305,8 +305,6 @@ public class Hazel extends Application implements Http_Events {
 
     public void add_worker(Object_Worker new_worker){
         execute(HazelCommand.ADD_WORKER, new_worker.getJSON(client, 2));
-//        workers.add(new_worker);
-//        adapter_workers.notifyDataSetChanged();
     }
 
     public void delete_worker(int position){
@@ -322,17 +320,41 @@ public class Hazel extends Application implements Http_Events {
         return workers.get(position);
     }
 
-    public void download_tasks(Activity parent){
-        execute(HazelCommand.DOWNLOAD_TASKS, null);
+
+    public void add_task(Object_Task new_task){
+
     }
 
+    public void delete_task(int position){
+
+    }
+
+    public void download_tasks(Activity parent){
+        execute(HazelCommand.DOWNLOAD_TASKS, null);
+        Object_Task t = new Object_Task();
+        t.title = "Skapa hazel";
+        t.description = "Hur svårt kan det vara?";
+        t.set_repeats_weekly();
+        tasks.add(t);
+        adapter_tasks.notifyDataSetChanged();
+
+    }
 
     public Adapter_Tasks getAdapter_tasks(Activity parent){
-        if (adapter_tasks == null){
+        if (adapter_tasks == null) {
             adapter_tasks = new Adapter_Tasks(parent, tasks);
         }
         return adapter_tasks;
     }
+
+    public void update_task_list(){
+        adapter_tasks.notifyDataSetChanged();
+    }
+
+    public Object_Task get_task(int position){
+        return tasks.get(position);
+    }
+
 
     @Override
     public void onError(String error_msg) {

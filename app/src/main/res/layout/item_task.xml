@@ -72,6 +72,15 @@
         android:layout_toRightOf="@+id/task_workers_icon"
         android:layout_toEndOf="@+id/task_workers_icon" />
 
+    <ImageView
+        android:id="@+id/task_repeats_icon"
+        android:src="@mipmap/repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/next_run_date"
+        android:layout_toRightOf="@+id/task_workers"
+        android:layout_alignBottom="@+id/next_run_month" />
+
     <TextView
         android:id="@+id/task_repeats"
         android:layout_width="wrap_content"
@@ -91,14 +100,7 @@
         android:layout_toRightOf="@+id/next_run_date"
         android:layout_alignBottom="@+id/next_run_month" />
 
-    <ImageView
-        android:id="@+id/task_repeats_icon"
-        android:src="@mipmap/repeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/next_run_date"
-        android:layout_toRightOf="@+id/task_workers"
-        android:layout_alignBottom="@+id/next_run_month" />
+
 
 
 </RelativeLayout>

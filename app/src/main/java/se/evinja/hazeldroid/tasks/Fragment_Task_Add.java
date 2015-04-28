@@ -1,5 +1,7 @@
 package se.evinja.hazeldroid.tasks;
 
 
-public class Fragment_Task_Add {
+import android.app.Fragment;
+
+public class Fragment_Task_Add extends Fragment {
 }

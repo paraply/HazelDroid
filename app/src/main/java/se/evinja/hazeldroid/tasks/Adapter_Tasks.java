@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import se.evinja.hazeldroid.R;
-import se.evinja.hazeldroid.workers.Object_Worker;
 
 public class Adapter_Tasks extends BaseAdapter {
     private List<Object_Task> task_list;
@@ -25,6 +24,7 @@ public class Adapter_Tasks extends BaseAdapter {
 
     public Adapter_Tasks(Activity parent, List<Object_Task> tasks){
         this.task_list = tasks;
+        activity = parent;
     }
 
     @Override
