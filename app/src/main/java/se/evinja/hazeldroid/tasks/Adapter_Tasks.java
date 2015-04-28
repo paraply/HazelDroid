@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
 import java.util.List;
 
 import se.evinja.hazeldroid.R;
@@ -18,7 +21,6 @@ public class Adapter_Tasks extends BaseAdapter {
     private LayoutInflater inflater;
 
     private Activity activity;
-
 
     public Adapter_Tasks(){}
 
@@ -48,6 +50,8 @@ public class Adapter_Tasks extends BaseAdapter {
         TextView description;
         TextView workers;
         TextView repeats;
+        TextView next_run_date;
+        TextView next_run_month;
     }
 
     @Override
@@ -66,6 +70,9 @@ public class Adapter_Tasks extends BaseAdapter {
             holder.workers = (TextView) convertView.findViewById(R.id.task_workers);
             holder.repeats = (TextView) convertView.findViewById(R.id.task_repeats);
 
+            holder.next_run_date = (TextView) convertView.findViewById(R.id.next_run_date);
+            holder.next_run_month = (TextView) convertView.findViewById(R.id.next_run_month);
+
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
@@ -77,6 +84,9 @@ public class Adapter_Tasks extends BaseAdapter {
         holder.description.setText(ot.description);
         holder.workers.setText(ot.get_worker_amount_string());
         holder.repeats.setText(ot.get_repeat_string());
+
+        holder.next_run_date.setText(ot.get_next_run_date());
+        holder.next_run_month.setText(ot.get_next_run_month());
 
         return convertView;
     }
