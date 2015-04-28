@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
@@ -30,7 +31,10 @@ public class Fragment_Tasks extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
+        ListView tasks_listview = (ListView) view.findViewById(R.id.tasks_list);
+        tasks_listview.setAdapter(hazel.getAdapter_tasks(parent));
         hazel = (Hazel) parent.getApplication();
+        parent.set_title(getString(R.string.tasks));
         hazel.download_tasks(parent);
         return  view;
     }
@@ -39,7 +43,6 @@ public class Fragment_Tasks extends Fragment {
     public void onAttach(Activity activity){
         super.onAttach(activity);
         parent = (Activity_Main) activity;
-        parent.set_title(getString(R.string.tasks));
     }
 
 }

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:padding="3dp"
     >
 
     <TextView
@@ -32,7 +33,7 @@
  />
 
     <TextView
-        android:id="@+id/task_name"
+        android:id="@+id/task_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Do something"
@@ -55,7 +56,7 @@
         android:textSize="14sp"
         android:layout_alignParentRight="true"
         android:paddingRight="10dp"
-        android:layout_below="@+id/task_name"
+        android:layout_below="@+id/task_title"
         android:layout_toRightOf="@+id/next_run_date"
         android:layout_toEndOf="@+id/next_run_date"
         android:layout_above="@+id/next_run_month">
@@ -63,24 +64,41 @@
 
     <TextView
         android:id="@+id/task_workers"
-        android:textColor="@color/black_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="1 worker"
-        android:layout_below="@+id/next_run_date"
-        android:layout_toRightOf="@+id/next_run_date"
-        android:layout_toEndOf="@+id/next_run_date" />
+        android:layout_below="@+id/task_description"
+        android:layout_toRightOf="@+id/task_workers_icon"
+        android:layout_toEndOf="@+id/task_workers_icon" />
 
     <TextView
         android:id="@+id/task_repeats"
-        android:textColor="@color/black_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Repeats weekly"
         android:layout_below="@+id/next_run_date"
-        android:layout_centerHorizontal="true" />
+        android:layout_toRightOf="@id/task_repeats_icon"
+        />
+
+    <ImageView
+        android:id="@+id/task_workers_icon"
+        android:src="@mipmap/workers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/next_run_date"
+        android:layout_toRightOf="@+id/next_run_date"
+        android:layout_alignBottom="@+id/next_run_month" />
+
+    <ImageView
+        android:id="@+id/task_repeats_icon"
+        android:src="@mipmap/repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/next_run_date"
+        android:layout_toRightOf="@+id/task_workers"
+        android:layout_alignBottom="@+id/next_run_month" />
 
 
 </RelativeLayout>

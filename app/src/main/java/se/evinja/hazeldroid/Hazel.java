@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.evinja.hazeldroid.qualifications.Adapter_Qualifications;
+import se.evinja.hazeldroid.tasks.Adapter_Tasks;
+import se.evinja.hazeldroid.tasks.Object_Task;
 import se.evinja.hazeldroid.workers.Adapter_Workers;
 import se.evinja.hazeldroid.qualifications.Object_Qualification;
 import se.evinja.hazeldroid.workers.Object_Worker;
@@ -53,14 +55,19 @@ public class Hazel extends Application implements Http_Events {
 
     private List<Object_Qualification> qualifications = new ArrayList<>();
     private Adapter_Qualifications adapter_qualifications;
+    private String current_qualification_adding;
 
     private List<Object_Worker> workers = new ArrayList<>();
     private Adapter_Workers adapter_workers;
+    private boolean no_worker_download = false;
     private boolean workers_are_invalid;
+
+    private List<Object_Task> tasks = new ArrayList<>();
+    private Adapter_Tasks adapter_tasks;
+
     private Activity parent;
     private String client;
-    private String current_qualification_adding;
-    private boolean no_worker_download = false;
+
 
     public void login(String username, String password, HazelEvents eventListener){
         access = AccessStatus.USER; //Reset before login
@@ -319,6 +326,13 @@ public class Hazel extends Application implements Http_Events {
         execute(HazelCommand.DOWNLOAD_TASKS, null);
     }
 
+
+    public Adapter_Tasks getAdapter_tasks(Activity parent){
+        if (adapter_tasks == null){
+            adapter_tasks = new Adapter_Tasks(parent, tasks);
+        }
+        return adapter_tasks;
+    }
 
     @Override
     public void onError(String error_msg) {
