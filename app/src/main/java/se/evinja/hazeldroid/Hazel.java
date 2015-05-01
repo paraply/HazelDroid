@@ -49,7 +49,6 @@ public class Hazel extends Application implements Http_Events {
 
     private boolean user_logged_out, login_procedure;
     private String username, password;
-    private boolean hasLoggedOut;
     private HazelEvents eventListener;
     private Http http;
 
@@ -383,7 +382,7 @@ public class Hazel extends Application implements Http_Events {
                             onError("Bad login message");
                         }
                         connectionStatus = ConnectionStatus.CONNECTED;
-                        hasLoggedOut = false;
+                        user_logged_out = false;
                         eventListener.onConnected();
                     }else{
                         onError("Login failed");
@@ -402,13 +401,11 @@ public class Hazel extends Application implements Http_Events {
                 try {
                     JSONObject jo = new JSONObject(data);
                    if (jo.getString("message").equals("Okidoki")){
-                        refresh_qualifications(); // DOWNLOAD ALL QUALIFICATIONS AGAIN
+                        refresh_qualifications(); // DOWNLOAD ALL QUALIFICATIONS AGAIN TODO JUST ADD NEW DO NOT DOWNLOAD AGAIN
                     }
                 } catch (JSONException e) {
                     onError("parsing add qualification message");
                 }
-
-//                onError("QUALIFICATION ADDED " + current_qualification_adding + " - " + data);
 
                  break;
 

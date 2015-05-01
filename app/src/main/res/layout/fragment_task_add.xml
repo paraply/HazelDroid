@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:fadeScrollbars="false"
+    android:id="@+id/fragment_worker_add"
+    >
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="se.evinja.hazeldroid.tasks.Fragment_Task_Add">
+
+        <View android:id="@+id/fake"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"/>
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Task name"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:id="@+id/new_task_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Start date"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/new_task_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/new_task_start_date"
+            android:gravity="left|center_vertical"
+            android:onClick="new_task_set_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="2015-04-12"
+            android:layout_below="@+id/textView6"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:focusable="true"
+            android:singleLine="true"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/black_text" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="End date"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/new_task_start_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/new_task_end_date"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/black_text"
+            android:gravity="left|center_vertical"
+            android:onClick="new_task_set_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="2015-04-13"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/textView8"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:paddingLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Start time"
+            android:paddingRight="20dp"
+            android:layout_above="@+id/new_task_start_time"
+            android:layout_alignLeft="@+id/new_task_start_time"
+            />
+
+        <Button
+            android:id="@+id/new_task_start_time"
+            android:paddingRight="40dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/black_text"
+            android:onClick="new_task_set_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp" android:minWidth="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="start|center_vertical"
+            android:text="12:04"
+            android:layout_alignTop="@+id/new_task_start_date"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:paddingLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="End time"
+            android:layout_above="@+id/new_task_end_time"
+            android:layout_alignLeft="@+id/new_task_end_time"
+            android:layout_alignStart="@+id/new_task_end_time" />
+
+        <Button
+            android:id="@+id/new_task_end_time"
+            android:paddingRight="40dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/black_text"
+            android:onClick="new_task_set_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:minHeight="0dp" android:minWidth="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="16:04"
+            android:layout_alignTop="@+id/new_task_end_date"
+            android:layout_alignParentRight="true"
+            />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Repeat"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:layout_below="@+id/new_task_end_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Spinner
+            android:id="@+id/new_task_repeats"
+            android:textColor="#ff22682b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView15"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="5dp"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:id="@+id/lblqualifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/required_qualifications"
+            android:layout_below="@+id/new_task_repeats"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            />
+
+        <se.evinja.hazeldroid.qualifications.Qualifications_Selector
+            android:id="@+id/new_task_qualifications"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/lblqualifications" />
+
+
+        <TextView
+            android:id="@+id/task_add_lbl_amount_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@id/new_task_qualifications"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Required amount of workers"
+            />
+
+        <TextView
+            android:id="@+id/task_add_lbl_min_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Minimum"
+            android:layout_alignBaseline="@+id/task_add_min_work"
+            android:layout_alignBottom="@+id/task_add_min_work"
+            android:layout_toLeftOf="@+id/task_add_min_work"
+            android:layout_toStartOf="@+id/task_add_min_work" />
+
+        <EditText
+            android:id="@+id/task_add_min_work"
+            android:width="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/task_add_lbl_amount_workers"
+            android:layout_alignRight="@id/fake"
+            android:layout_toLeftOf="@+id/task_add_lbl_max_workers"
+             />
+
+        <TextView
+            android:id="@+id/task_add_lbl_max_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:paddingLeft="10dp"
+            android:text="Maximum"
+            android:layout_alignBaseline="@+id/task_add_max_work"
+            android:layout_alignTop="@+id/task_add_lbl_min_workers"
+            android:layout_alignLeft="@+id/fake"
+            android:layout_alignStart="@+id/fake" />
+
+        <EditText
+            android:id="@+id/task_add_max_work"
+            android:layout_width="wrap_content"
+            android:width="100dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignTop="@+id/task_add_min_work"
+            android:layout_toRightOf="@+id/task_add_lbl_max_workers"
+            android:layout_toEndOf="@+id/task_add_lbl_max_workers" />
+
+        <TextView
+            android:id="@+id/task_add_lbl_req_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@id/task_add_max_work"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Required workers"
+            />
+
+        <se.evinja.hazeldroid.qualifications.Qualifications_Selector
+            android:id="@+id/task_add_workers"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/task_add_lbl_req_workers" />
+
+    </RelativeLayout>
+
+
+
+
+</ScrollView>

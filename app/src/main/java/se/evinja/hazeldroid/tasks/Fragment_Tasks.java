@@ -16,6 +16,8 @@ import android.widget.ListView;
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
+import se.evinja.hazeldroid.workers.Fragment_Worker_Edit;
+import se.evinja.hazeldroid.workers.Fragment_Worker_Show;
 
 public class Fragment_Tasks extends Fragment {
     private Activity_Main parent;
@@ -100,15 +102,27 @@ public class Fragment_Tasks extends Fragment {
     }
 
     private void show_show_task_fragment(int position){
-
+        Fragment_Task_Show show_t = Fragment_Task_Show.newInstance(position);
+        getActivity().getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, show_t)
+                .addToBackStack("task show")
+                .commit();
     }
 
     private void show_edit_fragment(int position){
-
+        Fragment_Task_Edit edit_t = Fragment_Task_Edit.newInstance(position);
+        getActivity().getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, edit_t)
+                .addToBackStack("task edit")
+                .commit();
     }
 
     private void show_add_fragment(){
-
+        Fragment_Task_Add show_t = Fragment_Task_Add.newInstance();
+        getActivity().getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, show_t)
+                .addToBackStack("task add")
+                .commit();
     }
 
 }

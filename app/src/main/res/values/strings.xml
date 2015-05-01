@@ -46,6 +46,8 @@
     <string name="worker_added_successfully">Worker added successfully</string>
     <string name="show_worker">Worker</string>
     <string name="edit_task">Edit task</string>
+    <string name="add_task">Add task</string>
+    <string name="required_qualifications">Required qualifications</string>
 
 
 </resources>

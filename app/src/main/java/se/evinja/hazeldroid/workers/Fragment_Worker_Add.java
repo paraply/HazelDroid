@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -52,7 +50,7 @@ public class Fragment_Worker_Add extends Fragment{
         hazel.download_qualifications_and_workers(parent);
         final View view = inflater.inflate(R.layout.fragment_worker_add, container, false);
 
-        username = (EditText) view.findViewById(R.id.worker_add_username);
+        username = (EditText) view.findViewById(R.id.task_add_min_work);
         password = (EditText) view.findViewById(R.id.worker_add_password);
         firstname = (EditText) view.findViewById(R.id.worker_add_firstname);
         lastname = (EditText) view.findViewById(R.id.worker_add_lastname);
