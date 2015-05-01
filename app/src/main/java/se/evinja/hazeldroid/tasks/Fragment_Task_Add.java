@@ -10,16 +10,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import java.util.Calendar;
 
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
-import se.evinja.hazeldroid.workers.Object_Worker;
 
 
 public class Fragment_Task_Add extends Fragment {
     private Hazel hazel;
     private Activity_Main parent;
+
+    private EditText title, description, min_w, max_w;
+    private Calendar start, end;
+
 
     public static Fragment_Task_Add newInstance() {
         return new Fragment_Task_Add();
@@ -36,7 +42,10 @@ public class Fragment_Task_Add extends Fragment {
         hazel = (Hazel) parent.getApplication();
         hazel.download_qualifications_and_workers(parent); //if somehow gotten here without doing that yet..
         final View view = inflater.inflate(R.layout.fragment_task_add, container, false);
-
+        title = (EditText) view.findViewById(R.id.task_add_name);
+        description = (EditText) view.findViewById(R.id.task_add_desc);
+        min_w = (EditText) view.findViewById(R.id.task_add_min_work);
+        max_w = (EditText) view.findViewById(R.id.task_add_max_work);
         return view;
     }
 
@@ -69,7 +78,15 @@ public class Fragment_Task_Add extends Fragment {
     private void validate_and_save(){
         Object_Task t = new Object_Task();
         //TODO VALIDATE
-
+        t.title = title.getText().toString();
+        t.description = description.getText().toString();
+        t.min_workers = Integer.parseInt(min_w.getText().toString());
+        t.max_workers = Integer.parseInt(max_w.getText().toString());
+        t.start = Calendar.getInstance();
+        t.end = Calendar.getInstance();
+        t.end.add(Calendar.HOUR_OF_DAY, 1);
+        t.repeat_length = 3;
+        t.set_repeats_weekly();
         hazel.add_task(t);
         parent.onBackPressed();
     }

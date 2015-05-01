@@ -192,6 +192,10 @@ public class Hazel extends Application implements Http_Events {
                 http.GET("qual");
                 break;
 
+            case ADD_TASK:
+                http.POST("qual", jsonData);
+                break;
+
             case DOWNLOAD_TASKS:
                 http.GET("task");
                 break;
@@ -321,20 +325,23 @@ public class Hazel extends Application implements Http_Events {
 
 
     public void add_task(Object_Task new_task){
-
+        tasks.add(new_task);
+        execute(HazelCommand.ADD_TASK, new_task.toJSON(client));
+        adapter_tasks.notifyDataSetChanged();
     }
 
     public void delete_task(int position){
-
+        tasks.remove(position);
+        adapter_tasks.notifyDataSetChanged();
     }
 
     public void download_tasks(Activity parent){
         execute(HazelCommand.DOWNLOAD_TASKS, null);
-        Object_Task t = new Object_Task();
-        t.title = "Skapa hazel";
-        t.description = "Hur svårt kan det vara?";
-        t.set_repeats_weekly();
-        tasks.add(t);
+//        Object_Task t = new Object_Task();
+//        t.title = "Skapa hazel";
+//        t.description = "Hur svårt kan det vara?";
+//        t.set_repeats_weekly();
+//        tasks.add(t);
         adapter_tasks.notifyDataSetChanged();
 
     }

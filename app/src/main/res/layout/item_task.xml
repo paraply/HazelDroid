@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="10"
+        android:gravity="center"
+        android:width="70dp"
         android:textSize="40sp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

@@ -1,12 +1,15 @@
 package se.evinja.hazeldroid.tasks;
 
 
-import java.text.DateFormat;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import se.evinja.hazeldroid.qualifications.Object_Qualification;
 import se.evinja.hazeldroid.workers.Object_Worker;
@@ -14,19 +17,82 @@ import se.evinja.hazeldroid.workers.Object_Worker;
 public class Object_Task {
     public String title, description;
     public int min_workers, max_workers;
-    private List<Object_Worker> task_workers = new ArrayList<>();
-    private List<Object_Qualification> task_qualifications = new ArrayList<>();
-    private Calendar start, end;
+    public List<Object_Worker> task_workers = new ArrayList<>();
+    public List<Object_Qualification> task_qualifications = new ArrayList<>();
+    public Calendar start, end;
+    public int id = 123, repeat_length;
 
     public Calendar nextrun = Calendar.getInstance();
+    private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat timeformat = new SimpleDateFormat("kk:mm");
 
     private enum repeat_types{
-        ONCE,
-        DAILY,
-        WEEKLY,
-        MONTHLY
+        Once,
+        Daily,
+        Yearly,
+        Monthly
+    } private repeat_types repeat;
+
+    private enum weekdays{
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
+    } private List<weekdays> week_d = new ArrayList<>();
+
+
+
+
+    public JSONObject toJSON(String client){
+        JSONObject j = new JSONObject();
+        JSONArray jweekdays = new JSONArray();
+        for (weekdays wd : week_d ){
+            jweekdays.put(wd);
+        }
+        JSONArray jqual = new JSONArray();
+        for (Object_Qualification q : task_qualifications ){
+            jqual.put(q);
+        }
+
+        try {
+            j.put("id", id);
+            j.put("startDate", getStartDate());
+            j.put("endDate", getEndDate());
+            j.put("weekdays", jweekdays);
+            j.put("startTime", getStartTime());
+            j.put("endTime", getEndTime());
+            j.put("interval", repeat);
+            j.put("intervalLength", repeat_length);
+            j.put("client", client);
+            j.put("name", title);
+//            j.put("qualname", jqual);
+            j.put("qualname", "Kobent");
+        } catch (Exception e) {
+            Log.i("##### TASK JSON", e.getMessage());
+        }
+
+        return j;
     }
-    repeat_types repeat;
+
+    public String getStartDate(){
+        return dateformat.format(start.getTime());
+    }
+
+    public String getStartTime(){
+        return timeformat.format(start.getTime());
+    }
+
+    public String getEndDate(){
+        return dateformat.format(end.getTime());
+    }
+
+
+    public String getEndTime() {
+        return timeformat.format(end.getTime());
+    }
 
 
     public String get_next_run_month(){
@@ -39,11 +105,11 @@ public class Object_Task {
 
 
     public void set_repeats_weekly(){
-        repeat = repeat_types.WEEKLY;
+        repeat = repeat_types.Yearly;
     }
 
     public void set_repeats_monthly(){
-        repeat = repeat_types.MONTHLY;
+        repeat = repeat_types.Monthly;
     }
 
     public String get_worker_amount_string(){
@@ -57,14 +123,14 @@ public class Object_Task {
     }
 
     public String get_repeat_string(){
-        if (repeat == repeat_types.ONCE){ //TODO GETSTRING.....
-            return "repeat once";
-        }else if (repeat == repeat_types.DAILY){
-            return "repeat daily";
-        }else if (repeat == repeat_types.WEEKLY){
+        if (repeat == repeat_types.Once){ //TODO GETSTRING.....
+            return "repeat Once";
+        }else if (repeat == repeat_types.Daily){
+            return "repeat Daily";
+        }else if (repeat == repeat_types.Yearly){
             return "repeat weekly";
-        }else if (repeat == repeat_types.MONTHLY){
-            return "repeat monthly";
+        }else if (repeat == repeat_types.Monthly){
+            return "repeat Monthly";
         }
         return null;
     }
