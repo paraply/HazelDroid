@@ -1,6 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
 
-</LinearLayout>
+    android:fadeScrollbars="false"
+    android:id="@+id/fragment_worker_add"
+    >
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin"
+        android:paddingStart="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:paddingEnd="@dimen/margin"
+        tools:context="se.evinja.hazeldroid.tasks.Fragment_task_show">
+
+        <View android:id="@+id/fake"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"/>
+
+
+        <TextView
+            android:id="@+id/task_show_lbl_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/task_name"
+            android:paddingTop="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/task_show_name"
+            style="@style/show_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_show_lbl_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <TextView
+            android:id="@+id/task_show_lbl_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Description"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/task_show_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/task_show_desc"
+            style="@style/show_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_show_lbl_desc"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <TextView
+            android:id="@+id/task_show_lbl_startdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/start_date"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/task_show_desc"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/task_show_start_date"
+            style="@style/show_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/task_show_lbl_startdate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:focusable="true"
+            android:singleLine="true"
+            android:textColor="@color/black_text"
+            android:layout_toLeftOf="@+id/task_show_start_time"
+            android:layout_toStartOf="@+id/task_show_start_time"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:id="@+id/task_show_lbl_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/end_date"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/task_show_start_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/task_show_end_date"
+            style="@style/show_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/task_show_lbl_end_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/task_show_end_time"
+            android:layout_toStartOf="@+id/task_show_end_time" />
+
+        <TextView
+            android:id="@+id/task_show_lbl_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/start_time"
+            android:paddingRight="20dp"
+            android:layout_alignBottom="@+id/task_show_lbl_startdate"
+            android:layout_toRightOf="@+id/fake"
+            android:layout_toEndOf="@+id/task_show_lbl_amount_workers" />
+
+        <TextView
+            android:id="@+id/task_show_start_time"
+            style="@style/show_label"
+            android:textColor="@color/black_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_show_lbl_start_time"
+            android:layout_toRightOf="@+id/fake"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/task_show_lbl_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/end_time"
+            android:layout_above="@+id/task_show_end_time"
+            android:layout_toRightOf="@+id/fake"
+            android:layout_toEndOf="@+id/fake" />
+
+        <TextView
+            android:id="@+id/task_show_end_time"
+            style="@style/show_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/task_show_end_date"
+            android:layout_toRightOf="@+id/fake"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/task_show_lbl_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/repeat"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/task_show_end_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/task_show_repeat"
+            style="@style/show_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_show_lbl_repeat"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            />
+
+        <TextView
+            android:id="@+id/task_show_lbl_qualifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/required_qualifications"
+            android:layout_below="@+id/task_show_repeat"
+            android:paddingTop="10dp"
+            />
+
+        <TextView
+            android:id="@+id/task_show_qualifications"
+            style="@style/show_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/task_show_lbl_qualifications" />
+
+
+        <TextView
+            android:id="@+id/task_show_lbl_amount_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@id/task_show_qualifications"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:text="Required amount of workers"
+            />
+
+        <TextView
+            android:id="@+id/task_show_lbl_min_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/minimum"
+            android:layout_alignBaseline="@+id/task_show_min_work"
+            android:layout_alignParentLeft="true"
+            />
+
+        <TextView
+            android:id="@+id/task_show_min_work"
+            style="@style/show_label"
+            android:inputType="number"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            android:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/task_show_lbl_amount_workers"
+            android:layout_alignRight="@id/fake"
+            android:layout_toLeftOf="@+id/task_show_lbl_min_workers"
+            android:layout_toRightOf="@+id/task_show_lbl_min_workers"
+            android:layout_toEndOf="@+id/task_show_lbl_min_workers" />
+
+        <TextView
+            android:id="@+id/task_show_lbl_max_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/maximum"
+            android:layout_alignBaseline="@+id/task_show_max_work"
+            android:layout_alignTop="@+id/task_show_lbl_min_workers"
+            android:layout_alignLeft="@+id/fake"
+            android:layout_alignStart="@+id/fake" />
+
+        <TextView
+            android:id="@+id/task_show_max_work"
+            style="@style/show_label"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="2"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignTop="@+id/task_show_min_work"
+            android:layout_toRightOf="@+id/task_show_lbl_max_workers"
+            android:layout_alignRight="@+id/task_show_qualifications"
+            android:layout_alignEnd="@+id/task_show_qualifications" />
+
+        <TextView
+            android:id="@+id/task_show_lbl_req_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@id/task_show_max_work"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/required_workers"
+            />
+
+        <TextView
+            android:id="@+id/task_show_workers"
+            style="@style/show_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_show_lbl_req_workers"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            />
+
+
+
+    </RelativeLayout>
+
+
+
+
+</ScrollView>

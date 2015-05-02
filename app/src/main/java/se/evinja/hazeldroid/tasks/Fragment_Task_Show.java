@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
@@ -19,7 +20,7 @@ import se.evinja.hazeldroid.workers.Fragment_Worker_Edit;
 public class Fragment_Task_Show extends Fragment {
     private Activity_Main parent;
     private Hazel hazel;
-    private  Object_Task o;
+    private  Object_Task t;
 
     public Fragment_Task_Show(){}
 
@@ -67,7 +68,19 @@ public class Fragment_Task_Show extends Fragment {
         hazel = (Hazel) parent.getApplication();
         View view = inflater.inflate(R.layout.fragment_task_show, container, false);
 
-        o = hazel.get_task(getArguments().getInt("task_position"));
+        t = hazel.get_task(getArguments().getInt("task_position"));
+        ((TextView) view.findViewById(R.id.task_show_name)).setText(t.title);
+        ((TextView) view.findViewById(R.id.task_show_desc)).setText(t.description);
+        ((TextView) view.findViewById(R.id.task_show_start_date)).setText(t.getStartDate());
+        ((TextView) view.findViewById(R.id.task_show_start_time)).setText(t.getStartTime());
+        ((TextView) view.findViewById(R.id.task_show_end_date)).setText(t.getEndDate());
+        ((TextView) view.findViewById(R.id.task_show_end_time)).setText(t.getEndTime());
+        ((TextView) view.findViewById(R.id.task_show_repeat)).setText(t.get_repeat_string());
+        ((TextView) view.findViewById(R.id.task_show_qualifications)).setText(t.getQualifications());
+        ((TextView) view.findViewById(R.id.task_show_min_work)).setText(Integer.toString(t.min_workers));
+        ((TextView) view.findViewById(R.id.task_show_max_work)).setText(Integer.toString(t.max_workers));
+        ((TextView) view.findViewById(R.id.task_show_workers)).setText(t.getWorkers());
+
 
 //        ((TextView) view.findViewById(R.id.show_worker_fullname)).setText(w.get_fullName());
 //        ((TextView) view.findViewById(R.id.show_worker_position)).setText(w.position);
@@ -75,7 +88,7 @@ public class Fragment_Task_Show extends Fragment {
 //        ((TextView) view.findViewById(R.id.show_worker_phone)).setText(w.phoneNr);
 //        ((TextView) view.findViewById(R.id.show_worker_personnr)).setText(w.get_personnumber());
 //        ((TextView) view.findViewById(R.id.show_worker_qualifications)).setText(w.get_qualificationstring(parent));
-        parent.set_title(o.title);
+        parent.set_title(t.title);
         return view;
     }
 
@@ -87,7 +100,7 @@ public class Fragment_Task_Show extends Fragment {
     }
 
     private void show_edit_fragment(int position){
-        Fragment_Task_Edit edit_t = Fragment_Task_Edit.newInstance(position);
+        Fragment_Task_Add edit_t = Fragment_Task_Add.newInstance(position);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, edit_t)
                 .addToBackStack("task edit")

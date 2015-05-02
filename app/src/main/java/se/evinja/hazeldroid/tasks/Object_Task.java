@@ -135,7 +135,35 @@ public class Object_Task {
     }
 
     public String getQualifications(){
-        return "inga";
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+
+        for (Object_Qualification q : task_qualifications) {
+                if (foundOne) {
+                    sb.append(", ");
+                }
+                foundOne = true;
+
+                sb.append(q.toString());
+        }
+
+        return sb.toString();
+    }
+
+    public String getWorkers(){
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+
+        for (Object_Worker w : task_workers) {
+            if (foundOne) {
+                sb.append("\n");
+            }
+            foundOne = true;
+
+            sb.append(w.get_fullName());
+        }
+
+        return sb.toString();
     }
 
 

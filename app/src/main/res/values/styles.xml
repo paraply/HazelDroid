@@ -18,4 +18,10 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 
+    <style name="show_label" parent="android:TextAppearance.Widget.TextView">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
 </resources>

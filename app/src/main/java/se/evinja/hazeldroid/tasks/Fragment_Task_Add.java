@@ -173,8 +173,10 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         });
 
         if (getArguments() == null ) { //Is in new mode && getArguments().getInt("edit_position",-1) == -1
+            parent.set_title(parent.getString(R.string.add_task));
             t = new Object_Task();
         }else{ //Is in edit mode
+            parent.set_title(parent.getString(R.string.edit_task));
             t = hazel.get_task(getArguments().getInt("edit_position"));
             title.setText(t.title);
             description.setText(t.description);
@@ -190,7 +192,6 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
             wrk_dialog.setSelectedWorkers(t.task_workers);
             workers.setText(wrk_dialog.getSelectedString());
         }
-
         return view;
     }
 

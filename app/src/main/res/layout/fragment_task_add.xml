@@ -38,7 +38,6 @@
 
         <EditText
             android:id="@+id/task_add_name"
-            android:text="test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_add_lbl_name"
@@ -61,7 +60,6 @@
 
         <EditText
             android:id="@+id/task_add_desc"
-            android:text="test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_add_lbl_desc"
@@ -88,7 +86,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:text="2015-04-12"
             android:layout_below="@+id/task_add_lbl_startdate"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -115,7 +112,6 @@
             style="@style/SpinnerButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2015-04-13"
             android:layout_marginRight="20dp"
             android:layout_below="@+id/task_add_lbl_end_date"
             android:layout_alignParentLeft="true"
@@ -140,7 +136,6 @@
             android:textColor="@color/black_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12:04"
             android:layout_below="@+id/task_add_lbl_start_time"
             android:layout_toRightOf="@+id/fake"
             android:layout_alignParentRight="true"
@@ -161,7 +156,6 @@
             style="@style/SpinnerButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="16:04"
             android:layout_alignTop="@+id/task_add_end_date"
             android:layout_toRightOf="@+id/fake"
             android:layout_alignParentRight="true"
@@ -181,13 +175,12 @@
         <TextView
             android:id="@+id/task_add_repeat"
             style="@style/SpinnerButtonStyle"
-            android:text="Once every forth blue moon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_add_lbl_repeat"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:spinnerMode="dropdown" />
+             />
 
         <TextView
             android:id="@+id/task_add_lbl_qualifications"
@@ -202,9 +195,10 @@
         <TextView
             android:id="@+id/task_add_qualifications"
             style="@style/SpinnerButtonStyle"
-            android:text="Mångalen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/task_add_lbl_qualifications" />
 
 
@@ -264,7 +258,7 @@
             android:gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="3"
+            android:text="2"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_alignTop="@+id/task_add_min_work"
@@ -285,7 +279,6 @@
 
         <TextView
             android:id="@+id/task_add_workers"
-            android:text="Mike,Spike,Lingonbike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_add_lbl_req_workers"
