@@ -15,10 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +24,8 @@ import java.util.Calendar;
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
-import se.evinja.hazeldroid.workers.Worker_Selector;
+import se.evinja.hazeldroid.qualifications.Dialog_Qualifications;
+import se.evinja.hazeldroid.workers.Dialog_Workers;
 
 
 public class Fragment_Task_Add extends Fragment implements DialogInterface.OnClickListener {
@@ -39,12 +38,22 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm");
 
-    private Worker_Selector wd;
-    private Worker_Selector workers_dialog;
+    private Dialog_Workers wrk_dialog;
+    private Dialog_Qualifications qual_dialog;
+    private Object_Task t;
 
     public static Fragment_Task_Add newInstance() {
         return new Fragment_Task_Add();
     }
+
+    public static Fragment_Task_Add newInstance(int edit_position) {
+        Fragment_Task_Add fragment = new Fragment_Task_Add();
+        Bundle args = new Bundle();
+        args.putInt("edit_position", edit_position);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +64,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         hazel = (Hazel) parent.getApplication();
-        hazel.download_qualifications_and_workers(parent); //if somehow gotten here without doing that yet..
-//        workers.init(hazel,parent);
+        hazel.download_qualifications_and_workers(parent); //if gotten here without doing that yet..
+
         final View view = inflater.inflate(R.layout.fragment_task_add, container, false);
         title = (EditText) view.findViewById(R.id.task_add_name);
         description = (EditText) view.findViewById(R.id.task_add_desc);
@@ -86,7 +95,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         start_d.setText(dateFormat.format(start.getTime()));
 
         start_t = (TextView) view.findViewById(R.id.task_add_start_time);
-        start_t.setOnClickListener(new TextView.OnClickListener(){
+        start_t.setOnClickListener(new TextView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -98,7 +107,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
 
                         start_t.setText(timeFormat.format(start.getTime()));
                     }
-                }, start.get(Calendar.HOUR_OF_DAY),start.get(Calendar.MINUTE),true);
+                }, start.get(Calendar.HOUR_OF_DAY), start.get(Calendar.MINUTE), true);
                 tdp.show();
             }
         });
@@ -119,7 +128,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
                                 end.set(Calendar.MONTH, monthOfYear);
                                 end.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                                end_d.setText( dateFormat.format(end.getTime()));
+                                end_d.setText(dateFormat.format(end.getTime()));
                             }
                         }, end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH));
                 dpd.show();
@@ -137,7 +146,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
                         end.set(Calendar.MINUTE, minute);
                         end_t.setText(timeFormat.format(end.getTime()));
                     }
-                }, end.get(Calendar.HOUR_OF_DAY),end.get(Calendar.MINUTE),true);
+                }, end.get(Calendar.HOUR_OF_DAY), end.get(Calendar.MINUTE), true);
                 tdp.show();
             }
         });
@@ -145,15 +154,42 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
 
         repeat = (TextView) view.findViewById(R.id.task_add_repeat);
         qualifications = (TextView) view.findViewById(R.id.task_add_qualifications);
-        wd = new Worker_Selector();
-        wd.init(parent,hazel, this);
+        wrk_dialog = new Dialog_Workers();
+        wrk_dialog.init(parent, hazel, this);
+        qual_dialog = new Dialog_Qualifications();
+        qual_dialog.init(parent, hazel, this);
+        qualifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qual_dialog.show(getFragmentManager(), "Required Qualifications");
+            }
+        });
         workers = (TextView) view.findViewById(R.id.task_add_workers);
         workers.setOnClickListener(new TextView.OnClickListener(){
             @Override
             public void onClick(View v) {
-                wd.show(getFragmentManager(),"Required workers");
+                wrk_dialog.show(getFragmentManager(), "Required workers");
             }
         });
+
+        if (getArguments() == null ) { //Is in new mode && getArguments().getInt("edit_position",-1) == -1
+            t = new Object_Task();
+        }else{ //Is in edit mode
+            t = hazel.get_task(getArguments().getInt("edit_position"));
+            title.setText(t.title);
+            description.setText(t.description);
+            start_d.setText(t.getStartDate());
+            start_t.setText(t.getStartTime());
+            end_d.setText(t.getEndDate());
+            end_t.setText(t.getEndTime());
+            repeat.setText(t.get_repeat_string());
+            qual_dialog.setSelectedQualifications(t.task_qualifications);
+            qualifications.setText(qual_dialog.getSelectedString());
+            min_w.setText(Integer.toString(t.min_workers));
+            max_w.setText(Integer.toString(t.max_workers));
+            wrk_dialog.setSelectedWorkers(t.task_workers);
+            workers.setText(wrk_dialog.getSelectedString());
+        }
 
         return view;
     }
@@ -185,7 +221,6 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     }
 
     private void validate_and_save(){
-        Object_Task t = new Object_Task();
         //TODO VALIDATE
         t.title = title.getText().toString();
         t.description = description.getText().toString();
@@ -194,14 +229,22 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         t.start = start;
         t.end = end;
         t.repeat_length = 3;
+        t.task_workers = wrk_dialog.getSelectedWorkers();
+        t.task_qualifications = qual_dialog.getSelectedQualifications();
         t.set_repeats_weekly();
-        hazel.add_task(t);
+        if (getArguments() == null) { // In ADD mode
+            hazel.add_task(t);
+        }
         parent.onBackPressed();
     }
 
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        workers.setText(wd.getSelectedString());
+        if (which == 1){
+            workers.setText(wrk_dialog.getSelectedString());
+        }else if (which == 2){
+            qualifications.setText(qual_dialog.getSelectedString());
+        }
     }
 }

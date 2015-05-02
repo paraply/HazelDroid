@@ -110,7 +110,7 @@ public class Fragment_Tasks extends Fragment {
     }
 
     private void show_edit_fragment(int position){
-        Fragment_Task_Edit edit_t = Fragment_Task_Edit.newInstance(position);
+        Fragment_Task_Add edit_t = Fragment_Task_Add.newInstance(position);
         getActivity().getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, edit_t)
                 .addToBackStack("task edit")

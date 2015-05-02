@@ -17,7 +17,7 @@ import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 import se.evinja.hazeldroid.qualifications.Object_Qualification;
 
-public class Worker_Selector extends DialogFragment  {
+public class Dialog_Workers extends DialogFragment  {
     private Activity parent;
     private Hazel hazel;
     private DialogInterface.OnClickListener onItemClickListener;
@@ -57,14 +57,31 @@ public class Worker_Selector extends DialogFragment  {
                 sb.append(workers[i].get_fullName());
             }
         }
-
         return sb.toString();
+    }
 
+    public List<Object_Worker> getSelectedWorkers(){
+        List<Object_Worker> w = new ArrayList<>();
+        for (int i = 0; i < workers.length; i++){
+            if (selected[i]){
+                w.add(workers[i]);
+            }
+        }
+        return w;
+    }
+
+    public void setSelectedWorkers(List<Object_Worker> sel_w){
+     for (int i = 0; i < workers.length; i++) {
+         for (Object_Worker w : sel_w) {
+            if (w.id == workers[i].id){
+                selected[i] = true;
+            }
+         }
+     }
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
                 .setTitle(parent.getString(R.string.select_workers))
                 .setMultiChoiceItems(getStringArray(), selected, new DialogSelectionClickHandler())
@@ -72,7 +89,7 @@ public class Worker_Selector extends DialogFragment  {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        onItemClickListener.onClick(dialog, which);
+                        onItemClickListener.onClick(dialog, 1);
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), null)

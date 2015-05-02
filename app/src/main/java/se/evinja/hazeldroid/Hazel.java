@@ -52,7 +52,7 @@ public class Hazel extends Application implements Http_Events {
     private HazelEvents eventListener;
     private Http http;
 
-    private List<Object_Qualification> qualifications = new ArrayList<>();
+    public List<Object_Qualification> qualifications = new ArrayList<>();
     private Adapter_Qualifications adapter_qualifications;
     private String current_qualification_adding;
 
@@ -325,7 +325,7 @@ public class Hazel extends Application implements Http_Events {
 
 
     public void add_task(Object_Task new_task){
-//        tasks.add(new_task);
+        tasks.add(new_task);
         execute(HazelCommand.ADD_TASK, new_task.toJSON(client));
         adapter_tasks.notifyDataSetChanged();
     }

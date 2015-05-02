@@ -20,7 +20,7 @@ public class Object_Task {
     public List<Object_Worker> task_workers = new ArrayList<>();
     public List<Object_Qualification> task_qualifications = new ArrayList<>();
     public Calendar start, end;
-    public int id = 2, repeat_length;
+    public int id, repeat_length;
 
     public Calendar nextrun = Calendar.getInstance();
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,6 +132,10 @@ public class Object_Task {
             return "repeat Monthly";
         }
         return null;
+    }
+
+    public String getQualifications(){
+        return "inga";
     }
 
 
