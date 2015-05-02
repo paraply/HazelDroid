@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,17 +29,18 @@ import se.evinja.hazeldroid.R;
 import se.evinja.hazeldroid.workers.Worker_Selector;
 
 
-public class Fragment_Task_Add extends Fragment {
+public class Fragment_Task_Add extends Fragment implements DialogInterface.OnClickListener {
     private Hazel hazel;
     private Activity_Main parent;
 
     private EditText title, description, min_w, max_w;
-    private TextView start_d, end_d, start_t, end_t;
+    private TextView start_d, end_d, start_t, end_t, repeat, qualifications, workers;
     private Calendar start, end;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm");
 
-    private Worker_Selector workers;
+    private Worker_Selector wd;
+    private Worker_Selector workers_dialog;
 
     public static Fragment_Task_Add newInstance() {
         return new Fragment_Task_Add();
@@ -52,7 +56,7 @@ public class Fragment_Task_Add extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         hazel = (Hazel) parent.getApplication();
         hazel.download_qualifications_and_workers(parent); //if somehow gotten here without doing that yet..
-        workers.init(hazel,parent);
+//        workers.init(hazel,parent);
         final View view = inflater.inflate(R.layout.fragment_task_add, container, false);
         title = (EditText) view.findViewById(R.id.task_add_name);
         description = (EditText) view.findViewById(R.id.task_add_desc);
@@ -73,7 +77,7 @@ public class Fragment_Task_Add extends Fragment {
                                 start.set(Calendar.MONTH, monthOfYear);
                                 start.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                                start_d.setText( dateFormat.format(start.getTime()));
+                                start_d.setText(dateFormat.format(start.getTime()));
                             }
                         }, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));
                 dpd.show();
@@ -121,7 +125,7 @@ public class Fragment_Task_Add extends Fragment {
                 dpd.show();
             }
         });
-        end_d.setText(dateFormat.format(end));
+        end_d.setText(dateFormat.format(end.getTime()));
         end_t = (TextView) view.findViewById(R.id.task_add_end_time);
         end_t.setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -137,8 +141,20 @@ public class Fragment_Task_Add extends Fragment {
                 tdp.show();
             }
         });
+        end_t.setText(timeFormat.format(end.getTime()));
 
-        end_t.setText(timeFormat.format(end));
+        repeat = (TextView) view.findViewById(R.id.task_add_repeat);
+        qualifications = (TextView) view.findViewById(R.id.task_add_qualifications);
+        wd = new Worker_Selector();
+        wd.init(parent,hazel, this);
+        workers = (TextView) view.findViewById(R.id.task_add_workers);
+        workers.setOnClickListener(new TextView.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                wd.show(getFragmentManager(),"Required workers");
+            }
+        });
+
         return view;
     }
 
@@ -184,4 +200,8 @@ public class Fragment_Task_Add extends Fragment {
     }
 
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        workers.setText(wd.getSelectedString());
+    }
 }

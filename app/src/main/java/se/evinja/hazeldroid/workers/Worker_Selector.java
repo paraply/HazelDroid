@@ -2,24 +2,92 @@ package se.evinja.hazeldroid.workers;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import se.evinja.hazeldroid.Hazel;
+import se.evinja.hazeldroid.R;
+import se.evinja.hazeldroid.qualifications.Object_Qualification;
 
-public class Worker_Selector extends DialogFragment {
-    private Hazel hazel;
+public class Worker_Selector extends DialogFragment  {
     private Activity parent;
+    private Hazel hazel;
+    private DialogInterface.OnClickListener onItemClickListener;
+    private Object_Worker[] workers;
+    private boolean[] selected;
 
-    public void init(Hazel hazel, Activity parent){
-        this.hazel = hazel;
+    public void init(Activity parent, Hazel hazel, DialogInterface.OnClickListener onItemClickListener){
         this.parent = parent;
+        this.hazel = hazel;
+        this.onItemClickListener = onItemClickListener;
+
+        workers = new Object_Worker[hazel.workers.size()];
+        workers = hazel.workers.toArray(new Object_Worker[hazel.workers.size()]);
+        selected = new boolean[workers.length];
+        Arrays.fill(selected, false);
     }
 
-    public void show(){
-        Toast.makeText(parent,"SHOW", Toast.LENGTH_SHORT).show();
+    private String[] getStringArray(){
+        String[] ret = new String[workers.length];
+        for (int index = 0; index < workers.length; index++){
+            ret[index] = workers[index].get_fullName();
+        }
+        return ret;
     }
 
+    public String getSelectedString(){
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+
+        for (int i = 0; i < workers.length; ++i) {
+            if (selected[i]) {
+                if (foundOne) {
+                    sb.append(", ");
+                }
+                foundOne = true;
+
+                sb.append(workers[i].get_fullName());
+            }
+        }
+
+        return sb.toString();
+
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
+        return new AlertDialog.Builder(getActivity())
+                .setTitle(parent.getString(R.string.select_workers))
+                .setMultiChoiceItems(getStringArray(), selected, new DialogSelectionClickHandler())
+                .setPositiveButton(getString(R.string.ok), new Dialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onItemClickListener.onClick(dialog, which);
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .create();
+    }
+
+
+
+     class DialogSelectionClickHandler implements DialogInterface.OnMultiChoiceClickListener  {
+
+         @Override
+         public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+             selected[which] = isChecked;
+         }
+     }
 
 
 }

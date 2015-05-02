@@ -13,4 +13,9 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="SpinnerButtonStyle" parent="android:Widget.Holo.Spinner">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
 </resources>

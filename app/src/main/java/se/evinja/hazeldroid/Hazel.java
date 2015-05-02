@@ -56,7 +56,7 @@ public class Hazel extends Application implements Http_Events {
     private Adapter_Qualifications adapter_qualifications;
     private String current_qualification_adding;
 
-    private List<Object_Worker> workers = new ArrayList<>();
+    public List<Object_Worker> workers = new ArrayList<>();
     private Adapter_Workers adapter_workers;
     private boolean no_worker_download = false;
     private boolean workers_are_invalid;
@@ -193,7 +193,7 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case ADD_TASK:
-                http.POST("qual", jsonData);
+                http.POST("task", jsonData);
                 break;
 
             case DOWNLOAD_TASKS:
@@ -325,7 +325,7 @@ public class Hazel extends Application implements Http_Events {
 
 
     public void add_task(Object_Task new_task){
-        tasks.add(new_task);
+//        tasks.add(new_task);
         execute(HazelCommand.ADD_TASK, new_task.toJSON(client));
         adapter_tasks.notifyDataSetChanged();
     }

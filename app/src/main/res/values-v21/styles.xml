@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SpinnerButtonStyle" parent="android:Widget.Material.Spinner.Underlined">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+</resources>

@@ -20,7 +20,7 @@ public class Object_Task {
     public List<Object_Worker> task_workers = new ArrayList<>();
     public List<Object_Qualification> task_qualifications = new ArrayList<>();
     public Calendar start, end;
-    public int id = 123, repeat_length;
+    public int id = 2, repeat_length;
 
     public Calendar nextrun = Calendar.getInstance();
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -29,7 +29,7 @@ public class Object_Task {
     private enum repeat_types{
         Once,
         Daily,
-        Yearly,
+        Weekly,
         Monthly
     } private repeat_types repeat;
 
@@ -58,7 +58,7 @@ public class Object_Task {
         }
 
         try {
-            j.put("id", id);
+            j.put("id", JSONObject.NULL);
             j.put("startDate", getStartDate());
             j.put("endDate", getEndDate());
             j.put("weekdays", jweekdays);
@@ -68,8 +68,7 @@ public class Object_Task {
             j.put("intervalLength", repeat_length);
             j.put("client", client);
             j.put("name", title);
-//            j.put("qualname", jqual);
-            j.put("qualname", "Kobent");
+            j.put("requirements", jqual);
         } catch (Exception e) {
             Log.i("##### TASK JSON", e.getMessage());
         }
@@ -105,7 +104,7 @@ public class Object_Task {
 
 
     public void set_repeats_weekly(){
-        repeat = repeat_types.Yearly;
+        repeat = repeat_types.Weekly;
     }
 
     public void set_repeats_monthly(){
@@ -127,7 +126,7 @@ public class Object_Task {
             return "repeat Once";
         }else if (repeat == repeat_types.Daily){
             return "repeat Daily";
-        }else if (repeat == repeat_types.Yearly){
+        }else if (repeat == repeat_types.Weekly){
             return "repeat weekly";
         }else if (repeat == repeat_types.Monthly){
             return "repeat Monthly";

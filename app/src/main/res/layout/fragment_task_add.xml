@@ -82,22 +82,22 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <Button
+        <TextView
             android:id="@+id/task_add_start_date"
-            android:gravity="left|center_vertical"
-
+            style="@style/SpinnerButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginRight="20dp"
             android:text="2015-04-12"
             android:layout_below="@+id/task_add_lbl_startdate"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:focusable="true"
             android:singleLine="true"
-            style="?android:attr/dropDownSpinnerStyle"
-            android:textColor="@color/black_text" />
+            android:textColor="@color/black_text"
+            android:layout_toLeftOf="@+id/task_add_start_time"
+            android:layout_toStartOf="@+id/task_add_start_time"
+            android:spinnerMode="dropdown" />
 
         <TextView
             android:id="@+id/task_add_lbl_end_date"
@@ -110,19 +110,18 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <Button
+        <TextView
             android:id="@+id/task_add_end_date"
-            style="?android:attr/dropDownSpinnerStyle"
-            android:textColor="@color/black_text"
-            android:gravity="center"
+            style="@style/SpinnerButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="2015-04-13"
-            android:paddingTop="5dp"
+            android:layout_marginRight="20dp"
             android:layout_below="@+id/task_add_lbl_end_date"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/task_add_end_time"
+            android:layout_toStartOf="@+id/task_add_end_time" />
 
         <TextView
             android:id="@+id/task_add_lbl_start_time"
@@ -132,21 +131,20 @@
             android:text="@string/start_time"
             android:paddingRight="20dp"
             android:layout_alignBottom="@+id/task_add_lbl_startdate"
-            android:layout_toRightOf="@+id/task_add_lbl_amount_workers"
+            android:layout_toRightOf="@+id/fake"
             android:layout_toEndOf="@+id/task_add_lbl_amount_workers" />
 
-        <Button
+        <TextView
             android:id="@+id/task_add_start_time"
-            style="?android:attr/dropDownSpinnerStyle"
+            style="@style/SpinnerButtonStyle"
             android:textColor="@color/black_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center"
             android:text="12:04"
             android:layout_below="@+id/task_add_lbl_start_time"
             android:layout_toRightOf="@+id/fake"
-            android:layout_toEndOf="@+id/fake" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/task_add_lbl_end_time"
@@ -158,18 +156,16 @@
             android:layout_toRightOf="@+id/fake"
             android:layout_toEndOf="@+id/fake" />
 
-        <Button
+        <TextView
             android:id="@+id/task_add_end_time"
-            style="?android:attr/dropDownSpinnerStyle"
-            android:textColor="@color/black_text"
+            style="@style/SpinnerButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="16:04"
             android:layout_alignTop="@+id/task_add_end_date"
             android:layout_toRightOf="@+id/fake"
-            android:layout_toEndOf="@+id/fake" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/task_add_lbl_repeat"
@@ -182,9 +178,10 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <Spinner
+        <TextView
             android:id="@+id/task_add_repeat"
-            android:textColor="#ff22682b"
+            style="@style/SpinnerButtonStyle"
+            android:text="Once every forth blue moon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_add_lbl_repeat"
@@ -202,11 +199,12 @@
             android:paddingTop="10dp"
             />
 
-        <se.evinja.hazeldroid.qualifications.Qualifications_Selector
-            android:id="@+id/add_task_qualifications"
+        <TextView
+            android:id="@+id/task_add_qualifications"
+            style="@style/SpinnerButtonStyle"
+            android:text="Mångalen"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:spinnerMode="dropdown"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/task_add_lbl_qualifications" />
 
 
@@ -215,7 +213,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_below="@id/add_task_qualifications"
+            android:layout_below="@id/task_add_qualifications"
             android:paddingTop="10dp"
             android:paddingBottom="5dp"
             android:text="Required amount of workers"
@@ -271,8 +269,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_alignTop="@+id/task_add_min_work"
             android:layout_toRightOf="@+id/task_add_lbl_max_workers"
-            android:layout_alignRight="@+id/add_task_qualifications"
-            android:layout_alignEnd="@+id/add_task_qualifications" />
+            android:layout_alignRight="@+id/task_add_qualifications"
+            android:layout_alignEnd="@+id/task_add_qualifications" />
 
         <TextView
             android:id="@+id/task_add_lbl_req_workers"
@@ -285,12 +283,9 @@
             android:text="@string/required_workers"
             />
 
-        <Button
+        <TextView
             android:id="@+id/task_add_workers"
             android:text="Mike,Spike,Lingonbike"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textColor="@color/black_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_add_lbl_req_workers"
@@ -298,7 +293,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            style="?android:attr/dropDownSpinnerStyle"
+            style="@style/SpinnerButtonStyle"
             />
 
 
