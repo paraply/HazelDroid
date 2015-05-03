@@ -35,7 +35,7 @@ public class Fragment_User_Schedule extends Fragment {
     public void onAttach(Activity activity){
         super.onAttach(activity);
         parent = (Activity_Main) activity;
-        parent.set_title(getString(R.string.user_schedule));
+        parent.set_title(getString(R.string.my_schedule));
     }
 
 }

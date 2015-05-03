@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HazelDroid</string>
+    <string name="app_name">Hazel</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -19,7 +19,7 @@
     <string name="drawer_close">Close drawer</string>
     <string name="my_schedule">My schedule</string>
     <string name="work_schedule">Work schedule</string>
-    <string name="user_schedule">My schedule</string>
+    <!--<string name="user_schedule">My schedule</string>-->
     <string name="workers">Workers</string>
     <string name="qualifications">Qualifications</string>
     <string name="tasks">Tasks</string>
