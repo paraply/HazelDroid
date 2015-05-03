@@ -2,6 +2,7 @@ package se.evinja.hazeldroid.tasks;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
@@ -15,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,10 +66,10 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_task_add, container, false);
         hazel = (Hazel) parent.getApplication();
         hazel.download_qualifications_and_workers(parent); //if gotten here without doing that yet..
 
-        final View view = inflater.inflate(R.layout.fragment_task_add, container, false);
         title = (EditText) view.findViewById(R.id.task_add_name);
         description = (EditText) view.findViewById(R.id.task_add_desc);
         min_w = (EditText) view.findViewById(R.id.task_add_min_work);
@@ -153,6 +156,14 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         end_t.setText(timeFormat.format(end.getTime()));
 
         repeat = (TextView) view.findViewById(R.id.task_add_repeat);
+        repeat.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog_Repeat dialog_repeat = new Dialog_Repeat();
+                dialog_repeat.show(getFragmentManager(), "Repeat dialog");
+            }
+        });
+
         qualifications = (TextView) view.findViewById(R.id.task_add_qualifications);
         wrk_dialog = new Dialog_Workers();
         wrk_dialog.init(parent, hazel, this);
@@ -235,6 +246,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         t.set_repeats_weekly();
         if (getArguments() == null) { // In ADD mode
             hazel.add_task(t);
+        }else{
+            hazel.update_task_list();
         }
         parent.onBackPressed();
     }
@@ -242,10 +255,11 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        if (which == 1){
+        if (which == 1){ //Set as 1 in class
             workers.setText(wrk_dialog.getSelectedString());
-        }else if (which == 2){
+        }else if (which == 2){ //Set as 2 in class
             qualifications.setText(qual_dialog.getSelectedString());
         }
     }
+
 }
