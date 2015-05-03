@@ -66,6 +66,7 @@ public class Hazel extends Application implements Http_Events {
 
     private Activity parent;
     private String client;
+    private Object_Worker worker_logged_in;
 
 
     public void login(String username, String password, HazelEvents eventListener){
@@ -104,7 +105,11 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public String getFullName(){
-        return username + " - " + access; //TODO FIX REAL
+        String str =  worker_logged_in.get_fullName() + "\n" + client;
+        if (!access_userlevel()){
+            str += " (" +  access.toString().toLowerCase() + ")";
+        }
+        return str;
     }
 
     public String get_client_name(){
@@ -370,33 +375,40 @@ public class Hazel extends Application implements Http_Events {
 
     @Override
     public void onData(String data) {
+        if (data == null){
+            Log.i("###### GOT DATA", "NULL!!!");
+            return;
+        }
         Log.i("###### GOT DATA", data);
         switch (currentCommand){
             case LOGIN:
                 try {
                     JSONObject jo = new JSONObject(data);
                     if (jo.getString("status_code").equals("200")){
-                        client = "Hunny inc"; //TODO REMOVE
-//                        client = jo.getString("client"); //TODO UNCOMMENT
-                        String level = jo.getString("message");
+                        client = jo.getString("client"); //TODO UNCOMMENT
+                        String level = jo.getString("access_lvl");
+                        worker_logged_in = new Object_Worker(jo.getJSONObject("worker"), this);
                         if (level.equals("1")){
                             access = AccessStatus.USER;
                         }else if (level.equals("2")){
                             access = AccessStatus.ADMIN;
                         }else if (level.equals("3")){
-                            access = AccessStatus.ADMIN; //TODO CHANGE TO ROOT
+                            access = AccessStatus.ROOT;
                         }else{
                             onError("Bad login message");
                         }
                         connectionStatus = ConnectionStatus.CONNECTED;
                         user_logged_out = false;
                         eventListener.onConnected();
+                    }else if (jo.getString("status_code").equals("404")){
+                        onError("Bad username");
+                        connectionStatus = ConnectionStatus.NOT_CONNECTED;
                     }else{
                         onError("Login failed");
                         connectionStatus = ConnectionStatus.NOT_CONNECTED;
                     }
                 } catch (JSONException e) {
-                    onError("parsing login reponse");
+                    onError("parsing login reponse: " + e.getMessage());
                 }
                 break;
 

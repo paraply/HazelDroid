@@ -1,12 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:id="@+id/dialog_repeat"
+    android:padding="16dp"
     android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Repeat"
+        android:gravity="center_vertical"
+        android:paddingRight="5dp"
+        android:id="@+id/repeat_every"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/dialog_repeat_spinner" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dialog_repeat_spinner"
-        android:spinnerMode="dropdown" />
-</LinearLayout>
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:layout_toRightOf="@+id/repeat_every"
+        android:layout_toEndOf="@+id/repeat_every"
+
+        />
+
+    <RelativeLayout
+        android:id="@+id/repeat_daily"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/dialog_repeat_spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Every"
+            android:layout_margin="10dp"
+            android:id="@+id/repeat_daily_lbl"
+            android:layout_alignBottom="@+id/repeat_daily_day" />
+
+        <EditText
+            android:id="@+id/repeat_daily_day"
+            android:layout_width="40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/repeat_daily_lbl"
+            android:layout_toEndOf="@+id/repeat_daily_lbl" />
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="days"
+            android:layout_toRightOf="@id/repeat_daily_day"
+            android:id="@+id/repeat_daily_lbl_days"
+            android:layout_alignBottom="@+id/repeat_daily_day" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/repeat_weekly"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/dialog_repeat_spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Every"
+            android:layout_margin="10dp"
+            android:id="@+id/repeat_weekly_lbl"
+            android:layout_alignBottom="@+id/repeat_weekly_week" />
+
+        <EditText
+            android:id="@+id/repeat_weekly_week"
+            android:layout_width="40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/repeat_weekly_lbl"
+            android:layout_toEndOf="@+id/repeat_weekly_lbl" />
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="weeks"
+            android:layout_toRightOf="@id/repeat_weekly_week"
+            android:id="@+id/repeat_weekly_lbl_weeks"
+            android:layout_alignBottom="@+id/repeat_weekly_week" />
+
+        <CheckBox
+            android:id="@+id/repeat_mon"
+            android:layout_marginTop="10dp"
+            android:text="Monday"
+            android:layout_below="@id/repeat_weekly_lbl_weeks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:id="@+id/repeat_tue"
+            android:layout_marginTop="5dp"
+            android:text="Tuesday"
+            android:layout_below="@id/repeat_mon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:id="@+id/repeat_wed"
+            android:text="Wednesday"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/repeat_tue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:id="@+id/repeat_thu"
+            android:text="Thursday"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/repeat_wed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:id="@+id/repeat_fri"
+            android:text="Friday"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/repeat_thu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:id="@+id/repeat_sat"
+            android:text="Saturday"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/repeat_fri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:id="@+id/repeat_sun"
+            android:text="Sunday"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/repeat_sat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/repeat_monthly"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_repeat_spinner"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Every"
+            android:layout_margin="10dp"
+            android:id="@+id/repeat_monthly_lbl"
+            android:layout_alignBottom="@+id/repeat_monthly_month" />
+
+        <EditText
+            android:id="@+id/repeat_monthly_month"
+            android:layout_width="40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/repeat_monthly_lbl"
+            android:layout_toEndOf="@+id/repeat_monthly_lbl" />
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="months"
+            android:layout_toRightOf="@id/repeat_monthly_month"
+            android:id="@+id/repeat_monthly_lbl_months"
+            android:layout_alignBottom="@+id/repeat_monthly_month" />
+
+        <TextView
+            android:id="@+id/repeat_monthly_lbl_date"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="On this date"
+            android:layout_below="@id/repeat_monthly_month"
+            android:paddingRight="10dp"
+            />
+
+        <EditText
+            android:id="@+id/repeat_monthly_date"
+            android:inputType="number"
+            android:layout_width="40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:layout_below="@+id/repeat_monthly_month"
+            android:layout_toRightOf="@id/repeat_monthly_lbl_date"
+            />
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -2,7 +2,6 @@ package se.evinja.hazeldroid.tasks;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
@@ -16,10 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,6 +41,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     private Dialog_Workers wrk_dialog;
     private Dialog_Qualifications qual_dialog;
     private Object_Task t;
+    private Dialog_Repeat rpt_dialog = new Dialog_Repeat();
 
     public static Fragment_Task_Add newInstance() {
         return new Fragment_Task_Add();
@@ -156,11 +154,13 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         end_t.setText(timeFormat.format(end.getTime()));
 
         repeat = (TextView) view.findViewById(R.id.task_add_repeat);
+        repeat.setText(rpt_dialog.getString());
+        rpt_dialog.init(this);
         repeat.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog_Repeat dialog_repeat = new Dialog_Repeat();
-                dialog_repeat.show(getFragmentManager(), "Repeat dialog");
+
+                rpt_dialog.show(getFragmentManager(), "Repeat dialog");
             }
         });
 
@@ -259,6 +259,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
             workers.setText(wrk_dialog.getSelectedString());
         }else if (which == 2){ //Set as 2 in class
             qualifications.setText(qual_dialog.getSelectedString());
+        }else if (which == 3){
+            repeat.setText(rpt_dialog.getString());
         }
     }
 
