@@ -90,23 +90,28 @@ public class Hazel extends Application implements Http_Events {
        // execute(HazelCommand.LOGOUT, null);
         parent = null;
         client = null;
-        qualification_waiting_to_be_added = null;
-        workers_are_invalid = false;
-        username = null;
-        password = null;
-        on_login_download_all = false;
-        workers.clear();
-        qualifications.clear();
         currentCommand = null;
         commandBefore = null;
         access = AccessStatus.USER;
-        adapter_qualifications = null;
-        adapter_workers = null;
-        tasks = null;
-        adapter_tasks = null;
-
         connectionStatus = ConnectionStatus.NOT_CONNECTED;
         user_logged_out = true;
+
+        username = null;
+        password = null;
+        on_login_download_all = false;
+
+        qualifications = null;
+        adapter_qualifications = null;
+        qualification_waiting_to_be_added = null;
+
+        workers = null;
+        adapter_workers = null;
+        workers_are_invalid = false;
+        worker_logged_in = null;
+        worker_logged_in_JSON = null;
+
+        tasks = null;
+        adapter_tasks = null;
     }
 
     public String get_navigation_title(){
@@ -317,7 +322,7 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void add_worker(Object_Worker new_worker){
-        execute(HazelCommand.ADD_WORKER, new_worker.getJSON(client, 2));
+        execute(HazelCommand.ADD_WORKER, new_worker.getJSON(client));
     }
 
     public void delete_worker(int position){
@@ -472,7 +477,7 @@ public class Hazel extends Application implements Http_Events {
                     }
                     eventListener.onQualificationsDownloaded();
                     if (on_login_download_all){ //if is in login procedure
-                        worker_logged_in = new Object_Worker(worker_logged_in_JSON, this); //Now we can create our object since we have a list of qualifications
+                        if (worker_logged_in_JSON != null) worker_logged_in = new Object_Worker(worker_logged_in_JSON, this); //Now we can create our object since we have a list of qualifications
                         download_workers();
                     }else {
                         if (!no_worker_download) {

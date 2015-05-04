@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,8 +27,9 @@ public class Fragment_Worker_Add extends Fragment implements DialogInterface.OnC
     private Hazel hazel;
     private  Activity_Main parent;
 
-    private EditText username, password, firstname, lastname, position, phone, mail,birthdate, last4;
+    private EditText username, password, firstname, lastname, position, phone, mail,birthdate, last4, minhours, maxhours;
     private TextView qualifications ;
+    private CheckBox access;
     private Dialog_Qualifications qual_dialog;
     private Calendar birthdate_calendar = Calendar.getInstance();
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -46,12 +48,12 @@ public class Fragment_Worker_Add extends Fragment implements DialogInterface.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         hazel = (Hazel) parent.getApplication();
-//        hazel.download_qualifications_and_workers(parent);
         hazel.download_workers();
         final View view = inflater.inflate(R.layout.fragment_worker_add, container, false);
 
         username = (EditText) view.findViewById(R.id.task_add_min_work);
         password = (EditText) view.findViewById(R.id.worker_add_password);
+        access = (CheckBox) view.findViewById(R.id.worker_add_administrator);
         firstname = (EditText) view.findViewById(R.id.worker_add_firstname);
         lastname = (EditText) view.findViewById(R.id.worker_add_lastname);
         position = (EditText) view.findViewById(R.id.worker_add_position);
@@ -68,26 +70,8 @@ public class Fragment_Worker_Add extends Fragment implements DialogInterface.OnC
         phone = (EditText) view.findViewById(R.id.worker_add_phone);
         mail = (EditText) view.findViewById(R.id.worker_add_mail);
         birthdate = (EditText) view.findViewById(R.id.worker_add_birthday);
-
-//        birthdate.setOnClickListener(new TextView.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
-//                        new DatePickerDialog.OnDateSetListener() {
-//
-//                            @Override
-//                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                                birthdate_calendar.set(Calendar.YEAR, year);
-//                                birthdate_calendar.set(Calendar.MONTH, monthOfYear);
-//                                birthdate_calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-//
-//                                birthdate.setText(dateformat.format(birthdate_calendar.getTime()));
-//                            }
-//                        }, birthdate_calendar.get(Calendar.YEAR), birthdate_calendar.get(Calendar.MONTH), birthdate_calendar.get(Calendar.DAY_OF_MONTH));
-//                dpd.show();
-//            }
-//
-//        });
+        minhours = (EditText) view.findViewById(R.id.worker_add_min_hours);
+        maxhours = (EditText) view.findViewById(R.id.worker_add_max_hours);
 
         last4 = (EditText) view.findViewById(R.id.worker_add_last4);
 
@@ -134,6 +118,9 @@ public class Fragment_Worker_Add extends Fragment implements DialogInterface.OnC
         worker.mailAddress = mail.getText().toString();
         worker.birthday = birthdate.getText().toString();
         worker.last4 = last4.getText().toString();
+        worker.minhours = minhours.getText().toString();
+        worker.maxhours = maxhours.getText().toString();
+        worker.access_level = access.isChecked() ? 3 : 2;
 
         hazel.add_worker(worker);
         parent.onBackPressed();

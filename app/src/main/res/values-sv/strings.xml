@@ -32,7 +32,7 @@
     <string name="phone">Telefon</string>
     <string name="mail">E-post</string>
     <string name="person_number">Personnummer</string>
-    <string name="login_credentials">Inloggningsuppgifter</string>
+    <string name="login_credentials">Skapa ett användarkonto</string>
     <string name="firstname">Förnamn</string>
     <string name="lastname">Efternamn</string>
     <string name="add_worker">Lägg till personal</string>
@@ -102,4 +102,9 @@
     <string name="downloading_tasks">Laddar ner uppgifter</string>
     <string name="none">Inga</string>
     <string name="qualification_added">Kvalifikation tillagd</string>
+    <string name="working_hours_per_week">Timmar per vecka</string>
+    <string name="access_level">Åtkomstnivå</string>
+    <string name="name">Namn</string>
+    <string name="user_can_be_scheduled">Användaren kan schemaläggas</string>
+    <string name="administrator">Administratör</string>
 </resources>

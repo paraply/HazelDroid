@@ -13,6 +13,10 @@
         android:paddingEnd="@dimen/margin"
         tools:context="se.evinja.hazel.hazelandroid.personnel.Fragment_Edit_Person">
 
+        <View android:id="@+id/fake"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"/>
 
 
         <ImageView
@@ -98,24 +102,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-        <TextView
-            android:id="@+id/worker_edit_lbl_qualifications"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/qualifications"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/worker_edit_position"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
-        <TextView
-            android:id="@+id/worker_edit_qualifications"
-            style="@style/SpinnerButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/worker_edit_lbl_qualifications"
-            />
 
 
         <TextView
@@ -124,7 +111,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/phone"
-            android:layout_below="@+id/worker_edit_qualifications" />
+            android:layout_below="@+id/worker_edit_position" />
 
         <EditText
             android:id="@+id/worker_edit_phone"
@@ -175,7 +162,6 @@
             android:id="@+id/worker_edit_birthday"
             style="@style/edit_text"
             android:hint="YYYY-MM-DD"
-            android:inputType="number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/worker_edit_lbl_personnr"
@@ -192,9 +178,91 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             style="@style/edit_text"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/worker_edit_lbl_personnr"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/worker_edit_lbl_qualifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/qualifications"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/worker_edit_birthday"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/worker_edit_qualifications"
+            style="@style/SpinnerButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/worker_edit_lbl_qualifications"
+            />
+
+        <TextView
+            android:id="@+id/worker_edit_working_hours"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/working_hours_per_week"
+            android:layout_below="@id/worker_edit_qualifications"
+            />
+
+        <TextView
+            android:id="@+id/worker_edit_lbl_min_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/minimum"
+            android:layout_alignBaseline="@+id/worker_edit_min_work"
+            android:layout_alignParentLeft="true"
+
+            />
+
+        <EditText
+            android:id="@+id/worker_edit_min_work"
+            android:inputType="number"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/worker_edit_working_hours"
+            android:layout_alignRight="@id/fake"
+            android:layout_toLeftOf="@+id/worker_edit_lbl_min_workers"
+            android:layout_toRightOf="@+id/worker_edit_lbl_min_workers"
+            android:layout_toEndOf="@+id/worker_edit_lbl_min_workers" />
+
+        <TextView
+            android:id="@+id/worker_edit_lbl_max_workers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/maximum"
+            android:layout_alignBaseline="@+id/worker_edit_max_work"
+            android:layout_alignTop="@+id/worker_edit_lbl_min_workers"
+            android:layout_alignLeft="@+id/fake"
+            android:layout_alignStart="@+id/fake" />
+
+        <EditText
+            android:id="@+id/worker_edit_max_work"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignTop="@+id/worker_edit_min_work"
+            android:layout_toRightOf="@+id/worker_edit_lbl_max_workers"
+            android:layout_alignParentRight="true"
+             />
+
+
 
     </RelativeLayout>
 </ScrollView>

@@ -64,21 +64,46 @@
             android:layout_alignLeft="@id/fake"
             android:layout_alignParentRight="true" />
 
+
+
+
+        <CheckBox
+            android:id="@+id/worker_add_administrator"
+            android:text="@string/administrator"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/worker_add_password" />
+
+<RelativeLayout
+    android:id="@+id/worker_add_worker_extra"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/worker_add_administrator"
+    >
+
+    <View android:id="@+id/fake2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
+
         <TextView
             android:id="@+id/worker_add_lbl_firstname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/firstname"
+            android:text="@string/name"
             android:layout_marginTop="10dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/task_add_min_work" />
+             />
 
         <EditText
             android:id="@+id/worker_add_firstname"
+            android:hint="@string/firstname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -87,29 +112,20 @@
             android:layout_below="@+id/worker_add_lbl_firstname"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignRight="@+id/fake2"
+ />
 
-        <TextView
-            android:id="@+id/worker_add_lbl_lastname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/lastname"
-            android:layout_below="@+id/worker_add_firstname"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
         <EditText
             android:id="@+id/worker_add_lastname"
+            android:hint="@string/lastname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black_text"
             style="@style/edit_text"
-            android:layout_below="@+id/worker_add_lbl_lastname"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_below="@+id/worker_add_lbl_firstname"
+            android:layout_toRightOf="@+id/fake2"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
@@ -142,8 +158,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/qualifications"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/worker_add_position"
+            android:layout_below="@+id/worker_add_birthday"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -162,8 +177,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/phone"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/worker_add_qualifications" />
+            android:layout_below="@+id/worker_add_position" />
 
         <EditText
             android:id="@+id/worker_add_phone"
@@ -208,10 +222,9 @@
             android:layout_below="@+id/worker_add_mail" />
 
         <EditText
+            android:id="@+id/worker_add_birthday"
             style="@style/edit_text"
             android:hint="YYYY-MM-DD"
-            android:inputType="number"
-            android:id="@+id/worker_add_birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/worker_add_lbl_birthday"
@@ -232,6 +245,68 @@
             android:layout_alignTop="@+id/worker_add_birthday"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/worker_edit_working_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/working_hours_per_week"
+        android:layout_below="@id/worker_add_qualifications"
+        />
+
+    <TextView
+        android:id="@+id/worker_add_lbl_min_workers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/minimum"
+        android:layout_alignBaseline="@+id/worker_add_min_hours"
+        android:layout_alignParentLeft="true"
+
+        />
+
+    <EditText
+        android:id="@+id/worker_add_min_hours"
+        android:inputType="number"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/worker_edit_working_hours"
+        android:layout_alignRight="@id/fake2"
+        android:layout_toLeftOf="@+id/worker_add_lbl_min_workers"
+        android:layout_toRightOf="@+id/worker_add_lbl_min_workers"
+        android:layout_toEndOf="@+id/worker_add_lbl_min_workers" />
+
+    <TextView
+        android:id="@+id/worker_add_lbl_max_workers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/maximum"
+        android:layout_alignBaseline="@+id/worker_add_max_hours"
+        android:layout_alignTop="@+id/worker_add_lbl_min_workers"
+        android:layout_alignLeft="@+id/fake2"
+        android:layout_alignStart="@+id/fake2" />
+
+    <EditText
+        android:id="@+id/worker_add_max_hours"
+        android:inputType="number"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignTop="@+id/worker_add_min_hours"
+        android:layout_toRightOf="@+id/worker_add_lbl_max_workers"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>
 
     </RelativeLayout>
 </ScrollView>

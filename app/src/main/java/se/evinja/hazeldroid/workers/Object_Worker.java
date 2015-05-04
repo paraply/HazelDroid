@@ -17,7 +17,8 @@ import se.evinja.hazeldroid.R;
 import se.evinja.hazeldroid.qualifications.Object_Qualification;
 
 public class Object_Worker {
-    public String id , firstName, lastName, position, mailAddress,birthday, last4, phoneNr, username, password, company;
+    public String id , firstName, lastName, position, mailAddress,birthday, last4, phoneNr, username, password, minhours = "", maxhours = "";
+    public int access_level;
     public List<Object_Qualification> qualifications = new ArrayList<>();
     private Hazel hazel;
     public Object_Worker(){}
@@ -33,6 +34,9 @@ public class Object_Worker {
                 phoneNr = jobj.getString("phoneNr");
                 birthday = jobj.getString("birthday");
                 last4 = jobj.getString("last4");
+
+                if (!jobj.isNull("minHours")) minhours = Integer.toString(jobj.getInt("minHours"));
+                if (!jobj.isNull("maxHours")) maxhours = Integer.toString(jobj.getInt("maxHours"));
 
 
                 JSONArray jArr = jobj.getJSONArray("qualifications");
@@ -51,7 +55,7 @@ public class Object_Worker {
 
     }
 
-    public JSONObject getJSON(String client_name, int access_level){
+    public JSONObject getJSON(String client_name){
         JSONObject jo_outer = new JSONObject();
         JSONObject jo_inner = new JSONObject();
         JSONArray ja = new JSONArray();

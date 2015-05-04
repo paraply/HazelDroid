@@ -31,6 +31,7 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     private Callback_Navigate drawer_callbacks;
     private int current_selected_position;
     private Hazel hazel;
+    private TextView nav_name, nav_client;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,8 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.drawerList);
-        ((TextView) view.findViewById(R.id.navigation_name)).setText(hazel.get_navigation_title());
-        ((TextView) view.findViewById(R.id.navigation_client)).setText(hazel.get_navigation_client());
+        nav_name = (TextView) view.findViewById(R.id.navigation_name);
+        nav_client = (TextView) view.findViewById(R.id.navigation_client);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager); //Set layout of recyclerview
@@ -102,8 +103,9 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
                 actionBarDrawerToggle.syncState();
             }
         });
-
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        nav_name.setText(hazel.get_navigation_title());
+        nav_client.setText(hazel.get_navigation_client());
     }
 
     public void open() {

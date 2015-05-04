@@ -32,7 +32,7 @@
     <string name="phone">Phone</string>
     <string name="mail">Email</string>
     <string name="person_number">Personal number</string>
-    <string name="login_credentials">Login credentials</string>
+    <string name="login_credentials">Create user account</string>
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>
     <string name="add_worker">Add worker</string>
@@ -102,4 +102,9 @@
     <string name="downloading_tasks">Downloading tasks</string>
     <string name="none">None</string>
     <string name="qualification_added">Qualification added</string>
+    <string name="working_hours_per_week">Working hours per week</string>
+    <string name="access_level">Access level</string>
+    <string name="name">Name</string>
+    <string name="user_can_be_scheduled">User can be scheduled</string>
+    <string name="administrator">Administrator</string>
 </resources>
