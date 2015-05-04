@@ -1,5 +1,6 @@
 package se.evinja.hazeldroid.tasks;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -18,8 +19,11 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import se.evinja.hazeldroid.R;
 
@@ -39,26 +43,28 @@ public class Dialog_Repeat extends DialogFragment{
         this.onItemClickListener = onItemClickListener;
     }
 
-    public String getString(){
+    public String getString(Activity parent){
         String str = "";
         if (repeat == repeat_types.Once) {
-            str = "Only once";
+            str = parent.getString(R.string.only_once);
         }else if (repeat == repeat_types.Daily){
-            str =  repeat_interval.equals("1") ? "Every day" : "Every " + repeat_interval + " day";
+            str =  repeat_interval.equals("1") ? parent.getString(R.string.every_day) : parent.getString(R.string.every) + repeat_interval + parent.getString(R.string.day);
         }else if (repeat == repeat_types.Weekly){
-            str = repeat_interval.equals("1") ? "Every week" : "Every " + repeat_interval + " week, ";
+            str = repeat_interval.equals("1") ? parent.getString(R.string.every_week) : parent.getString(R.string.every) + repeat_interval + parent.getString(R.string.week) ;
 
-            if (mo) str += "Monday ";
-            if (tu) str += "Tuesday ";
-            if (we) str += "Wednesday ";
-            if (th) str += "Thursday ";
-            if (fr) str += "Friday ";
-            if (sa) str += "Saturday ";
-            if (su) str += "Sunday ";
+            //Could use locale to get translated weekday names and get first day of the week.
+
+            if (mo) str += parent.getString(R.string.monday);
+            if (tu) str += parent.getString(R.string.tuesday);
+            if (we) str += parent.getString(R.string.wednesday);
+            if (th) str += parent.getString(R.string.thursday);
+            if (fr) str += parent.getString(R.string.friday);
+            if (sa) str += parent.getString(R.string.saturday);
+            if (su) str += parent.getString(R.string.sunday);
 
         }else if (repeat == repeat_types.Monthly){
-            str = repeat_interval.equals("1") ? "Every month" : "Every " + repeat_interval + " month";
-            str += " on the " + repeat_month_date + ":th";
+            str = repeat_interval.equals("1") ? parent.getString(R.string.every_month) : parent.getString(R.string.every) + repeat_interval + parent.getString(R.string.month);
+            str += parent.getString(R.string.on_the) + repeat_month_date + parent.getString(R.string.th);
         }
         return str;
     }
@@ -128,7 +134,7 @@ public class Dialog_Repeat extends DialogFragment{
                                               }
                                           });
 
-            String[] repeat_choices = new String[]{"Once", "Daily", "Weekly", "Monthly"};
+            String[] repeat_choices = new String[]{ctx.getString(R.string.once), ctx.getString(R.string.daily), ctx.getString(R.string.weekly), ctx.getString(R.string.monthly)};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, repeat_choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -138,7 +144,7 @@ public class Dialog_Repeat extends DialogFragment{
         if (repeat == repeat_types.Monthly) spinner.setSelection(3);
 
         return new AlertDialog.Builder(ctx)
-                .setTitle("Repeat this task")
+                .setTitle(ctx.getString(R.string.repeat_this_task))
                 .setView(view)
                 .setCancelable(true)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

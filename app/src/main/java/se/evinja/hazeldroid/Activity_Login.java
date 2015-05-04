@@ -82,7 +82,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
         login_password.setEnabled(false);
         login_remember.setEnabled(false);
         login_btn.setEnabled(false);
-        hazel.login(username, password, this);
+        hazel.login(username, password, this,this);
     }
 
     private void restoreUI(){
@@ -126,21 +126,22 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
             editor.remove("password");
             editor.apply();
         }
-        restoreUI();
-        Intent intent = new Intent(this,Activity_Main.class);
-        startActivity(intent);
-        finish();
-//        progress.setMessage(getString(R.string.downloading_personnel));
+        progress.setMessage(getString(R.string.downloading_qualifications));
     }
 
     @Override
     public void onStaffDownloaded() {
-//        progress.setMessage(getString(R.string.downloading_schedules));
+        progress.setMessage(getString(R.string.downloading_tasks));
+    }
+
+    @Override
+    public void onQualificationsDownloaded() {
+        progress.setMessage(getString(R.string.downloading_personnel));
     }
 
     @Override
     public void onWorkerAdded() {
-        Toast.makeText(this, getString(R.string.worker_added_successfully), Toast.LENGTH_LONG ).show();
+//        Toast.makeText(this, getString(R.string.worker_added_successfully), Toast.LENGTH_LONG ).show();
     }
 
     @Override
@@ -156,10 +157,16 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
 
     @Override
     public void onTasksDownloaded() {
-
+        proceedToMain();
 
     }
 
+    private void proceedToMain(){
+        restoreUI();
+        Intent intent = new Intent(this,Activity_Main.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onStop() {

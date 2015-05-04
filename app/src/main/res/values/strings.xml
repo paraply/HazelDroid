@@ -60,6 +60,44 @@
     <string name="ok">OK</string>
     <string name="select_workers">Select workers</string>
     <string name="select_qualifications">Select qualifications</string>
-
-
+    <string name="every_day">Every day</string>
+    <string name="every">"Every "</string>
+    <string name="every_week">Every week</string>
+    <string name="every_month">Every month</string>
+    <string name="daily">Daily</string>
+    <string name="once">Once</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="repeat_this_task">Repeat this task</string>
+    <string name="day">day</string>
+    <string name="week">week,</string>
+    <string name="month">" month"</string>
+    <string name="on_the">" on the "</string>
+    <string name="th">:th</string>
+    <string name="only_once">Only once</string>
+    <string name="monday">"Monday "</string>
+    <string name="tuesday">"Tuesday "</string>
+    <string name="wednesday">"Wednesday "</string>
+    <string name="thursday">"Thursday "</string>
+    <string name="friday">"Friday "</string>
+    <string name="saturday">"Saturday "</string>
+    <string name="sunday">"Sunday "</string>
+    <string name="no_workers">No workers</string>
+    <string name="one_worker">1 worker</string>
+    <string name="space_workers">workers</string>
+    <string name="repeat_once">repeat once</string>
+    <string name="repeat_daily">repeat daily</string>
+    <string name="repeat_weekly">repeat weekly</string>
+    <string name="repeat_monthly">repeat monthly</string>
+    <string name="error_during">"Error during: "</string>
+    <string name="error_message">" message: "</string>
+    <string name="description">Description</string>
+    <string name="required_amount_of_workers">Required amount of workers</string>
+    <string name="days">day</string>
+    <string name="weeks">week</string>
+    <string name="months">month</string>
+    <string name="on_this_date">On this date</string>
+    <string name="no_description">No description</string>
+    <string name="downloading_qualifications">Downloading qualifications</string>
+    <string name="downloading_tasks">Downloading tasks</string>
 </resources>

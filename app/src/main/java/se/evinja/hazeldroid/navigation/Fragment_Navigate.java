@@ -45,7 +45,8 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.drawerList);
-        ((TextView) view.findViewById(R.id.navigation_name)).setText(hazel.getFullName());
+        ((TextView) view.findViewById(R.id.navigation_name)).setText(hazel.get_navigation_title());
+        ((TextView) view.findViewById(R.id.navigation_client)).setText(hazel.get_navigation_client());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager); //Set layout of recyclerview
@@ -119,14 +120,15 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
 
     private List<Item_Navigate> get_navigation_items(){
         List<Item_Navigate> items = new ArrayList<>();
-        if (!hazel.access_rootlevel()){ //Root has no schedule
-            items.add(new Item_Navigate("My schedule", getResources().getDrawable(R.mipmap.my_schedule)));
-        }
-        items.add(new Item_Navigate("Workplace schedule", getResources().getDrawable(R.mipmap.work_schedule)));
-        items.add(new Item_Navigate("Workers", getResources().getDrawable(R.mipmap.workers)));
-        if (hazel.access_adminlevel()) { //Only admin can edit tasks and qualifications
-            items.add(new Item_Navigate("Tasks", getResources().getDrawable(R.mipmap.tasks)));
-            items.add(new Item_Navigate("Qualifications", getResources().getDrawable(R.mipmap.qualifications)));
+        if (!hazel.access_rootlevel()){ //Root can not do anything yet
+            items.add(new Item_Navigate(getString(R.string.my_schedule), getResources().getDrawable(R.mipmap.my_schedule)));
+
+            items.add(new Item_Navigate(getString(R.string.work_schedule), getResources().getDrawable(R.mipmap.work_schedule)));
+            items.add(new Item_Navigate(getString(R.string.workers), getResources().getDrawable(R.mipmap.workers)));
+            if (hazel.access_adminlevel()) { //Only admin can edit tasks and qualifications
+                items.add(new Item_Navigate(getString(R.string.tasks), getResources().getDrawable(R.mipmap.tasks)));
+                items.add(new Item_Navigate(getString(R.string.qualifications), getResources().getDrawable(R.mipmap.qualifications)));
+            }
         }
         return items;
     }

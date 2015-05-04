@@ -75,20 +75,13 @@ public class Fragment_Task_Show extends Fragment {
         ((TextView) view.findViewById(R.id.task_show_start_time)).setText(t.getStartTime());
         ((TextView) view.findViewById(R.id.task_show_end_date)).setText(t.getEndDate());
         ((TextView) view.findViewById(R.id.task_show_end_time)).setText(t.getEndTime());
-        ((TextView) view.findViewById(R.id.task_show_repeat)).setText(t.get_repeat_string());
+        ((TextView) view.findViewById(R.id.task_show_repeat)).setText(t.get_repeat_string(parent));
         ((TextView) view.findViewById(R.id.task_show_qualifications)).setText(t.getQualifications());
-        ((TextView) view.findViewById(R.id.task_show_min_work)).setText(Integer.toString(t.min_workers));
-        ((TextView) view.findViewById(R.id.task_show_max_work)).setText(Integer.toString(t.max_workers));
+        ((TextView) view.findViewById(R.id.task_show_min_work)).setText(t.get_min_workers());
+        ((TextView) view.findViewById(R.id.task_show_max_work)).setText(t.get_max_workers());
         ((TextView) view.findViewById(R.id.task_show_workers)).setText(t.getWorkers());
-
-
-//        ((TextView) view.findViewById(R.id.show_worker_fullname)).setText(w.get_fullName());
-//        ((TextView) view.findViewById(R.id.show_worker_position)).setText(w.position);
-//        ((TextView) view.findViewById(R.id.show_worker_mail)).setText(w.mailAddress);
-//        ((TextView) view.findViewById(R.id.show_worker_phone)).setText(w.phoneNr);
-//        ((TextView) view.findViewById(R.id.show_worker_personnr)).setText(w.get_personnumber());
-//        ((TextView) view.findViewById(R.id.show_worker_qualifications)).setText(w.get_qualificationstring(parent));
         parent.set_title(t.title);
+
         return view;
     }
 

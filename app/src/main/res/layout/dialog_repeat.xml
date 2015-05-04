@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Repeat"
+        android:text="@string/repeat"
         android:gravity="center_vertical"
         android:paddingRight="5dp"
         android:id="@+id/repeat_every"
@@ -41,8 +41,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Every"
-            android:layout_margin="10dp"
+            android:text="@string/every"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/repeat_daily_lbl"
             android:layout_alignBottom="@+id/repeat_daily_day" />
 
@@ -61,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="days"
+            android:text="@string/days"
             android:layout_toRightOf="@id/repeat_daily_day"
             android:id="@+id/repeat_daily_lbl_days"
             android:layout_alignBottom="@+id/repeat_daily_day" />
@@ -80,8 +82,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Every"
-            android:layout_margin="10dp"
+            android:text="@string/every"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/repeat_weekly_lbl"
             android:layout_alignBottom="@+id/repeat_weekly_week" />
 
@@ -100,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="weeks"
+            android:text="@string/weeks"
             android:layout_toRightOf="@id/repeat_weekly_week"
             android:id="@+id/repeat_weekly_lbl_weeks"
             android:layout_alignBottom="@+id/repeat_weekly_week" />
@@ -108,7 +112,7 @@
         <CheckBox
             android:id="@+id/repeat_mon"
             android:layout_marginTop="10dp"
-            android:text="Monday"
+            android:text="@string/monday"
             android:layout_below="@id/repeat_weekly_lbl_weeks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -116,41 +120,41 @@
         <CheckBox
             android:id="@+id/repeat_tue"
             android:layout_marginTop="5dp"
-            android:text="Tuesday"
+            android:text="@string/tuesday"
             android:layout_below="@id/repeat_mon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <CheckBox
             android:id="@+id/repeat_wed"
-            android:text="Wednesday"
+            android:text="@string/wednesday"
             android:layout_marginTop="5dp"
             android:layout_below="@id/repeat_tue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <CheckBox
             android:id="@+id/repeat_thu"
-            android:text="Thursday"
+            android:text="@string/thursday"
             android:layout_marginTop="5dp"
             android:layout_below="@id/repeat_wed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <CheckBox
             android:id="@+id/repeat_fri"
-            android:text="Friday"
+            android:text="@string/friday"
             android:layout_marginTop="5dp"
             android:layout_below="@id/repeat_thu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <CheckBox
             android:id="@+id/repeat_sat"
-            android:text="Saturday"
+            android:text="@string/saturday"
             android:layout_marginTop="5dp"
             android:layout_below="@id/repeat_fri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <CheckBox
             android:id="@+id/repeat_sun"
-            android:text="Sunday"
+            android:text="@string/sunday"
             android:layout_marginTop="5dp"
             android:layout_below="@id/repeat_sat"
             android:layout_width="wrap_content"
@@ -172,7 +176,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Every"
+            android:text="@string/every"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_margin="10dp"
             android:id="@+id/repeat_monthly_lbl"
             android:layout_alignBottom="@+id/repeat_monthly_month" />
@@ -192,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="months"
+            android:text="@string/months"
             android:layout_toRightOf="@id/repeat_monthly_month"
             android:id="@+id/repeat_monthly_lbl_months"
             android:layout_alignBottom="@+id/repeat_monthly_month" />
@@ -203,7 +210,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="On this date"
+            android:text="@string/on_this_date"
             android:layout_below="@id/repeat_monthly_month"
             android:paddingRight="10dp"
             />

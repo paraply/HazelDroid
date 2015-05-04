@@ -47,21 +47,21 @@ public class Hazel extends Application implements Http_Events {
     }
     ConnectionStatus connectionStatus;
 
-    private boolean user_logged_out, login_procedure;
+    private boolean user_logged_out, on_login_download_all;
     private String username, password;
     private HazelEvents eventListener;
     private Http http;
 
-    public List<Object_Qualification> qualifications = new ArrayList<>();
+    public List<Object_Qualification> qualifications;
     private Adapter_Qualifications adapter_qualifications;
     private String current_qualification_adding;
 
-    public List<Object_Worker> workers = new ArrayList<>();
+    public List<Object_Worker> workers;
     private Adapter_Workers adapter_workers;
     private boolean no_worker_download = false;
     private boolean workers_are_invalid;
 
-    private List<Object_Task> tasks = new ArrayList<>();
+    private List<Object_Task> tasks;
     private Adapter_Tasks adapter_tasks;
 
     private Activity parent;
@@ -69,12 +69,13 @@ public class Hazel extends Application implements Http_Events {
     private Object_Worker worker_logged_in;
 
 
-    public void login(String username, String password, HazelEvents eventListener){
+    public void login(String username, String password, HazelEvents eventListener, Activity parent){
         access = AccessStatus.USER; //Reset before login
-        login_procedure = true; // downloads needs to know that we are in login mode
+        on_login_download_all = true; // downloads needs to know that we are in login mode
         this.username = username;
         this.password = password;
         this.eventListener = eventListener;
+        this.parent = parent;
         http = new Http(this, username,password);
         execute(HazelCommand.LOGIN, null);
     }
@@ -83,7 +84,7 @@ public class Hazel extends Application implements Http_Events {
         this.eventListener = eventListener;
     }
 
-    public void logout(){
+    public void logout(){ //Reset everything TODO CHECK IF EVERYTHING
        // execute(HazelCommand.LOGOUT, null);
         parent = null;
         client = null;
@@ -91,7 +92,7 @@ public class Hazel extends Application implements Http_Events {
         workers_are_invalid = false;
         username = null;
         password = null;
-        login_procedure = false;
+        on_login_download_all = false;
         workers.clear();
         qualifications.clear();
         currentCommand = null;
@@ -99,27 +100,29 @@ public class Hazel extends Application implements Http_Events {
         access = AccessStatus.USER;
         adapter_qualifications = null;
         adapter_workers = null;
+        tasks = null;
+        adapter_tasks = null;
 
         connectionStatus = ConnectionStatus.NOT_CONNECTED;
         user_logged_out = true;
     }
 
-    public String getFullName(){
-        String str =  worker_logged_in.get_fullName() + "\n" + client;
+    public String get_navigation_title(){
+        return worker_logged_in.get_fullName();
+    }
+
+    public String get_navigation_client(){
+        String str = client;
         if (!access_userlevel()){
             str += " (" +  access.toString().toLowerCase() + ")";
         }
         return str;
     }
 
-    public String get_client_name(){
-        return client;
-    }
-
     public void download_user_schedule(){
         execute(HazelCommand.DOWNLOAD_USER_SCHEDULE, null);
         eventListener.onUserSchedule(); //TODO MOVE
-//        if (login_procedure){
+//        if (on_login_download_all){
 //            download_staff_schedule();
 //        }
     }
@@ -127,7 +130,7 @@ public class Hazel extends Application implements Http_Events {
     public void download_staff_schedule(){
         execute(HazelCommand.DOWNLOAD_STAFF_SCHEDULE, null);
         eventListener.onStaffSchedule();
-//        login_procedure = false; // Login procedure finished
+//        on_login_download_all = false; // Login procedure finished
     }
 
     public boolean user_has_logged_out(){
@@ -168,9 +171,9 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case CANCEL:
-                if (login_procedure){
+                if (on_login_download_all){
                     connectionStatus = ConnectionStatus.NOT_CONNECTED;
-                    login_procedure = false;
+                    on_login_download_all = false;
                 }
                 break;
 
@@ -275,15 +278,22 @@ public class Hazel extends Application implements Http_Events {
     public void download_qualifications_and_workers(Activity parent){
         this.parent = parent;
         no_worker_download = false;
-        if (adapter_qualifications == null){
-            adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
-        }
-        if (qualifications.size() == 0 ){
-            this.parent = parent;
-            execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
+        if ((qualifications == null) || qualifications.size() == 0 ){
+            download_qualifications(parent);
         }else{
             download_workers(parent);
         }
+    }
+
+    private void download_qualifications(Activity parent){
+        if (qualifications == null){
+            qualifications = new ArrayList<>();
+        }
+        if (adapter_qualifications == null){
+            adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
+        }
+        this.parent = parent;
+        execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
     }
 
     private void refresh_qualifications(){
@@ -293,6 +303,9 @@ public class Hazel extends Application implements Http_Events {
     }
 
     private void download_workers(Activity parent){ //This will download qualifications if not already downloaded.
+        if (workers == null){
+            workers = new ArrayList<>();
+        }
         if (adapter_workers == null){
             adapter_workers = new Adapter_Workers(parent, workers);
         }
@@ -328,7 +341,6 @@ public class Hazel extends Application implements Http_Events {
         return workers.get(position);
     }
 
-
     public void add_task(Object_Task new_task){
         tasks.add(new_task);
         execute(HazelCommand.ADD_TASK, new_task.toJSON(client));
@@ -341,14 +353,12 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void download_tasks(Activity parent){
-        execute(HazelCommand.DOWNLOAD_TASKS, null);
-//        Object_Task t = new Object_Task();
-//        t.title = "Skapa hazel";
-//        t.description = "Hur svårt kan det vara?";
-//        t.set_repeats_weekly();
-//        tasks.add(t);
-        adapter_tasks.notifyDataSetChanged();
-
+        if (tasks == null){
+            tasks = new ArrayList<>();
+        }
+        if (tasks.size() == 0){ //Only download if has none..
+            execute(HazelCommand.DOWNLOAD_TASKS, null);
+        }
     }
 
     public Adapter_Tasks getAdapter_tasks(Activity parent){
@@ -376,7 +386,7 @@ public class Hazel extends Application implements Http_Events {
     @Override
     public void onData(String data) {
         if (data == null){
-            Log.i("###### GOT DATA", "NULL!!!");
+            onError("Got null data");
             return;
         }
         Log.i("###### GOT DATA", data);
@@ -400,6 +410,12 @@ public class Hazel extends Application implements Http_Events {
                         connectionStatus = ConnectionStatus.CONNECTED;
                         user_logged_out = false;
                         eventListener.onConnected();
+                        if (on_login_download_all){
+                            //Download qualifications first since:
+                            //workers needs qualifications objects
+                            //tasks needs worker objects and qualification objects
+                            download_qualifications(parent);
+                        }
                     }else if (jo.getString("status_code").equals("404")){
                         onError("Bad username");
                         connectionStatus = ConnectionStatus.NOT_CONNECTED;
@@ -413,7 +429,7 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case LOGOUT:
-                //Doesnt need to do anything
+                //Does not need to do anything
                 break;
 
             case ADD_QUALIFICATION:
@@ -429,6 +445,21 @@ public class Hazel extends Application implements Http_Events {
                  break;
 
             case DOWNLOAD_TASKS:
+                try {
+                    JSONArray ja = new JSONArray(data);
+                    for (int i = 0; i < ja.length(); i++){
+                        JSONObject jo = ja.getJSONObject(i);
+                        tasks.add(new Object_Task(jo, this));
+                        Log.i("###### NEW TASK", jo.toString());
+                    }
+                    if (adapter_tasks != null){ //It is null when on_login_download_all
+                        adapter_tasks.notifyDataSetChanged();
+                    }
+
+
+                } catch (Exception e) {
+                    onError("parsing workers: " + e.getMessage());
+                }
                 eventListener.onTasksDownloaded();
                 break;
 
@@ -440,11 +471,18 @@ public class Hazel extends Application implements Http_Events {
                         qualifications.add(new Object_Qualification(jo.getString("qualname"), parent, this));
                         Log.i("###### QUALIFICATION", jo.toString());
                     }
-                    adapter_qualifications.notifyDataSetChanged();
-                    if (!no_worker_download){
-                        download_workers(parent); //Download workers when qualifications has been downloaded. NOT THE OTHER WAY AROUND. Workers need qualifications to generate objects.
-                    }else{
-                        no_worker_download = false;
+                    if (adapter_qualifications != null){ //It is null when on_login_download_all
+                        adapter_qualifications.notifyDataSetChanged();
+                    }
+                    eventListener.onQualificationsDownloaded();
+                    if (on_login_download_all){ //if is in login procedure
+                        download_workers(parent);
+                    }else {
+                        if (!no_worker_download) {
+                            download_workers(parent); //Download workers when qualifications has been downloaded. NOT THE OTHER WAY AROUND. Workers need qualifications to generate objects.
+                        } else {
+                            no_worker_download = false;
+                        }
                     }
                 } catch (JSONException e) {
                     onError("parsing qualifications");
@@ -473,7 +511,12 @@ public class Hazel extends Application implements Http_Events {
                         workers.add(new Object_Worker(jo, this));
                         Log.i("###### WORKER", jo.toString());
                     }
-                    adapter_workers.notifyDataSetChanged();
+                    if (adapter_workers != null){ //It is null when on_login_download_all
+                        adapter_workers.notifyDataSetChanged();
+                    }
+                    if (on_login_download_all){
+                        download_tasks(parent);
+                    }
 
 
                 } catch (JSONException e) {

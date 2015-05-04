@@ -154,7 +154,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         end_t.setText(timeFormat.format(end.getTime()));
 
         repeat = (TextView) view.findViewById(R.id.task_add_repeat);
-        repeat.setText(rpt_dialog.getString());
+        repeat.setText(rpt_dialog.getString(parent));
         rpt_dialog.init(this);
         repeat.setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -195,11 +195,11 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
             start_t.setText(t.getStartTime());
             end_d.setText(t.getEndDate());
             end_t.setText(t.getEndTime());
-            repeat.setText(t.get_repeat_string());
+            repeat.setText(t.get_repeat_string(parent));
             qual_dialog.setSelectedQualifications(t.task_qualifications);
             qualifications.setText(qual_dialog.getSelectedString());
-            min_w.setText(Integer.toString(t.min_workers));
-            max_w.setText(Integer.toString(t.max_workers));
+            min_w.setText(t.get_min_workers());
+            max_w.setText(t.get_max_workers());
             wrk_dialog.setSelectedWorkers(t.task_workers);
             workers.setText(wrk_dialog.getSelectedString());
         }
@@ -236,8 +236,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         //TODO VALIDATE
         t.title = title.getText().toString();
         t.description = description.getText().toString();
-        t.min_workers = Integer.parseInt(min_w.getText().toString());
-        t.max_workers = Integer.parseInt(max_w.getText().toString());
+        t.min_workers = min_w.getText().toString();
+        t.max_workers = max_w.getText().toString();
         t.start = start;
         t.end = end;
         t.repeat_length = 3;
@@ -260,7 +260,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         }else if (which == 2){ //Set as 2 in class
             qualifications.setText(qual_dialog.getSelectedString());
         }else if (which == 3){
-            repeat.setText(rpt_dialog.getString());
+            repeat.setText(rpt_dialog.getString(parent));
         }
     }
 

@@ -179,7 +179,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
 
     @Override
     public void onError(Hazel.HazelCommand duringCommand, String errorMsg) {
-        Toast.makeText(this,"Error during: " + duringCommand + " message: " + errorMsg, Toast.LENGTH_LONG ).show();
+        Toast.makeText(this,getString(R.string.error_during) + duringCommand + getString(R.string.error_message) + errorMsg, Toast.LENGTH_LONG ).show();
     }
 
     @Override
@@ -199,11 +199,16 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
 
     @Override
     public void onTasksDownloaded() {
-        Toast.makeText(this, "Downloaded tasks", Toast.LENGTH_LONG ).show();
+//        Toast.makeText(this, "Downloaded tasks", Toast.LENGTH_LONG ).show();
     }
 
     @Override
     public void onStaffDownloaded() {
+
+    }
+
+    @Override
+    public void onQualificationsDownloaded() {
 
     }
 

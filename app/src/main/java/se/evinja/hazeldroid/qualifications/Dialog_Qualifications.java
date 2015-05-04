@@ -16,14 +16,14 @@ import se.evinja.hazeldroid.R;
 
 public class Dialog_Qualifications extends DialogFragment  {
     private Activity parent;
-    private Hazel hazel;
+//    private Hazel hazel;
     private DialogInterface.OnClickListener onItemClickListener;
     private Object_Qualification[] qualifications;
     private boolean[] selected;
 
     public void init(Activity parent, Hazel hazel, DialogInterface.OnClickListener onItemClickListener){
         this.parent = parent;
-        this.hazel = hazel;
+//        this.hazel = hazel;
         this.onItemClickListener = onItemClickListener;
 
         qualifications = new Object_Qualification[hazel.qualifications.size()];

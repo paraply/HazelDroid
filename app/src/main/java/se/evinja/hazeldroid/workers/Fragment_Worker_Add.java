@@ -2,8 +2,8 @@ package se.evinja.hazeldroid.workers;
 
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,15 +20,15 @@ import java.util.Calendar;
 import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
-import se.evinja.hazeldroid.qualifications.Qualifications_Selector;
+import se.evinja.hazeldroid.qualifications.Dialog_Qualifications;
 
-public class Fragment_Worker_Add extends Fragment{
+public class Fragment_Worker_Add extends Fragment implements DialogInterface.OnClickListener{
     private Hazel hazel;
     private  Activity_Main parent;
 
-    private EditText username, password, firstname, lastname, position, phone, mail, last4;
-    private TextView birthdate;
-    private Qualifications_Selector qualifications;
+    private EditText username, password, firstname, lastname, position, phone, mail,birthdate, last4;
+    private TextView qualifications ;
+    private Dialog_Qualifications qual_dialog;
     private Calendar birthdate_calendar = Calendar.getInstance();
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -55,34 +54,41 @@ public class Fragment_Worker_Add extends Fragment{
         firstname = (EditText) view.findViewById(R.id.worker_add_firstname);
         lastname = (EditText) view.findViewById(R.id.worker_add_lastname);
         position = (EditText) view.findViewById(R.id.worker_add_position);
-        qualifications = (Qualifications_Selector) view.findViewById(R.id.worker_add_qualifications);
-        phone = (EditText) view.findViewById(R.id.worker_add_phone);
-        mail = (EditText) view.findViewById(R.id.worker_add_mail);
-        birthdate = (TextView) view.findViewById(R.id.worker_add_birthday);
-
-        birthdate.setOnClickListener(new TextView.OnClickListener() {
+        qualifications = (TextView) view.findViewById(R.id.worker_add_qualifications);
+        qual_dialog = new Dialog_Qualifications();
+        qual_dialog.init(parent, hazel, this);
+        qualifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                birthdate_calendar.set(Calendar.YEAR, year);
-                                birthdate_calendar.set(Calendar.MONTH, monthOfYear);
-                                birthdate_calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                                birthdate.setText(dateformat.format(birthdate_calendar.getTime()));
-                            }
-                        }, birthdate_calendar.get(Calendar.YEAR), birthdate_calendar.get(Calendar.MONTH), birthdate_calendar.get(Calendar.DAY_OF_MONTH));
-                dpd.show();
+                qual_dialog.show(getFragmentManager(), "Required Qualifications");
             }
-
         });
 
-        last4 = (EditText) view.findViewById(R.id.worker_add_last4);
+        phone = (EditText) view.findViewById(R.id.worker_add_phone);
+        mail = (EditText) view.findViewById(R.id.worker_add_mail);
+        birthdate = (EditText) view.findViewById(R.id.worker_add_birthday);
 
-        qualifications.setQualifications(hazel.get_qualifications());
+//        birthdate.setOnClickListener(new TextView.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+//                        new DatePickerDialog.OnDateSetListener() {
+//
+//                            @Override
+//                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                                birthdate_calendar.set(Calendar.YEAR, year);
+//                                birthdate_calendar.set(Calendar.MONTH, monthOfYear);
+//                                birthdate_calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//
+//                                birthdate.setText(dateformat.format(birthdate_calendar.getTime()));
+//                            }
+//                        }, birthdate_calendar.get(Calendar.YEAR), birthdate_calendar.get(Calendar.MONTH), birthdate_calendar.get(Calendar.DAY_OF_MONTH));
+//                dpd.show();
+//            }
+//
+//        });
+
+        last4 = (EditText) view.findViewById(R.id.worker_add_last4);
 
         return view;
     }
@@ -121,7 +127,7 @@ public class Fragment_Worker_Add extends Fragment{
         worker.lastName = lastname.getText().toString();
         worker.firstName = firstname.getText().toString();
         worker.position = position.getText().toString();
-        worker.qualifications = qualifications.getSelected();
+        worker.qualifications = qual_dialog.getSelectedQualifications();
 
         worker.phoneNr = phone.getText().toString();
         worker.mailAddress = mail.getText().toString();
@@ -130,5 +136,10 @@ public class Fragment_Worker_Add extends Fragment{
 
         hazel.add_worker(worker);
         parent.onBackPressed();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        qualifications.setText(qual_dialog.getSelectedString());
     }
 }

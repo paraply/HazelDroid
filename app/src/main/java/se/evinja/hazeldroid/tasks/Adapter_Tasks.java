@@ -82,8 +82,8 @@ public class Adapter_Tasks extends BaseAdapter {
 
         holder.title.setText(ot.title);
         holder.description.setText(ot.description);
-        holder.workers.setText(ot.get_worker_amount_string());
-        holder.repeats.setText(ot.get_repeat_string());
+        holder.workers.setText(ot.get_worker_amount_string(activity));
+        holder.repeats.setText(ot.get_repeat_string(activity));
 
         holder.next_run_date.setText(ot.get_next_run_date());
         holder.next_run_month.setText(ot.get_next_run_month());

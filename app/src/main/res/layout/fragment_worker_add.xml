@@ -10,6 +10,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="@dimen/margin"
+        android:paddingStart="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:paddingEnd="@dimen/margin"
         tools:context="se.evinja.hazeldroid.workers.Fragment_Worker_Add">
 
         <View android:id="@+id/fake"
@@ -33,8 +37,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/login_credentials"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_picture"
             />
 
@@ -44,8 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            style="@style/edit_text"
             android:hint="@string/username"
             android:layout_below="@+id/worker_add_lbl_login"
             android:layout_alignRight="@id/fake"
@@ -59,6 +60,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:hint="@string/password"
             android:layout_below="@+id/worker_add_lbl_login"
+            style="@style/edit_text"
             android:layout_alignLeft="@id/fake"
             android:layout_alignParentRight="true" />
 
@@ -68,8 +70,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/firstname"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -83,8 +83,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black_text"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            style="@style/edit_text"
             android:layout_below="@+id/worker_add_lbl_firstname"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -97,8 +96,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/lastname"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_firstname"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -109,8 +106,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black_text"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            style="@style/edit_text"
             android:layout_below="@+id/worker_add_lbl_lastname"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -123,8 +119,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/position"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lastname"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -135,8 +129,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black_text"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            style="@style/edit_text"
             android:layout_below="@+id/worker_add_lbl_position"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -149,18 +142,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/qualifications"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/worker_add_position"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <se.evinja.hazeldroid.qualifications.Qualifications_Selector
+
+        <TextView
             android:id="@+id/worker_add_qualifications"
+            style="@style/SpinnerButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@+id/worker_add_lbl_qualifications" />
+            android:layout_below="@+id/worker_add_lbl_qualifications"
+            />
 
         <TextView
             android:id="@+id/worker_add_lbl_phone"
@@ -168,18 +162,16 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/phone"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/worker_add_qualifications" />
 
         <EditText
             android:id="@+id/worker_add_phone"
             android:inputType="phone"
+            style="@style/edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lbl_phone"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -192,8 +184,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/mail"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_phone" />
 
         <EditText
@@ -202,8 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            style="@style/edit_text"
             android:layout_below="@+id/worker_add_lbl_mail"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -216,20 +205,15 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/person_number"
-            android:paddingLeft="10dp"
             android:layout_below="@+id/worker_add_mail" />
 
-        <TextView
-            style="@android:style/Widget.EditText"
+        <EditText
+            style="@style/edit_text"
             android:hint="YYYY-MM-DD"
-            android:clickable="true"
-            android:inputType="none"
+            android:inputType="number"
             android:id="@+id/worker_add_birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_below="@+id/worker_add_lbl_birthday"
             android:layout_toLeftOf="@+id/worker_add_last4"
             android:layout_alignParentLeft="true"
@@ -244,6 +228,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            style="@style/edit_text"
             android:layout_alignTop="@+id/worker_add_birthday"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />

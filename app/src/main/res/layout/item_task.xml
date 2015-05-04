@@ -5,6 +5,11 @@
     android:padding="3dp"
     >
 
+    <View android:id="@+id/fake"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
     <TextView
         android:id="@+id/next_run_date"
         android:layout_width="wrap_content"
@@ -12,6 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="10"
         android:gravity="center"
+        android:visibility="gone"
         android:width="70dp"
         android:textSize="40sp"
         android:paddingLeft="10dp"
@@ -23,6 +29,7 @@
 
     <TextView
         android:id="@+id/next_run_month"
+        android:visibility="gone"
         android:background="@color/accent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +39,7 @@
         android:layout_below="@+id/next_run_date"
         android:layout_alignRight="@+id/next_run_date"
         android:gravity="center"
- />
+        />
 
     <TextView
         android:id="@+id/task_title"
@@ -43,8 +50,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:textColor="@color/black_text"
-        android:layout_toRightOf="@+id/next_run_date"
-        android:layout_toEndOf="@+id/next_run_date">
+>
     </TextView>
 
 
@@ -57,19 +63,32 @@
         android:text="Somewhere somehow s3df21 s3d21f 3s2d1f3 s2d1f32s1d f32s1d32f 1sweffffffffffffffffffffff sdf sdf sdf df"
         android:textSize="14sp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:paddingRight="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_below="@+id/task_title"
-        android:layout_toRightOf="@+id/next_run_date"
-        android:layout_toEndOf="@+id/next_run_date"
-        android:layout_above="@+id/next_run_month">
+   >
     </TextView>
+
+
+    <ImageView
+        android:id="@+id/task_workers_icon"
+        android:src="@mipmap/workers"
+        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_below="@+id/task_description"
+        />
 
     <TextView
         android:id="@+id/task_workers"
+        android:paddingLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="1 worker"
+        android:layout_alignBottom="@id/task_workers_icon"
+        android:gravity="center_vertical"
         android:layout_below="@+id/task_description"
         android:layout_toRightOf="@+id/task_workers_icon"
         android:layout_toEndOf="@+id/task_workers_icon" />
@@ -78,9 +97,9 @@
         android:id="@+id/task_repeats_icon"
         android:src="@mipmap/repeat"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/next_run_date"
-        android:layout_toRightOf="@+id/task_workers"
+        android:layout_height="24dp"
+        android:layout_below="@+id/task_description"
+        android:layout_toRightOf="@+id/fake"
         android:layout_alignBottom="@+id/next_run_month" />
 
     <TextView
@@ -89,18 +108,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Repeats weekly"
-        android:layout_below="@+id/next_run_date"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/task_description"
+        android:layout_alignBottom="@id/task_repeats_icon"
         android:layout_toRightOf="@id/task_repeats_icon"
         />
 
-    <ImageView
-        android:id="@+id/task_workers_icon"
-        android:src="@mipmap/workers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/next_run_date"
-        android:layout_toRightOf="@+id/next_run_date"
-        android:layout_alignBottom="@+id/next_run_month" />
 
 
 

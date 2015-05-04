@@ -19,14 +19,14 @@ import se.evinja.hazeldroid.qualifications.Object_Qualification;
 
 public class Dialog_Workers extends DialogFragment  {
     private Activity parent;
-    private Hazel hazel;
+//    private Hazel hazel;
     private DialogInterface.OnClickListener onItemClickListener;
     private Object_Worker[] workers;
     private boolean[] selected;
 
     public void init(Activity parent, Hazel hazel, DialogInterface.OnClickListener onItemClickListener){
         this.parent = parent;
-        this.hazel = hazel;
+//        this.hazel = hazel; //TODO neccessary??
         this.onItemClickListener = onItemClickListener;
 
         workers = new Object_Worker[hazel.workers.size()];
