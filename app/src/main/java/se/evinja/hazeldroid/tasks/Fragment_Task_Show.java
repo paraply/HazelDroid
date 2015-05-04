@@ -76,10 +76,10 @@ public class Fragment_Task_Show extends Fragment {
         ((TextView) view.findViewById(R.id.task_show_end_date)).setText(t.getEndDate());
         ((TextView) view.findViewById(R.id.task_show_end_time)).setText(t.getEndTime());
         ((TextView) view.findViewById(R.id.task_show_repeat)).setText(t.get_repeat_string(parent));
-        ((TextView) view.findViewById(R.id.task_show_qualifications)).setText(t.getQualifications());
+        ((TextView) view.findViewById(R.id.task_show_qualifications)).setText(t.getQualifications(parent));
         ((TextView) view.findViewById(R.id.task_show_min_work)).setText(t.get_min_workers());
         ((TextView) view.findViewById(R.id.task_show_max_work)).setText(t.get_max_workers());
-        ((TextView) view.findViewById(R.id.task_show_workers)).setText(t.getWorkers());
+        ((TextView) view.findViewById(R.id.task_show_workers)).setText(t.getWorkers(parent));
         parent.set_title(t.title);
 
         return view;

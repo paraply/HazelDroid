@@ -41,7 +41,8 @@ public class Fragment_Qualifications extends Fragment {
         hazel = (Hazel) parent.getApplication();
         View view = inflater.inflate(R.layout.fragment_qualifications, container, false);
         ListView qualifications_listview = (ListView) view.findViewById(R.id.qualifications_list);
-        hazel.download_qualifications_and_workers(parent);
+//        hazel.download_qualifications_and_workers(parent);
+        hazel.download_qualifications();
         qualifications_listview.setAdapter(hazel.getAdapter_qualifications());
 
         qualifications_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,7 +102,7 @@ public class Fragment_Qualifications extends Fragment {
                     .setView(q_title)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            hazel.add_qualification(q_title.getText().toString(), parent);
+                            hazel.add_qualification(q_title.getText().toString());
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

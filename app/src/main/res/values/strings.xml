@@ -100,4 +100,6 @@
     <string name="no_description">No description</string>
     <string name="downloading_qualifications">Downloading qualifications</string>
     <string name="downloading_tasks">Downloading tasks</string>
+    <string name="none">None</string>
+    <string name="qualification_added">Qualification added</string>
 </resources>

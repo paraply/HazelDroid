@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class Activity_Login extends ActionBarActivity implements HazelEvents {
+public class Activity_Login extends ActionBarActivity implements Callback_Hazel {
     private EditText login_username, login_password;
     private CheckBox login_remember;
     private SharedPreferences sharedPref;
@@ -28,6 +28,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         hazel = (Hazel) getApplication();
+        hazel.set_listener_and_parent(this, this);
         login_username = (EditText) findViewById(R.id.login_text_username);
         login_password = (EditText) findViewById(R.id.login_text_password);
         login_remember = (CheckBox) findViewById(R.id.login_chk_remember);
@@ -82,7 +83,7 @@ public class Activity_Login extends ActionBarActivity implements HazelEvents {
         login_password.setEnabled(false);
         login_remember.setEnabled(false);
         login_btn.setEnabled(false);
-        hazel.login(username, password, this,this);
+        hazel.login(username, password);
     }
 
     private void restoreUI(){

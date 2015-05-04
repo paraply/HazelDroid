@@ -66,7 +66,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_task_add, container, false);
         hazel = (Hazel) parent.getApplication();
-        hazel.download_qualifications_and_workers(parent); //if gotten here without doing that yet..
+//        hazel.download_qualifications_and_workers(parent); //if gotten here without doing that yet..
 
         title = (EditText) view.findViewById(R.id.task_add_name);
         description = (EditText) view.findViewById(R.id.task_add_desc);

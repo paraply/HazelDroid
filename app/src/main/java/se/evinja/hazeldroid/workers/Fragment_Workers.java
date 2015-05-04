@@ -38,9 +38,9 @@ public class Fragment_Workers extends Fragment {
         hazel = (Hazel) parent.getApplication();
         View view = inflater.inflate(R.layout.fragment_workers, container, false);
         ListView workers_listview = (ListView) view.findViewById(R.id.workers_list);
-        workers_listview.setAdapter(hazel.getAdapter_workers(parent));
-        hazel.download_qualifications_and_workers(parent);
-
+        workers_listview.setAdapter(hazel.getAdapter_workers());
+//        hazel.download_qualifications_and_workers(parent);
+        hazel.download_workers();
 
         workers_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

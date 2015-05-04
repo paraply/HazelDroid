@@ -29,6 +29,7 @@ public class Object_Task {
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeformat = new SimpleDateFormat("kk:mm");
     private SimpleDateFormat hazelformat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+    private Hazel hazel;
 
     private enum repeat_types{
         Once,
@@ -50,7 +51,8 @@ public class Object_Task {
 
     public Object_Task(){}
 
-    public Object_Task(JSONObject jobj,Hazel hazel){ //Need hazel reference to get qualification from string
+    public Object_Task(JSONObject jobj, Hazel hazel){ //Need hazel reference to get qualification from string
+        this.hazel = hazel;
         try {
             id = jobj.getInt("id");
             title = jobj.getString("name");
@@ -78,7 +80,7 @@ public class Object_Task {
             }
 
         } catch (Exception e) {
-            Log.i("##### ERROR TASK PARSE", e.getMessage());
+            hazel.onError("Parsing task: " + e.getMessage());
         }
 
     }
@@ -107,7 +109,7 @@ public class Object_Task {
             j.put("name", title);
             j.put("requirements", jqual);
         } catch (Exception e) {
-            Log.i("##### TASK JSON", e.getMessage());
+            if (hazel != null) hazel.onError("Task to JSON: " + e.getMessage());
         }
 
         return j;
@@ -186,7 +188,7 @@ public class Object_Task {
         return null;
     }
 
-    public String getQualifications(){
+    public String getQualifications(Activity parent){
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 
@@ -198,11 +200,11 @@ public class Object_Task {
 
                 sb.append(q.toString());
         }
-
+        if (sb.toString().isEmpty()) sb.append(parent.getString(R.string.none));
         return sb.toString();
     }
 
-    public String getWorkers(){
+    public String getWorkers(Activity parent){
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 
@@ -214,7 +216,7 @@ public class Object_Task {
 
             sb.append(w.get_fullName());
         }
-
+        if (sb.toString().isEmpty()) sb.append(parent.getString(R.string.none));
         return sb.toString();
     }
 

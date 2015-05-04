@@ -3,6 +3,7 @@ package se.evinja.hazeldroid;
 import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,7 @@ public class Hazel extends Application implements Http_Events {
         DOWNLOAD_USER_SCHEDULE,
         DOWNLOAD_STAFF_SCHEDULE,
         ADD_QUALIFICATION,
+        UPDATE_QUALIFICATION,
         DOWNLOAD_QUALIFICATIONS,
         ADD_WORKER,
         DELETE_WORKER,
@@ -49,12 +51,12 @@ public class Hazel extends Application implements Http_Events {
 
     private boolean user_logged_out, on_login_download_all;
     private String username, password;
-    private HazelEvents eventListener;
+    private Callback_Hazel eventListener;
     private Http http;
 
     public List<Object_Qualification> qualifications;
     private Adapter_Qualifications adapter_qualifications;
-    private String current_qualification_adding;
+    private Object_Qualification qualification_waiting_to_be_added;
 
     public List<Object_Worker> workers;
     private Adapter_Workers adapter_workers;
@@ -64,31 +66,31 @@ public class Hazel extends Application implements Http_Events {
     private List<Object_Task> tasks;
     private Adapter_Tasks adapter_tasks;
 
-    private Activity parent;
-    private String client;
+    public Activity parent;
+    public String client;
     private Object_Worker worker_logged_in;
+    private JSONObject worker_logged_in_JSON; //Store the currenly logged in user as JSON since we need to download qualifications first to be able to create the Object_worker worker_logged_in
 
 
-    public void login(String username, String password, HazelEvents eventListener, Activity parent){
+    public void login(String username, String password){
         access = AccessStatus.USER; //Reset before login
         on_login_download_all = true; // downloads needs to know that we are in login mode
         this.username = username;
         this.password = password;
-        this.eventListener = eventListener;
-        this.parent = parent;
         http = new Http(this, username,password);
         execute(HazelCommand.LOGIN, null);
     }
 
-    public void set_new_eventListener(HazelEvents eventListener){
+    public void set_listener_and_parent(Callback_Hazel eventListener, Activity parent){
         this.eventListener = eventListener;
+        this.parent = parent;
     }
 
     public void logout(){ //Reset everything TODO CHECK IF EVERYTHING
        // execute(HazelCommand.LOGOUT, null);
         parent = null;
         client = null;
-        current_qualification_adding = null;
+        qualification_waiting_to_be_added = null;
         workers_are_invalid = false;
         username = null;
         password = null;
@@ -108,7 +110,11 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public String get_navigation_title(){
-        return worker_logged_in.get_fullName();
+        if (worker_logged_in == null){
+            return username;
+        }else {
+            return worker_logged_in.get_fullName();
+        }
     }
 
     public String get_navigation_client(){
@@ -182,6 +188,10 @@ public class Hazel extends Application implements Http_Events {
                 http.POST("qual", jsonData);
                 break;
 
+            case DOWNLOAD_QUALIFICATIONS:
+                http.GET("qual");
+                break;
+
             case ADD_WORKER:
                 Log.i("##### POST", jsonData.toString());
                 http.POST("user", jsonData);
@@ -196,9 +206,7 @@ public class Hazel extends Application implements Http_Events {
                 http.GET("worker");
                 break;
 
-            case DOWNLOAD_QUALIFICATIONS:
-                http.GET("qual");
-                break;
+
 
             case ADD_TASK:
                 http.POST("task", jsonData);
@@ -213,16 +221,6 @@ public class Hazel extends Application implements Http_Events {
         }
     }
 
-//    private void download_qualifications(Activity parent){
-//        if (adapter_qualifications == null){
-//            adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
-//        }
-//        if (qualifications.size() == 0 ){
-//            this.parent = parent;
-//            execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
-//        }
-//    }
-
     public int get_worker_has_qualification(Object_Qualification qualification){
         int amount = 0;
         for (Object_Worker w : workers){
@@ -235,16 +233,9 @@ public class Hazel extends Application implements Http_Events {
         return amount;
     }
 
-    public void add_qualification(String title, Activity parent){
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("qualname", title);
-            jo.put("client", 1);
-            current_qualification_adding = title;
-        } catch (JSONException e) {
-            onError("Qualification to json failed");
-        }
-        execute(HazelCommand.ADD_QUALIFICATION, jo);
+    public void add_qualification(String title){
+        qualification_waiting_to_be_added = new Object_Qualification(title, this);
+        execute(HazelCommand.ADD_QUALIFICATION, qualification_waiting_to_be_added.toJSON());
     }
 
     public void delete_qualification(int position){
@@ -255,6 +246,7 @@ public class Hazel extends Application implements Http_Events {
 
     public void update_qualification(int position, String new_title){
         qualifications.get(position).title = new_title;
+        Toast.makeText(parent, "Server cannot do that yet.. Sorry", Toast.LENGTH_LONG).show();
         adapter_qualifications.notifyDataSetChanged();
     }
 
@@ -275,25 +267,26 @@ public class Hazel extends Application implements Http_Events {
         return qualifications;
     }
 
-    public void download_qualifications_and_workers(Activity parent){
-        this.parent = parent;
-        no_worker_download = false;
-        if ((qualifications == null) || qualifications.size() == 0 ){
-            download_qualifications(parent);
-        }else{
-            download_workers(parent);
-        }
-    }
+//    public void download_qualifications_and_workers(Activity parent){
+//        this.parent = parent;
+//        no_worker_download = false;
+//        if ((qualifications == null) || qualifications.size() == 0 ){
+//            download_qualifications(parent);
+//        }else{
+//            download_workers(parent);
+//        }
+//    }
 
-    private void download_qualifications(Activity parent){
+    public void download_qualifications(){
         if (qualifications == null){
             qualifications = new ArrayList<>();
         }
         if (adapter_qualifications == null){
             adapter_qualifications = new Adapter_Qualifications(parent, qualifications);
         }
-        this.parent = parent;
-        execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
+        if (qualifications.size() == 0){
+            execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
+        }
     }
 
     private void refresh_qualifications(){
@@ -302,7 +295,7 @@ public class Hazel extends Application implements Http_Events {
         execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
     }
 
-    private void download_workers(Activity parent){ //This will download qualifications if not already downloaded.
+    public void download_workers(){ //This will download qualifications if not already downloaded.
         if (workers == null){
             workers = new ArrayList<>();
         }
@@ -311,13 +304,12 @@ public class Hazel extends Application implements Http_Events {
         }
         if (workers.size() == 0 || workers_are_invalid ){ // Do not download if has valid worker list. It is automatically called from fragments needing it. No reason redownloading.
             workers.clear();
-            this.parent = parent;
             execute(HazelCommand.DOWNLOAD_WORKERS, null);
             workers_are_invalid = false;
         }
     }
 
-    public Adapter_Workers getAdapter_workers(Activity parent){
+    public Adapter_Workers getAdapter_workers(){
         if (adapter_workers == null){
             adapter_workers = new Adapter_Workers(parent, workers);
         }
@@ -352,7 +344,7 @@ public class Hazel extends Application implements Http_Events {
         adapter_tasks.notifyDataSetChanged();
     }
 
-    public void download_tasks(Activity parent){
+    public void download_tasks(){
         if (tasks == null){
             tasks = new ArrayList<>();
         }
@@ -361,7 +353,7 @@ public class Hazel extends Application implements Http_Events {
         }
     }
 
-    public Adapter_Tasks getAdapter_tasks(Activity parent){
+    public Adapter_Tasks getAdapter_tasks(){
         if (adapter_tasks == null) {
             adapter_tasks = new Adapter_Tasks(parent, tasks);
         }
@@ -395,9 +387,12 @@ public class Hazel extends Application implements Http_Events {
                 try {
                     JSONObject jo = new JSONObject(data);
                     if (jo.getString("status_code").equals("200")){
-                        client = jo.getString("client"); //TODO UNCOMMENT
+                        client = jo.getString("client");
                         String level = jo.getString("access_lvl");
-                        worker_logged_in = new Object_Worker(jo.getJSONObject("worker"), this);
+                        if (!jo.isNull("worker")) {
+                            worker_logged_in_JSON = jo.getJSONObject("worker");
+//                            worker_logged_in = new Object_Worker(jo.getJSONObject("worker"), this);
+                        }
                         if (level.equals("1")){
                             access = AccessStatus.USER;
                         }else if (level.equals("2")){
@@ -414,7 +409,7 @@ public class Hazel extends Application implements Http_Events {
                             //Download qualifications first since:
                             //workers needs qualifications objects
                             //tasks needs worker objects and qualification objects
-                            download_qualifications(parent);
+                            download_qualifications();
                         }
                     }else if (jo.getString("status_code").equals("404")){
                         onError("Bad username");
@@ -436,10 +431,11 @@ public class Hazel extends Application implements Http_Events {
                 try {
                     JSONObject jo = new JSONObject(data);
                    if (jo.getString("message").equals("Okidoki")){
-                        refresh_qualifications(); // DOWNLOAD ALL QUALIFICATIONS AGAIN TODO JUST ADD NEW DO NOT DOWNLOAD AGAIN
+                       qualifications.add(qualification_waiting_to_be_added);
+                       Toast.makeText(parent,getString(R.string.qualification_added), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    onError("parsing add qualification message");
+                    onError("Failed to add/update qualification");
                 }
 
                  break;
@@ -468,7 +464,7 @@ public class Hazel extends Application implements Http_Events {
                     JSONArray ja = new JSONArray(data);
                     for (int i = 0; i < ja.length(); i++){
                         JSONObject jo = ja.getJSONObject(i);
-                        qualifications.add(new Object_Qualification(jo.getString("qualname"), parent, this));
+                        qualifications.add(new Object_Qualification(jo.getString("qualname"), this));
                         Log.i("###### QUALIFICATION", jo.toString());
                     }
                     if (adapter_qualifications != null){ //It is null when on_login_download_all
@@ -476,10 +472,11 @@ public class Hazel extends Application implements Http_Events {
                     }
                     eventListener.onQualificationsDownloaded();
                     if (on_login_download_all){ //if is in login procedure
-                        download_workers(parent);
+                        worker_logged_in = new Object_Worker(worker_logged_in_JSON, this); //Now we can create our object since we have a list of qualifications
+                        download_workers();
                     }else {
                         if (!no_worker_download) {
-                            download_workers(parent); //Download workers when qualifications has been downloaded. NOT THE OTHER WAY AROUND. Workers need qualifications to generate objects.
+                            download_workers(); //Download workers when qualifications has been downloaded. NOT THE OTHER WAY AROUND. Workers need qualifications to generate objects.
                         } else {
                             no_worker_download = false;
                         }
@@ -500,7 +497,7 @@ public class Hazel extends Application implements Http_Events {
                 }
                 //TODO ADD_WORKER SHOULD RETURN ID, WONT HAVE TO DOWNLOAD LIST AGAIN..
                 workers.clear();            //TODO REMOVE PROBABLY
-                download_workers(parent); //TODO REMOVE PROBABLY
+                download_workers(); //TODO REMOVE PROBABLY
                 break;
 
             case DOWNLOAD_WORKERS:
@@ -515,7 +512,7 @@ public class Hazel extends Application implements Http_Events {
                         adapter_workers.notifyDataSetChanged();
                     }
                     if (on_login_download_all){
-                        download_tasks(parent);
+                        download_tasks();
                     }
 
 

@@ -22,7 +22,7 @@ import se.evinja.hazeldroid.schedules.Fragment_User_Schedule;
 import se.evinja.hazeldroid.schedules.Fragment_Work_Schedule;
 import se.evinja.hazeldroid.workers.Fragment_Workers;
 
-public class Activity_Main extends ActionBarActivity implements Callback_Navigate, HazelEvents {
+public class Activity_Main extends ActionBarActivity implements Callback_Navigate, Callback_Hazel {
     private Hazel hazel;
     private Fragment_Navigate fragment_navigation;
     private CharSequence title;
@@ -38,7 +38,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hazel = (Hazel) getApplication();
-        hazel.set_new_eventListener(this); //Take over from Activity_Login
+        hazel.set_listener_and_parent(this, this); //Take over from Activity_Login
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -87,6 +87,7 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
             hazel.logout();
             Intent intent = new Intent(this, Activity_Login.class);
             startActivity(intent);
+            fragment_navigation = null;
             finish(); //Kill this activity
         }
         return super.onOptionsItemSelected(item);
@@ -183,19 +184,13 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
     }
 
     @Override
-    public void onConnected() {
-
-    }
+    public void onConnected() {}
 
     @Override
-    public void onUserSchedule() {
-
-    }
+    public void onUserSchedule() {}
 
     @Override
-    public void onStaffSchedule() {
-
-    }
+    public void onStaffSchedule() {}
 
     @Override
     public void onTasksDownloaded() {

@@ -40,9 +40,9 @@ public class Fragment_Tasks extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
         ListView tasks_listview = (ListView) view.findViewById(R.id.tasks_list);
         hazel = (Hazel) parent.getApplication();
-        tasks_listview.setAdapter(hazel.getAdapter_tasks(parent));
+        tasks_listview.setAdapter(hazel.getAdapter_tasks());
         parent.set_title(getString(R.string.tasks));
-        hazel.download_tasks(parent);
+        hazel.download_tasks();
 
         tasks_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

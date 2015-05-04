@@ -56,7 +56,7 @@
     <string name="repeat">Upprepa</string>
     <string name="minimum">Minst</string>
     <string name="maximum">Högst</string>
-    <string name="required_workers">Kräver personal</string>
+    <string name="required_workers">Kräver personer</string>
     <string name="ok">OK</string>
     <string name="select_workers">Välj personal</string>
     <string name="select_qualifications">Välj kvalifikationer</string>
@@ -100,4 +100,6 @@
     <string name="no_description">Ingen beskrivning</string>
     <string name="downloading_qualifications">Laddar ner kvalifikationer</string>
     <string name="downloading_tasks">Laddar ner uppgifter</string>
+    <string name="none">Inga</string>
+    <string name="qualification_added">Kvalifikation tillagd</string>
 </resources>

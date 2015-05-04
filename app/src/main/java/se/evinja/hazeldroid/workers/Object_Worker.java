@@ -19,10 +19,11 @@ import se.evinja.hazeldroid.qualifications.Object_Qualification;
 public class Object_Worker {
     public String id , firstName, lastName, position, mailAddress,birthday, last4, phoneNr, username, password, company;
     public List<Object_Qualification> qualifications = new ArrayList<>();
-
+    private Hazel hazel;
     public Object_Worker(){}
 
     public Object_Worker(JSONObject jobj,Hazel hazel){ //Need hazel reference to get qualification from string
+        this.hazel = hazel;
             try {
                 id = jobj.getString("id");
                 firstName = jobj.getString("fstname");
@@ -45,7 +46,7 @@ public class Object_Worker {
                 }
 
             } catch (Exception e) {
-                Log.i("##### ERROR WRK JSON", e.getMessage());
+                hazel.onError("Worker parse JSON: " + e.getMessage());
             }
 
     }
@@ -79,7 +80,7 @@ public class Object_Worker {
             jo_outer.put("worker", jo_inner);
 
         } catch (JSONException e) {
-            Log.i("##### WRK JSON CREATE", e.getMessage());
+            if (hazel != null)  hazel.onError("Worker to JSON: " + e.getMessage());
         }
 
         return jo_outer;

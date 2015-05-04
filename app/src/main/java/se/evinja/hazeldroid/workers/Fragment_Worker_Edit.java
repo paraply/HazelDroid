@@ -66,7 +66,8 @@ public class Fragment_Worker_Edit extends Fragment implements DialogInterface.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_worker_edit, container, false);
         hazel = (Hazel) getActivity().getApplication();
-        hazel.download_qualifications_and_workers(parent); //Download qualifications if not already downloaded. Automatically fills Selector
+//        hazel.download_qualifications_and_workers(parent); //Download qualifications if not already downloaded. Automatically fills Selector
+        hazel.download_workers();
         worker = hazel.get_worker(getArguments().getInt("worker_position"));
 
         qualifications = (TextView) view.findViewById(R.id.worker_edit_qualifications);
