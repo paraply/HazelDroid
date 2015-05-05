@@ -2,6 +2,7 @@ package se.evinja.hazeldroid.tasks;
 
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -31,23 +32,10 @@ public class Object_Task {
     private SimpleDateFormat hazelformat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
     private Hazel hazel;
 
-    private enum repeat_types{
-        Once,
-        Daily,
-        Weekly,
-        Monthly
-    } private repeat_types repeat;
+    public Repeat_Types repeat;
 
-    private enum weekdays{
-        Monday,
-        Tuesday,
-        Wednesday,
-        Thursday,
-        Friday,
-        Saturday,
-        Sunday
-    } private List<weekdays> week_d = new ArrayList<>();
-
+    public boolean sel_weekdays[] = new boolean[7];
+    private List<String> weekday_output = new ArrayList<>();
 
     public Object_Task(){}
 
@@ -63,10 +51,10 @@ public class Object_Task {
             repeat_length = jobj.getInt("intervalLength");
             description = hazel.getString(R.string.no_description);
             switch (jobj.getString("interval")){
-                case "Once": repeat = repeat_types.Once; break;
-                case "Daily": repeat = repeat_types.Daily; break;
-                case "Weekly": repeat = repeat_types.Weekly; break;
-                case "Monthly": repeat = repeat_types.Monthly; break;
+                case "Once": repeat = Repeat_Types.Once; break;
+                case "Daily": repeat = Repeat_Types.Daily; break;
+                case "Weekly": repeat = Repeat_Types.Weekly; break;
+                case "Monthly": repeat = Repeat_Types.Monthly; break;
             }
 
             JSONArray jArr = jobj.getJSONArray("requirements");
@@ -87,10 +75,6 @@ public class Object_Task {
 
     public JSONObject toJSON(String client){
         JSONObject j = new JSONObject();
-        JSONArray jweekdays = new JSONArray();
-        for (weekdays wd : week_d ){
-            jweekdays.put(wd);
-        }
         JSONArray jqual = new JSONArray();
         for (Object_Qualification q : task_qualifications ){
             jqual.put(q);
@@ -100,14 +84,25 @@ public class Object_Task {
             j.put("id", JSONObject.NULL);
             j.put("startDate", getStartDate());
             j.put("endDate", getEndDate());
-//            j.put("weekdays", jweekdays);
 //            j.put("startTime", getStartTime());
             j.put("startTime", "2015-04-24 15:00:00");
 
 
 //            j.put("endTime", getEndTime());
             j.put("endTime",  "2015-04-24 17:00:00");
-            j.put("interval", "Daily");
+            if (repeat == Repeat_Types.Weekly){
+                if (sel_weekdays[0]) weekday_output.add("Monday");
+                if (sel_weekdays[1]) weekday_output.add("Tuesday");
+                if (sel_weekdays[2]) weekday_output.add("Wednesday");
+                if (sel_weekdays[3]) weekday_output.add("Thursday");
+                if (sel_weekdays[4]) weekday_output.add("Friday");
+                if (sel_weekdays[5]) weekday_output.add("Saturday");
+                if (sel_weekdays[6]) weekday_output.add("Sunday");
+                String weekdaylist = " [" +  TextUtils.join(",", weekday_output) + "]";
+                j.put("interval", repeat + weekdaylist);
+            }else{
+                j.put("interval", repeat);
+            }
             j.put("intervalLength", repeat_length);
             j.put("client", client);
             j.put("name", title);
@@ -162,18 +157,9 @@ public class Object_Task {
         }
     }
 
-
-    public void set_repeats_weekly(){
-        repeat = repeat_types.Weekly;
-    }
-
-    public void set_repeats_monthly(){
-        repeat = repeat_types.Monthly;
-    }
-
     public String get_worker_amount_string(Activity parent){
         if (task_workers.size() == 0){
-            return parent.getString(R.string.no_workers);//TODO GETSTRING...
+            return parent.getString(R.string.no_workers);
         }else if (task_workers.size() == 1){
             return parent.getString(R.string.one_worker);
         }else{
@@ -182,13 +168,13 @@ public class Object_Task {
     }
 
     public String get_repeat_string(Activity parent){
-        if (repeat == repeat_types.Once){ //TODO GETSTRING.....
+        if (repeat == Repeat_Types.Once){
             return parent.getString(R.string.repeat_once);
-        }else if (repeat == repeat_types.Daily){
+        }else if (repeat == Repeat_Types.Daily){
             return parent.getString(R.string.repeat_daily);
-        }else if (repeat == repeat_types.Weekly){
+        }else if (repeat == Repeat_Types.Weekly){
             return parent.getString(R.string.repeat_weekly);
-        }else if (repeat == repeat_types.Monthly){
+        }else if (repeat == Repeat_Types.Monthly){
             return parent.getString(R.string.repeat_monthly);
         }
         return null;
@@ -199,12 +185,11 @@ public class Object_Task {
         boolean foundOne = false;
 
         for (Object_Qualification q : task_qualifications) {
-                if (foundOne) {
-                    sb.append(", ");
-                }
-                foundOne = true;
-
-                sb.append(q.toString());
+            if (foundOne) {
+                sb.append(", ");
+            }
+            foundOne = true;
+            sb.append(q.toString());
         }
         if (sb.toString().isEmpty()) sb.append(parent.getString(R.string.none));
         return sb.toString();

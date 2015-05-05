@@ -30,14 +30,13 @@ import se.evinja.hazeldroid.R;
 public class Dialog_Repeat extends DialogFragment{
     private DialogInterface.OnClickListener onItemClickListener;
 
-    private enum repeat_types{
-        Once,
-        Daily,
-        Weekly,
-        Monthly
-    } private repeat_types repeat = repeat_types.Once;
-    private String repeat_interval = "1", repeat_month_date = "1";
-    private boolean mo = true,tu,we,th,fr,sa,su;
+    public Repeat_Types repeat = Repeat_Types.Once;
+    private String repeat_interval = "2", repeat_month_date = "1";
+//    private boolean mo = true,tu,we,th,fr,sa,su;
+
+    public boolean sel_weekdays[] = new boolean[7];
+
+
 
     public void init(DialogInterface.OnClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
@@ -45,24 +44,24 @@ public class Dialog_Repeat extends DialogFragment{
 
     public String getString(Activity parent){
         String str = "";
-        if (repeat == repeat_types.Once) {
+        if (repeat == Repeat_Types.Once) {
             str = parent.getString(R.string.only_once);
-        }else if (repeat == repeat_types.Daily){
-            str =  repeat_interval.equals("1") ? parent.getString(R.string.every_day) : parent.getString(R.string.every) + repeat_interval + parent.getString(R.string.day);
-        }else if (repeat == repeat_types.Weekly){
-            str = repeat_interval.equals("1") ? parent.getString(R.string.every_week) : parent.getString(R.string.every) + repeat_interval + parent.getString(R.string.week) ;
+        }else if (repeat == Repeat_Types.Daily){
+            str =  repeat_interval.equals("1") ? parent.getString(R.string.every_day) : parent.getString(R.string.every) + repeat_interval + " " + parent.getString(R.string.day);
+        }else if (repeat == Repeat_Types.Weekly){
+            str = repeat_interval.equals("1") ? parent.getString(R.string.every_week) : parent.getString(R.string.every) + repeat_interval  + parent.getString(R.string.week) ;
 
             //Could use locale to get translated weekday names and get first day of the week.
             str += " ";
-            if (mo) str += parent.getString(R.string.monday);
-            if (tu) str += parent.getString(R.string.tuesday);
-            if (we) str += parent.getString(R.string.wednesday);
-            if (th) str += parent.getString(R.string.thursday);
-            if (fr) str += parent.getString(R.string.friday);
-            if (sa) str += parent.getString(R.string.saturday);
-            if (su) str += parent.getString(R.string.sunday);
+            if (sel_weekdays[0]) str += parent.getString(R.string.monday);
+            if (sel_weekdays[1]) str += parent.getString(R.string.tuesday);
+            if (sel_weekdays[2]) str += parent.getString(R.string.wednesday);
+            if (sel_weekdays[3]) str += parent.getString(R.string.thursday);
+            if (sel_weekdays[4]) str += parent.getString(R.string.friday);
+            if (sel_weekdays[5]) str += parent.getString(R.string.saturday);
+            if (sel_weekdays[6]) str += parent.getString(R.string.sunday);
 
-        }else if (repeat == repeat_types.Monthly){
+        }else if (repeat == Repeat_Types.Monthly){
             str = repeat_interval.equals("1") ? parent.getString(R.string.every_month) : parent.getString(R.string.every) + repeat_interval + parent.getString(R.string.month);
             str += parent.getString(R.string.on_the) + repeat_month_date + parent.getString(R.string.th);
         }
@@ -72,6 +71,7 @@ public class Dialog_Repeat extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Context ctx = getActivity();
+        sel_weekdays[0] = true; // Set monday as true as default
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialog_repeat, null, false);
@@ -85,20 +85,13 @@ public class Dialog_Repeat extends DialogFragment{
         weekly_week.setText(repeat_interval);
         monthly_month.setText(repeat_interval);
 
-        final CheckBox mon = (CheckBox) view.findViewById(R.id.repeat_mon);
-        mon.setChecked(mo);
-        final CheckBox tue = (CheckBox) view.findViewById(R.id.repeat_tue);
-        tue.setChecked(tu);
-        final CheckBox wed = (CheckBox) view.findViewById(R.id.repeat_wed);
-        wed.setChecked(we);
-        final CheckBox thu = (CheckBox) view.findViewById(R.id.repeat_thu);
-        thu.setChecked(th);
-        final CheckBox fri = (CheckBox) view.findViewById(R.id.repeat_fri);
-        fri.setChecked(fr);
-        final CheckBox sat = (CheckBox) view.findViewById(R.id.repeat_sat);
-        sat.setChecked(sa);
-        final CheckBox sun = (CheckBox) view.findViewById(R.id.repeat_sun);
-        sun.setChecked(su);
+        final CheckBox mon = (CheckBox) view.findViewById(R.id.repeat_mon); mon.setChecked(sel_weekdays[0]);
+        final CheckBox tue = (CheckBox) view.findViewById(R.id.repeat_tue); tue.setChecked(sel_weekdays[1]);
+        final CheckBox wed = (CheckBox) view.findViewById(R.id.repeat_wed); wed.setChecked(sel_weekdays[2]);
+        final CheckBox thu = (CheckBox) view.findViewById(R.id.repeat_thu); thu.setChecked(sel_weekdays[3]);
+        final CheckBox fri = (CheckBox) view.findViewById(R.id.repeat_fri); fri.setChecked(sel_weekdays[4]);
+        final CheckBox sat = (CheckBox) view.findViewById(R.id.repeat_sat); sat.setChecked(sel_weekdays[5]);
+        final CheckBox sun = (CheckBox) view.findViewById(R.id.repeat_sun); sun.setChecked(sel_weekdays[6]);
 
         final TextView month_date = (TextView) view.findViewById(R.id.repeat_monthly_date);
         month_date.setText(repeat_month_date);
@@ -114,16 +107,16 @@ public class Dialog_Repeat extends DialogFragment{
 
                                                   if (position == 1){
                                                       daily.setVisibility(View.VISIBLE);
-                                                      repeat = repeat_types.Daily;
+                                                      repeat = Repeat_Types.Daily;
                                                       repeat_interval = daily_day.getText().toString();
                                                   }else if (position == 2){
                                                       weekly.setVisibility(View.VISIBLE);
-                                                      repeat = repeat_types.Weekly;
+                                                      repeat = Repeat_Types.Weekly;
 
                                                       repeat_interval = weekly_week.getText().toString();
                                                   }else if (position == 3) {
                                                       monthly.setVisibility(View.VISIBLE);
-                                                      repeat = repeat_types.Monthly;
+                                                      repeat = Repeat_Types.Monthly;
                                                       repeat_interval = monthly_month.getText().toString();
                                                   }
                                               }
@@ -138,10 +131,10 @@ public class Dialog_Repeat extends DialogFragment{
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, repeat_choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if (repeat == repeat_types.Once) spinner.setSelection(0);
-        if (repeat == repeat_types.Daily) spinner.setSelection(1);
-        if (repeat == repeat_types.Weekly) spinner.setSelection(2);
-        if (repeat == repeat_types.Monthly) spinner.setSelection(3);
+        if (repeat == Repeat_Types.Once) spinner.setSelection(0);
+        if (repeat == Repeat_Types.Daily) spinner.setSelection(1);
+        if (repeat == Repeat_Types.Weekly) spinner.setSelection(2);
+        if (repeat == Repeat_Types.Monthly) spinner.setSelection(3);
 
         return new AlertDialog.Builder(ctx)
                 .setTitle(ctx.getString(R.string.repeat_this_task))
@@ -151,18 +144,18 @@ public class Dialog_Repeat extends DialogFragment{
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mo = mon.isChecked();
-                        tu = tue.isChecked();
-                        we = wed.isChecked();
-                        th = thu.isChecked();
-                        fr = fri.isChecked();
-                        sa = sat.isChecked();
-                        su = sun.isChecked();
+                        sel_weekdays[0] = mon.isChecked();
+                        sel_weekdays[1] = tue.isChecked();
+                        sel_weekdays[2] = wed.isChecked();
+                        sel_weekdays[3] = thu.isChecked();
+                        sel_weekdays[4] = fri.isChecked();
+                        sel_weekdays[5] = sat.isChecked();
+                        sel_weekdays[6] = sun.isChecked();
 
                         repeat_month_date = month_date.getText().toString();
-                        if (repeat == repeat_types.Daily) repeat_interval =  daily_day.getText().toString();
-                        if (repeat == repeat_types.Weekly) repeat_interval =  weekly_week.getText().toString();
-                        if (repeat == repeat_types.Monthly) repeat_interval =  monthly_month.getText().toString();
+                        if (repeat == Repeat_Types.Daily) repeat_interval =  daily_day.getText().toString();
+                        if (repeat == Repeat_Types.Weekly) repeat_interval =  weekly_week.getText().toString();
+                        if (repeat == Repeat_Types.Monthly) repeat_interval =  monthly_month.getText().toString();
 
                         onItemClickListener.onClick(dialog, 3);
                     }

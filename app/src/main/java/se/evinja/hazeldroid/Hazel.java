@@ -64,6 +64,7 @@ public class Hazel extends Application implements Http_Events {
     private Adapter_Workers adapter_workers;
     private boolean no_worker_download = false;
     private boolean workers_are_invalid;
+    public Object_Task task_waiting_to_be_added;
 
     private List<Object_Task> tasks;
     private Adapter_Tasks adapter_tasks;
@@ -357,9 +358,8 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void add_task(Object_Task new_task){
-        tasks.add(new_task);
+        task_waiting_to_be_added = new_task;
         execute(HazelCommand.ADD_TASK, new_task.toJSON(client));
-        adapter_tasks.notifyDataSetChanged();
     }
 
     public void delete_task(int position){
@@ -555,11 +555,14 @@ public class Hazel extends Application implements Http_Events {
                 try {
                     JSONObject jo = new JSONObject(data);
                     if (jo.getString("message").equals("Ok")){
+                        tasks.add(task_waiting_to_be_added);
+                        adapter_tasks.notifyDataSetChanged();
                         Toast.makeText(parent, "Added task ok", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     onError("parsing add task: " + data);
                 }
+                break;
 
 
             case DOWNLOAD_TASKS:

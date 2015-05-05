@@ -235,6 +235,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     private void validate_and_save(){
         //TODO VALIDATE
         t.title = title.getText().toString();
+        t.repeat = rpt_dialog.repeat;
+        t.sel_weekdays = rpt_dialog.sel_weekdays;
         t.description = description.getText().toString();
         t.min_workers = min_w.getText().toString();
         t.max_workers = max_w.getText().toString();
@@ -243,7 +245,6 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         t.repeat_length = 3;
         t.task_workers = wrk_dialog.getSelectedWorkers();
         t.task_qualifications = qual_dialog.getSelectedQualifications();
-        t.set_repeats_weekly();
         if (getArguments() == null) { // In ADD mode
             hazel.add_task(t);
         }else{
