@@ -32,6 +32,7 @@ public class Hazel extends Application implements Http_Events {
         UPDATE_QUALIFICATION,
         DOWNLOAD_QUALIFICATIONS,
         ADD_WORKER,
+        UPDATE_WORKER,
         DELETE_WORKER,
         DOWNLOAD_WORKERS,
         ADD_TASK,
@@ -57,6 +58,7 @@ public class Hazel extends Application implements Http_Events {
     public List<Object_Qualification> qualifications;
     private Adapter_Qualifications adapter_qualifications;
     private Object_Qualification qualification_waiting_to_be_added;
+    private int qualification_update_waiting;
 
     public List<Object_Worker> workers;
     private Adapter_Workers adapter_workers;
@@ -87,7 +89,7 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void logout(){ //Reset everything TODO CHECK IF EVERYTHING
-       // execute(HazelCommand.LOGOUT, null);
+        // execute(HazelCommand.LOGOUT, null);
         parent = null;
         client = null;
         currentCommand = null;
@@ -193,6 +195,11 @@ public class Hazel extends Application implements Http_Events {
                 http.POST("qual", jsonData);
                 break;
 
+            case UPDATE_QUALIFICATION:
+                Log.i("##### PUT", jsonData.toString());
+                http.PUT("qual", jsonData);
+                break;
+
             case DOWNLOAD_QUALIFICATIONS:
                 http.GET("qual");
                 break;
@@ -202,22 +209,32 @@ public class Hazel extends Application implements Http_Events {
                 http.POST("user", jsonData);
                 break;
 
+            case UPDATE_WORKER:
+                Log.i("##### PUT", jsonData.toString());
+                try {
+                    http.PUT(jsonData.getString("usrname"), jsonData);
+                } catch (JSONException e) {
+                    onError("Update worker to JSON failed");
+                }
+                break;
+
             case DELETE_WORKER:
                 Log.i("##### POST", jsonData.toString());
                 http.POST("user", jsonData);
                 break;
 
             case DOWNLOAD_WORKERS:
+                Log.i("##### GET","worker");
                 http.GET("worker");
                 break;
 
-
-
             case ADD_TASK:
+                Log.i("##### POST", jsonData.toString());
                 http.POST("task", jsonData);
                 break;
 
             case DOWNLOAD_TASKS:
+                Log.i("##### GET","task");
                 http.GET("task");
                 break;
 
@@ -250,8 +267,9 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void update_qualification(int position, String new_title){
-        qualifications.get(position).title = new_title;
-        Toast.makeText(parent, "Server cannot do that yet.. Sorry", Toast.LENGTH_LONG).show();
+        JSONObject jo =  qualifications.get(position).update(new_title);
+        qualification_update_waiting = position;
+        execute(HazelCommand.UPDATE_QUALIFICATION,jo);
         adapter_qualifications.notifyDataSetChanged();
     }
 
@@ -435,34 +453,30 @@ public class Hazel extends Application implements Http_Events {
             case ADD_QUALIFICATION:
                 try {
                     JSONObject jo = new JSONObject(data);
-                   if (jo.getString("message").equals("Okidoki")){
-                       qualifications.add(qualification_waiting_to_be_added);
-                       Toast.makeText(parent,getString(R.string.qualification_added), Toast.LENGTH_SHORT).show();
+                    if (jo.getString("message").equals("Okidoki")){
+                        qualifications.add(qualification_waiting_to_be_added);
+                        Toast.makeText(parent,getString(R.string.qualification_added), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    onError("Failed to add/update qualification");
+                    onError("Failed to add qualification");
                 }
-
-                 break;
-
-            case DOWNLOAD_TASKS:
-                try {
-                    JSONArray ja = new JSONArray(data);
-                    for (int i = 0; i < ja.length(); i++){
-                        JSONObject jo = ja.getJSONObject(i);
-                        tasks.add(new Object_Task(jo, this));
-                        Log.i("###### NEW TASK", jo.toString());
-                    }
-                    if (adapter_tasks != null){ //It is null when on_login_download_all
-                        adapter_tasks.notifyDataSetChanged();
-                    }
-
-
-                } catch (Exception e) {
-                    onError("parsing workers: " + e.getMessage());
-                }
-                eventListener.onTasksDownloaded();
                 break;
+
+            case UPDATE_QUALIFICATION:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+                        if (qualification_update_waiting != -1){
+                            qualifications.get(qualification_update_waiting).confirm_update(); // Confirmed
+                            adapter_qualifications.notifyDataSetChanged();
+                            qualification_update_waiting = -1;
+                        }
+                    }
+                } catch (JSONException e) {
+                    onError("Failed to update qualification");
+                    qualification_update_waiting = -1;
+                }
+
 
             case DOWNLOAD_QUALIFICATIONS:
                 try {
@@ -505,6 +519,16 @@ public class Hazel extends Application implements Http_Events {
                 download_workers(); //TODO REMOVE PROBABLY
                 break;
 
+            case UPDATE_WORKER:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+                        eventListener.onWorkerAdded();
+                    }
+                } catch (JSONException e) {
+                    onError("Add worker failed -" + data);
+                }
+
             case DOWNLOAD_WORKERS:
                 try {
                     JSONArray ja = new JSONArray(data);
@@ -526,6 +550,37 @@ public class Hazel extends Application implements Http_Events {
                 }
 
                 break;
+
+            case ADD_TASK:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+                        Toast.makeText(parent, "Added task ok", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    onError("parsing add task: " + data);
+                }
+
+
+            case DOWNLOAD_TASKS:
+                try {
+                    JSONArray ja = new JSONArray(data);
+                    for (int i = 0; i < ja.length(); i++){
+                        JSONObject jo = ja.getJSONObject(i);
+                        tasks.add(new Object_Task(jo, this));
+                        Log.i("###### NEW TASK", jo.toString());
+                    }
+                    if (adapter_tasks != null){ //It is null when on_login_download_all
+                        adapter_tasks.notifyDataSetChanged();
+                    }
+
+
+                } catch (Exception e) {
+                    onError("parsing workers: " + e.getMessage());
+                }
+                eventListener.onTasksDownloaded();
+                break;
+
 
             default:
                 onError("Received data on no command");

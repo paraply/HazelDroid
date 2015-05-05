@@ -100,14 +100,20 @@ public class Object_Task {
             j.put("id", JSONObject.NULL);
             j.put("startDate", getStartDate());
             j.put("endDate", getEndDate());
-            j.put("weekdays", jweekdays);
-            j.put("startTime", getStartTime());
-            j.put("endTime", getEndTime());
-            j.put("interval", repeat);
+//            j.put("weekdays", jweekdays);
+//            j.put("startTime", getStartTime());
+            j.put("startTime", "2015-04-24 15:00:00");
+
+
+//            j.put("endTime", getEndTime());
+            j.put("endTime",  "2015-04-24 17:00:00");
+            j.put("interval", "Daily");
             j.put("intervalLength", repeat_length);
             j.put("client", client);
             j.put("name", title);
             j.put("requirements", jqual);
+            j.put("minW", Integer.parseInt(min_workers));
+            j.put("maxW", Integer.parseInt(max_workers));
         } catch (Exception e) {
             if (hazel != null) hazel.onError("Task to JSON: " + e.getMessage());
         }

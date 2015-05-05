@@ -9,6 +9,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -23,6 +24,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
 
 public class Http {
     private HttpClient httpClient = new DefaultHttpClient();
@@ -44,9 +49,9 @@ public class Http {
             @Override
             protected String doInBackground(String... params) {
                 try {
-                HttpGet httpGet = new HttpGet(params[0]);
-                httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(params[1], params[2]), "UTF-8", false));
-                String result = "";
+                    HttpGet httpGet = new HttpGet(params[0]);
+                    httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(params[1], params[2]), "UTF-8", false));
+                    String result = "";
 
                     HttpResponse response = httpClient.execute(httpGet);
                     InputStream is = response.getEntity().getContent();
@@ -79,6 +84,31 @@ public class Http {
         get.execute(BASE_PATH + username + "/" +  server_path, username, password);
 
     }
+
+    public void PUT(String server_path, final JSONObject jsonData){
+        try {
+
+            HttpPut httpPut = new HttpPut(BASE_PATH + username + "/" + server_path);
+            httpPut.setEntity(new StringEntity(jsonData.toString()));
+            httpPut.setHeader("Accept", "application/json");
+            httpPut.setHeader("Content-Type", "application/json");
+            httpPut.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(username, password), "UTF-8", false));
+            HttpResponse response = httpClient.execute(httpPut);
+            InputStream is = response.getEntity().getContent();
+
+            if (is != null){
+                String result = convertStreamToString(is);
+                Log.i("###### PUT GOT DATA", result);
+                eventListener.onData(result);
+            }else{
+                eventListener.onError("HTTP PUT got null");
+            }
+
+        } catch (Exception e) {
+            eventListener.onError("HTTP PUT: " + e.getMessage());
+        }
+    }
+
 
     public void POST(String server_path, final JSONObject jsonData){
 

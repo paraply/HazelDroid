@@ -13,6 +13,7 @@ public class Object_Qualification {
     public String title;
     private Activity parent;
     private Hazel hazel;
+    private String update_not_confirmed;
 
     public Object_Qualification(String title, Hazel hazel){
         this.title = title;
@@ -36,6 +37,26 @@ public class Object_Qualification {
         }
         return jo;
     }
+
+    public JSONObject update(String new_title){
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("old_qual", title);
+            jo.put("new_qual", new_title);
+            update_not_confirmed = new_title;
+
+        } catch (JSONException e) {
+            hazel.onError("Qualification Update to JSON");
+            e.printStackTrace();
+        }
+    return jo;
+    }
+
+    public void confirm_update(){
+        title = update_not_confirmed;
+        update_not_confirmed = null;
+    }
+
 
 
     public String getWorkerString(){
