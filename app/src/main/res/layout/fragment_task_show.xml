@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/start_date"
+            android:text="@string/task_starts"
             android:paddingTop="10dp"
             android:layout_below="@+id/task_show_desc"
             android:layout_alignParentLeft="true"
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/end_date"
+            android:text="@string/task_ends"
             android:paddingTop="10dp"
             android:layout_below="@+id/task_show_start_date"
             android:layout_alignParentLeft="true"
@@ -125,6 +125,7 @@
             android:id="@+id/task_show_lbl_start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/start_time"
             android:paddingRight="20dp"
@@ -145,6 +146,7 @@
 
         <TextView
             android:id="@+id/task_show_lbl_end_time"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"

@@ -107,4 +107,9 @@
     <string name="name">Name</string>
     <string name="user_can_be_scheduled">User can be scheduled</string>
     <string name="administrator">Administrator</string>
+    <string name="infinitely">Infinitely</string>
+    <string name="repeat_untilDot">Until…</string>
+    <string name="repeat_until">Until</string>
+    <string name="task_starts">Task starts</string>
+    <string name="task_ends">Task ends</string>
 </resources>

@@ -107,4 +107,9 @@
     <string name="name">Namn</string>
     <string name="user_can_be_scheduled">Användaren kan schemaläggas</string>
     <string name="administrator">Administratör</string>
+    <string name="infinitely">För evigt</string>
+    <string name="repeat_untilDot">tills…</string>
+    <string name="repeat_until">tills</string>
+    <string name="task_starts">Startar</string>
+    <string name="task_ends">Slutar</string>
 </resources>

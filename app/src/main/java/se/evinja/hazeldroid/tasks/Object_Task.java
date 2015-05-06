@@ -21,10 +21,12 @@ import se.evinja.hazeldroid.workers.Object_Worker;
 public class Object_Task {
     public String title, description;
     public String min_workers, max_workers;
+    public String repeat_interval = null, repeat_month_date;
     public List<Object_Worker> task_workers = new ArrayList<>();
     public List<Object_Qualification> task_qualifications = new ArrayList<>();
     public Calendar start = Calendar.getInstance(), end = Calendar.getInstance();
-    public int id, repeat_length;
+    public Calendar repeat_until;
+    public int id;
 
     public Calendar nextrun = Calendar.getInstance();
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -48,8 +50,14 @@ public class Object_Task {
             if (!jobj.isNull("maxW")) max_workers = Integer.toString(jobj.getInt("maxW"));
             start.setTime(hazelformat.parse(jobj.getString("startTime")));
             end.setTime(hazelformat.parse(jobj.getString("endTime")));
-            repeat_length = jobj.getInt("intervalLength");
-            description = hazel.getString(R.string.no_description);
+            if (!jobj.isNull("intervalLength"))  repeat_interval = Integer.toString(jobj.getInt("intervalLength"));
+
+            if (!jobj.isNull("endDate")){
+                repeat_until = Calendar.getInstance();
+                repeat_until.setTime(dateformat.parse(jobj.getString("endDate"))); //When the repeat ends
+            }
+
+                description = hazel.getString(R.string.no_description);
             switch (jobj.getString("interval")){
                 case "Once": repeat = Repeat_Types.Once; break;
                 case "Daily": repeat = Repeat_Types.Daily; break;
@@ -82,14 +90,12 @@ public class Object_Task {
 
         try {
             j.put("id", JSONObject.NULL);
-            j.put("startDate", getStartDate());
-            j.put("endDate", getEndDate());
-//            j.put("startTime", getStartTime());
-            j.put("startTime", "2015-04-24 15:00:00");
 
+            j.put("startTime", hazelformat.format(start.getTime()));
+            j.put("endTime", hazelformat.format(end.getTime()));
+            j.put("startDate", dateformat.format(start.getTime())); //When repeat starts. Same as task start in this app
+            j.put("endDate", repeat_until == null ? JSONObject.NULL : dateformat.format(repeat_until.getTime()) ); //When the repeat ends
 
-//            j.put("endTime", getEndTime());
-            j.put("endTime",  "2015-04-24 17:00:00");
             if (repeat == Repeat_Types.Weekly){
                 if (sel_weekdays[0]) weekday_output.add("Monday");
                 if (sel_weekdays[1]) weekday_output.add("Tuesday");
@@ -103,7 +109,7 @@ public class Object_Task {
             }else{
                 j.put("interval", repeat);
             }
-            j.put("intervalLength", repeat_length);
+            j.put("intervalLength", repeat_interval == null ? JSONObject.NULL : Integer.parseInt(repeat_interval));
             j.put("client", client);
             j.put("name", title);
             j.put("requirements", jqual);
@@ -128,9 +134,16 @@ public class Object_Task {
         return dateformat.format(end.getTime());
     }
 
-
     public String getEndTime() {
         return timeformat.format(end.getTime());
+    }
+
+    public String getRepeatUntil(){
+        if (repeat_until != null) {
+            return dateformat.format(repeat_until.getTime());
+        }else{
+            return hazel.getString(R.string.infinitely);
+        }
     }
 
     public String get_next_run_month(){
@@ -167,18 +180,39 @@ public class Object_Task {
         }
     }
 
+
     public String get_repeat_string(Activity parent){
-        if (repeat == Repeat_Types.Once){
-            return parent.getString(R.string.repeat_once);
-        }else if (repeat == Repeat_Types.Daily){
-            return parent.getString(R.string.repeat_daily);
-        }else if (repeat == Repeat_Types.Weekly){
-            return parent.getString(R.string.repeat_weekly);
-        }else if (repeat == Repeat_Types.Monthly){
-            return parent.getString(R.string.repeat_monthly);
+        String str = "";
+        if (repeat == Repeat_Types.Once) {
+            return parent.getString(R.string.only_once);
         }
-        return null;
+        if (repeat == Repeat_Types.Daily){
+            str =  repeat_interval.equals("1") ? parent.getString(R.string.every_day) : parent.getString(R.string.every) + repeat_interval + " " + parent.getString(R.string.day);
+        }else if (repeat == Repeat_Types.Weekly){
+            str = repeat_interval.equals("1") ? parent.getString(R.string.every_week) : parent.getString(R.string.every) + repeat_interval  + parent.getString(R.string.week) ;
+
+            //Could use locale to get translated weekday names and get first day of the week.
+            str += " ";
+            if (sel_weekdays[0]) str += parent.getString(R.string.monday);
+            if (sel_weekdays[1]) str += parent.getString(R.string.tuesday);
+            if (sel_weekdays[2]) str += parent.getString(R.string.wednesday);
+            if (sel_weekdays[3]) str += parent.getString(R.string.thursday);
+            if (sel_weekdays[4]) str += parent.getString(R.string.friday);
+            if (sel_weekdays[5]) str += parent.getString(R.string.saturday);
+            if (sel_weekdays[6]) str += parent.getString(R.string.sunday);
+
+        }else if (repeat == Repeat_Types.Monthly){
+            str = repeat_interval.equals("1") ? parent.getString(R.string.every_month) : parent.getString(R.string.every) + repeat_interval + parent.getString(R.string.month);
+            str += parent.getString(R.string.on_the) + repeat_month_date + parent.getString(R.string.th);
+        }
+        if (repeat_until != null){
+            str += " " + parent.getString(R.string.repeat_until) + " " + dateformat.format(repeat_until.getTime());
+        }
+        return str;
     }
+
+
+
 
     public String getQualifications(Activity parent){
         StringBuilder sb = new StringBuilder();

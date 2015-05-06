@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -31,7 +32,7 @@ public class Dialog_Repeat extends DialogFragment{
     private DialogInterface.OnClickListener onItemClickListener;
 
     public Repeat_Types repeat = Repeat_Types.Once;
-    private String repeat_interval = "2", repeat_month_date = "1";
+    public String repeat_interval = "2", repeat_month_date = "1";
 //    private boolean mo = true,tu,we,th,fr,sa,su;
 
     public boolean sel_weekdays[] = new boolean[7];
@@ -99,35 +100,36 @@ public class Dialog_Repeat extends DialogFragment{
         Spinner spinner = (Spinner) view.findViewById(R.id.dialog_repeat_spinner);
 
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-                                              @Override
-                                              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                                  daily.setVisibility(View.GONE);
-                                                  weekly.setVisibility(View.GONE);
-                                                  monthly.setVisibility(View.GONE);
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                daily.setVisibility(View.GONE);
+                weekly.setVisibility(View.GONE);
+                monthly.setVisibility(View.GONE);
+                if (position == 0) {
+                    repeat = Repeat_Types.Once;
+                }else if (position == 1){
+                    daily.setVisibility(View.VISIBLE);
+                    repeat = Repeat_Types.Daily;
+                    repeat_interval = daily_day.getText().toString();
+                }else if (position == 2){
+                    weekly.setVisibility(View.VISIBLE);
+                    repeat = Repeat_Types.Weekly;
 
-                                                  if (position == 1){
-                                                      daily.setVisibility(View.VISIBLE);
-                                                      repeat = Repeat_Types.Daily;
-                                                      repeat_interval = daily_day.getText().toString();
-                                                  }else if (position == 2){
-                                                      weekly.setVisibility(View.VISIBLE);
-                                                      repeat = Repeat_Types.Weekly;
+                    repeat_interval = weekly_week.getText().toString();
+                }else if (position == 3) {
+                    monthly.setVisibility(View.VISIBLE);
+                    repeat = Repeat_Types.Monthly;
+                    repeat_interval = monthly_month.getText().toString();
+                }
+            }
 
-                                                      repeat_interval = weekly_week.getText().toString();
-                                                  }else if (position == 3) {
-                                                      monthly.setVisibility(View.VISIBLE);
-                                                      repeat = Repeat_Types.Monthly;
-                                                      repeat_interval = monthly_month.getText().toString();
-                                                  }
-                                              }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-                                              @Override
-                                              public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
-                                              }
-                                          });
-
-            String[] repeat_choices = new String[]{ctx.getString(R.string.once), ctx.getString(R.string.daily), ctx.getString(R.string.weekly), ctx.getString(R.string.monthly)};
+        String[] repeat_choices = new String[]{ctx.getString(R.string.once), ctx.getString(R.string.daily), ctx.getString(R.string.weekly), ctx.getString(R.string.monthly)};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, repeat_choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);

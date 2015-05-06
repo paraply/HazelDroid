@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -34,6 +35,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
 
     private EditText title, description, min_w, max_w;
     private TextView start_d, end_d, start_t, end_t, repeat, qualifications, workers;
+    private RadioButton infinitely, until;
+    private Calendar repeat_until;
     private Calendar start, end;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm");
@@ -66,7 +69,6 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_task_add, container, false);
         hazel = (Hazel) parent.getApplication();
-//        hazel.download_qualifications_and_workers(parent); //if gotten here without doing that yet..
 
         title = (EditText) view.findViewById(R.id.task_add_name);
         description = (EditText) view.findViewById(R.id.task_add_desc);
@@ -202,8 +204,72 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
             max_w.setText(t.get_max_workers());
             wrk_dialog.setSelectedWorkers(t.task_workers);
             workers.setText(wrk_dialog.getSelectedString());
+            repeat_until = t.repeat_until;
         }
+
+        infinitely = (RadioButton) view.findViewById(R.id.task_add_infinitely);
+        until = (RadioButton) view.findViewById(R.id.task_add_repeat_until);
+
+        infinitely.setOnClickListener(new RadioButton.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                until.setChecked(false);
+                fix_radio_buttons();
+            }
+        });
+
+
+
+        until.setOnClickListener(new RadioButton.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                if (repeat_until == null){
+                    until.setChecked(false); //Do not set as check yet, user may cancel the date dialog
+                    repeat_until = Calendar.getInstance();
+                }
+                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                until.setChecked(true);
+                                infinitely.setChecked(false);
+                                repeat_until.set(Calendar.YEAR, year);
+                                repeat_until.set(Calendar.MONTH, monthOfYear);
+                                repeat_until.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                                fix_radio_buttons();
+                            }
+                        }, repeat_until.get(Calendar.YEAR), repeat_until.get(Calendar.MONTH), repeat_until.get(Calendar.DAY_OF_MONTH));
+                dpd.show();
+            }
+        });
+
+
+
+
+        fix_radio_buttons();
         return view;
+    }
+
+    private void fix_radio_buttons(){
+        if (rpt_dialog.repeat == Repeat_Types.Once){
+            repeat_until = null;
+            infinitely.setVisibility(View.GONE);
+            until.setVisibility(View.GONE);
+        }else{
+            infinitely.setVisibility(View.VISIBLE);
+            until.setVisibility(View.VISIBLE);
+            if (infinitely.isChecked()){
+                repeat_until = null;
+                until.setText(getString(R.string.repeat_untilDot));
+            }else{
+                if (repeat_until != null){
+                    until.setText(getString(R.string.repeat_until) + " " + dateFormat.format(repeat_until.getTime()) );
+                }
+            }
+        }
     }
 
     @Override
@@ -242,9 +308,10 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         t.max_workers = max_w.getText().toString();
         t.start = start;
         t.end = end;
-        t.repeat_length = 3;
+        t.repeat_interval = rpt_dialog.repeat_interval;
         t.task_workers = wrk_dialog.getSelectedWorkers();
         t.task_qualifications = qual_dialog.getSelectedQualifications();
+        t.repeat_until = repeat_until;
         if (getArguments() == null) { // In ADD mode
             hazel.add_task(t);
         }else{
@@ -262,6 +329,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
             qualifications.setText(qual_dialog.getSelectedString());
         }else if (which == 3){
             repeat.setText(rpt_dialog.getString(parent));
+            fix_radio_buttons();
         }
     }
 
