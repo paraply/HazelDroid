@@ -8,15 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import se.evinja.hazeldroid.Activity_Main;
+import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 
 public class Fragment_Work_Schedule extends Fragment {
-    Activity_Main parent;
+    private Hazel hazel;
+    private Activity_Main parent;
+
 
     public Fragment_Work_Schedule(){};
 
     public static Fragment_Work_Schedule newInstance(){
-        return  new Fragment_Work_Schedule();
+        return new Fragment_Work_Schedule();
     }
 
     @Override
@@ -28,6 +31,8 @@ public class Fragment_Work_Schedule extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_work_schedule, container, false);
+        hazel = (Hazel) parent.getApplication();
+        hazel.getWorkplaceSchedule("2015-04-24 00:00:00", "2015-04-25 23:59:00");
         return  view;
     }
 

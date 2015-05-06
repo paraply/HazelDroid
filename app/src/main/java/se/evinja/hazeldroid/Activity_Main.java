@@ -120,8 +120,8 @@ public class Activity_Main extends ActionBarActivity implements Callback_Navigat
             fm.popBackStack();
         }
 
-        if (hazel.access_rootlevel()){
-            position -= 1; //Root has not "my schedule" item
+        if (hazel.access_adminlevel()){
+            position += 1; //Admin has not "my schedule" item
         }
         switch (position){
             case 0:

@@ -123,7 +123,9 @@ public class Fragment_Navigate extends Fragment implements Callback_Navigate {
     private List<Item_Navigate> get_navigation_items(){
         List<Item_Navigate> items = new ArrayList<>();
         if (!hazel.access_rootlevel()){ //Root can not do anything yet
-            items.add(new Item_Navigate(getString(R.string.my_schedule), getResources().getDrawable(R.mipmap.my_schedule)));
+            if (!hazel.access_adminlevel()){
+                items.add(new Item_Navigate(getString(R.string.my_schedule), getResources().getDrawable(R.mipmap.my_schedule)));
+            }
 
             items.add(new Item_Navigate(getString(R.string.work_schedule), getResources().getDrawable(R.mipmap.work_schedule)));
             items.add(new Item_Navigate(getString(R.string.workers), getResources().getDrawable(R.mipmap.workers)));

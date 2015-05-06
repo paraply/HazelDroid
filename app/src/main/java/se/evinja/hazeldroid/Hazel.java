@@ -40,7 +40,9 @@ public class Hazel extends Application implements Http_Events {
         ADD_TASK,
         UPDATE_TASK,
         DELETE_TASK,
-        DOWNLOAD_TASKS
+        DOWNLOAD_TASKS,
+        MY_SCHEDULE,
+        WORKPLACE_SCHEDULE
     }
     HazelCommand currentCommand,commandBefore;
 
@@ -261,6 +263,10 @@ public class Hazel extends Application implements Http_Events {
             case DELETE_TASK:
                 http.DELETE("task/" + tasks.get(task_waiting_to_be_deleted).id );
                 break;
+
+            case WORKPLACE_SCHEDULE:
+                Log.i("##### PUT", jsonData.toString());
+                http.PUT("schedule/workplace", jsonData);
             default:
                 return;
         }
@@ -428,6 +434,16 @@ public class Hazel extends Application implements Http_Events {
         return tasks.get(position);
     }
 
+    public void getWorkplaceSchedule(String start, String end){
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("startDate", start);
+            jo.put("endDate", end);
+        } catch (JSONException e) {
+            onError("getWorkplaceSchedule format JSON");
+        }
+        execute(HazelCommand.WORKPLACE_SCHEDULE, jo);
+    }
 
     @Override
     public void onError(String error_msg) {
@@ -680,6 +696,9 @@ public class Hazel extends Application implements Http_Events {
                 } catch (JSONException e) {
                     onError("hazel.onData: Delete task failed -" + data);
                 }
+                break;
+            case WORKPLACE_SCHEDULE:
+                Toast.makeText(parent, "Wieee", Toast.LENGTH_LONG).show();
                 break;
 
             default:

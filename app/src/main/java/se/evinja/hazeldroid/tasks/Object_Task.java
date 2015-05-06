@@ -181,6 +181,20 @@ public class Object_Task {
     }
 
 
+    public String get_short_repeat_string(Activity parent){
+        String str = "";
+        if (repeat == Repeat_Types.Once) {
+            str = parent.getString(R.string.only_once);
+        }else if (repeat == Repeat_Types.Daily){
+            str = parent.getString(R.string.daily);
+        }else if (repeat == Repeat_Types.Weekly){
+            str = parent.getString(R.string.weekly);
+        }else if (repeat == Repeat_Types.Monthly){
+            str = parent.getString(R.string.monthly);
+        }
+        return str;
+    }
+
     public String get_repeat_string(Activity parent){
         String str = "";
         if (repeat == Repeat_Types.Once) {
