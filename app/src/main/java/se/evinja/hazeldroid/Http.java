@@ -7,6 +7,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -86,29 +87,151 @@ public class Http {
     }
 
     public void PUT(String server_path, final JSONObject jsonData){
-        try {
 
-            HttpPut httpPut = new HttpPut(BASE_PATH + username + "/" + server_path);
-            httpPut.setEntity(new StringEntity(jsonData.toString()));
-            httpPut.setHeader("Accept", "application/json");
-            httpPut.setHeader("Content-Type", "application/json");
-            httpPut.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(username, password), "UTF-8", false));
-            HttpResponse response = httpClient.execute(httpPut);
-            InputStream is = response.getEntity().getContent();
+        class Http_poster extends AsyncTask<Void, Void, String> {
+            JSONObject json;
+            String serverPath;
+            String doInBackgroundErrors = ""; //Errors are saved until they can be handled - cant handle error in background thread
+            String spath;
+            String postUser;
+            String postPwd;
+            public Http_poster(final String postUrl,  final String user, final String password,  final JSONObject postJSON) {
+                json = postJSON;
+                serverPath = user + "/" + postUrl;
+                postUser = user;
+                postPwd = password;
 
-            if (is != null){
-                String result = convertStreamToString(is);
-                Log.i("###### PUT GOT DATA", result);
-                eventListener.onData(result);
-            }else{
-                eventListener.onError("HTTP PUT got null");
             }
 
-        } catch (Exception e) {
-            eventListener.onError("HTTP PUT: " + e.getMessage());
+            @Override
+            protected String doInBackground(Void... params){
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
+                HttpConnectionParams.setSoTimeout(httpParams, CONNECTION_TIMEOUT);
+                HttpClient client = new DefaultHttpClient(httpParams);
+                spath = BASE_PATH +  serverPath;
+                HttpPut request = new HttpPut(BASE_PATH +  serverPath);
+                request.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(postUser, postPwd), "UTF-8", false));
+                request.setHeader( "Content-Type", "application/json" );
+
+                try {
+                    StringEntity se = new StringEntity(json.toString(),"UTF-8");
+                    se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                    request.setEntity(se);
+                    HttpResponse response = client.execute(request);
+                    HttpEntity entity = response.getEntity();
+                    InputStream is = entity.getContent();
+                    String strResponse = convertStreamToString(is); //Convert stream to string
+                    return strResponse;
+
+                } catch (Exception e) {
+                    doInBackgroundErrors += e.getMessage();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                try {
+                    if (!doInBackgroundErrors.isEmpty()) { //Error occured in background - now we can handle it
+                        eventListener.onError("POST Background: " + doInBackgroundErrors);
+                        doInBackgroundErrors = "";
+                        return;
+                    }
+                    if (result == null){
+                        Log.i("###### PUT GOT NULL", "");
+                        return; //Should not come here. Maybe.
+                    }
+                    try {
+                        Log.i("###### PUT GOT DATA", result);
+                        eventListener.onData(result);
+
+                    } catch (Exception e) {
+                        eventListener.onError("Bad PUT JSON-data received: " + result);
+                    }
+                }catch (Exception e){
+                    eventListener.onError("onPostExecute exception, data:" + result + ". Message" + e.getMessage());
+                }
+            }
+
         }
+        Http_poster sendPostReqAsyncTask = new Http_poster(server_path, username, password, jsonData);
+        sendPostReqAsyncTask.execute();
     }
 
+    public void DELETE(String server_path){
+
+        class Http_poster extends AsyncTask<Void, Void, String> {
+            JSONObject json;
+            String serverPath;
+            String doInBackgroundErrors = ""; //Errors are saved until they can be handled - cant handle error in background thread
+            String spath;
+            String postUser;
+            String postPwd;
+            public Http_poster(final String postUrl,  final String user, final String password) {
+                serverPath = user + "/" + postUrl;
+                postUser = user;
+                postPwd = password;
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params){
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
+                HttpConnectionParams.setSoTimeout(httpParams, CONNECTION_TIMEOUT);
+                HttpClient client = new DefaultHttpClient(httpParams);
+                spath = BASE_PATH +  serverPath;
+                HttpDelete request = new HttpDelete(BASE_PATH +  serverPath);
+                request.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(postUser, postPwd), "UTF-8", false));
+                request.setHeader( "Content-Type", "application/json" );
+
+                try {
+//                    StringEntity se = new StringEntity(json.toString(),"UTF-8");
+//                    se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//                    request.setEntity(se);
+                    HttpResponse response = client.execute(request);
+                    HttpEntity entity = response.getEntity();
+                    InputStream is = entity.getContent();
+                    String strResponse = convertStreamToString(is); //Convert stream to string
+                    return strResponse;
+
+                } catch (Exception e) {
+                    doInBackgroundErrors += e.getMessage();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                try {
+                    if (!doInBackgroundErrors.isEmpty()) { //Error occurred in background - now we can handle it
+                        eventListener.onError("DELETE Background: " + doInBackgroundErrors);
+                        doInBackgroundErrors = "";
+                        return;
+                    }
+                    if (result == null){
+                        Log.i("###### DELETE GOT NULL", "");
+                        return; //Should not come here. Maybe.
+                    }
+                    try {
+                        Log.i("###### DELETE GOT DATA", result);
+                        eventListener.onData(result);
+
+                    } catch (Exception e) {
+                        eventListener.onError("Bad DELETE JSON-data received: " + result);
+                    }
+                }catch (Exception e){
+                    eventListener.onError("onPostExecute exception, data:" + result + ". Message" + e.getMessage());
+                }
+            }
+
+        }
+        Http_poster sendPostReqAsyncTask = new Http_poster(server_path, username, password);
+        sendPostReqAsyncTask.execute();
+    }
 
     public void POST(String server_path, final JSONObject jsonData){
 

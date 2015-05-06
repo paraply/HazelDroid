@@ -118,9 +118,9 @@ public class Fragment_Worker_Add extends Fragment implements DialogInterface.OnC
         worker.mailAddress = mail.getText().toString();
         worker.birthday = birthdate.getText().toString();
         worker.last4 = last4.getText().toString();
-        worker.minhours = minhours.getText().toString();
-        worker.maxhours = maxhours.getText().toString();
-        worker.access_level = access.isChecked() ? 3 : 2;
+        worker.minhours = minhours.getText().toString().isEmpty() ? null : minhours.getText().toString();
+        worker.maxhours = maxhours.getText().toString().isEmpty() ? null : maxhours.getText().toString();
+        worker.access_level = access.isChecked() ? 2 : 1;
 
         hazel.add_worker(worker);
         parent.onBackPressed();

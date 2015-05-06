@@ -6,6 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="se.evinja.hazeldroid.workers.Fragment_Worker_Show"
     >
+    <View android:id="@+id/fake"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
 
     <ImageView
         android:id="@+id/show_worker_picture"
@@ -179,5 +183,72 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/show_worker_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/working_hours_per_week"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/show_worker_personnr"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <TextView
+        android:id="@+id/show_worker_lbl_min_hours"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/minimum"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_hours"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+    />
+
+    <TextView
+        android:id="@+id/show_worker_min_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black_text"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/show_worker_hours"
+        android:layout_toRightOf="@+id/show_worker_lbl_min_hours"
+  />
+
+    <TextView
+        android:id="@+id/show_worker_lbl_max_hours"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/maximum"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/show_worker_hours"
+        android:layout_toRightOf="@+id/fake"
+
+        />
+
+    <TextView
+        android:id="@+id/show_worker_max_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black_text"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignTop="@+id/show_worker_lbl_max_hours"
+        android:layout_toRightOf="@+id/show_worker_lbl_max_hours"
+        android:layout_toEndOf="@+id/show_worker_lbl_max_hours" />
+
 
 </RelativeLayout >

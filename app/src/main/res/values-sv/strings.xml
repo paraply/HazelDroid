@@ -112,4 +112,6 @@
     <string name="repeat_until">tills</string>
     <string name="task_starts">Startar</string>
     <string name="task_ends">Slutar</string>
+    <string name="worker_updated">Uppdateringen lyckades</string>
+    <string name="qualification_updated">Kvalifikation uppdaterad</string>
 </resources>

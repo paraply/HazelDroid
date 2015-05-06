@@ -26,7 +26,7 @@ public class Fragment_Worker_Edit extends Fragment implements DialogInterface.On
     private Object_Worker worker;
     private Activity_Main parent;
 
-    private EditText firstname, lastname, position, phone, mail, last4, birthdate;
+    private EditText firstname, lastname, position, phone, mail, last4, birthdate, minhours, maxhours;
     private TextView qualifications ;
     private Dialog_Qualifications qual_dialog;
     private Calendar birthdate_calendar = Calendar.getInstance();
@@ -89,25 +89,8 @@ public class Fragment_Worker_Edit extends Fragment implements DialogInterface.On
         mail = (EditText) view.findViewById(R.id.worker_edit_mail);
         birthdate = (EditText) view.findViewById(R.id.worker_edit_birthday);
 
-//        birthdate.setOnClickListener(new TextView.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
-//                        new DatePickerDialog.OnDateSetListener() {
-//
-//                            @Override
-//                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                                birthdate_calendar.set(Calendar.YEAR, year);
-//                                birthdate_calendar.set(Calendar.MONTH, monthOfYear);
-//                                birthdate_calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-//
-//                                birthdate.setText(dateformat.format(birthdate_calendar.getTime()));
-//                            }
-//                        }, birthdate_calendar.get(Calendar.YEAR), birthdate_calendar.get(Calendar.MONTH), birthdate_calendar.get(Calendar.DAY_OF_MONTH));
-//                dpd.show();
-//            }
-//
-//        });
+        minhours = (EditText) view.findViewById(R.id.worker_edit_min_work);
+        maxhours = (EditText) view.findViewById(R.id.worker_edit_max_work);
 
         last4 = (EditText) view.findViewById(R.id.worker_edit_last4);
 
@@ -144,7 +127,10 @@ public class Fragment_Worker_Edit extends Fragment implements DialogInterface.On
         worker.mailAddress = mail.getText().toString();
         worker.birthday = birthdate.getText().toString();
         worker.last4 = last4.getText().toString();
-        hazel.update_worker_list();
+        hazel.update_worker(getArguments().getInt("worker_position"));
+
+        worker.minhours = minhours.getText().toString().isEmpty() ? null : minhours.getText().toString();
+        worker.maxhours = maxhours.getText().toString().isEmpty() ? null : maxhours.getText().toString();
 
         parent.onBackPressed();
     }

@@ -5,6 +5,7 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,11 +32,13 @@ public class Hazel extends Application implements Http_Events {
         ADD_QUALIFICATION,
         UPDATE_QUALIFICATION,
         DOWNLOAD_QUALIFICATIONS,
+        DELETE_QUALIFICATION,
         ADD_WORKER,
         UPDATE_WORKER,
         DELETE_WORKER,
         DOWNLOAD_WORKERS,
         ADD_TASK,
+        UPDATE_TASK,
         DOWNLOAD_TASKS
     }
     HazelCommand currentCommand,commandBefore;
@@ -59,12 +62,14 @@ public class Hazel extends Application implements Http_Events {
     private Adapter_Qualifications adapter_qualifications;
     private Object_Qualification qualification_waiting_to_be_added;
     private int qualification_update_waiting;
+    private int qualification_position_to_be_deleted;
 
     public List<Object_Worker> workers;
     private Adapter_Workers adapter_workers;
     private boolean no_worker_download = false;
     private boolean workers_are_invalid;
     public Object_Task task_waiting_to_be_added;
+    private int deleteWorkerPosition;
 
     private List<Object_Task> tasks;
     private Adapter_Tasks adapter_tasks;
@@ -186,8 +191,7 @@ public class Hazel extends Application implements Http_Events {
 
             case CANCEL:
                 if (on_login_download_all){
-                    connectionStatus = ConnectionStatus.NOT_CONNECTED;
-                    on_login_download_all = false;
+                    logout();
                 }
                 break;
 
@@ -205,6 +209,11 @@ public class Hazel extends Application implements Http_Events {
                 http.GET("qual");
                 break;
 
+            case DELETE_QUALIFICATION:
+                Log.i("##### DELETE", "qualification position: " + qualification_position_to_be_deleted);
+                http.DELETE("qual/" + qualifications.get(qualification_position_to_be_deleted).title );
+                break;
+
             case ADD_WORKER:
                 Log.i("##### POST", jsonData.toString());
                 http.POST("user", jsonData);
@@ -213,15 +222,16 @@ public class Hazel extends Application implements Http_Events {
             case UPDATE_WORKER:
                 Log.i("##### PUT", jsonData.toString());
                 try {
-                    http.PUT(jsonData.getString("usrname"), jsonData);
+                    Log.i("##### PUT ADDR",  "worker/" + jsonData.getString("id"));
+                    http.PUT( "worker/" + jsonData.getString("id"), jsonData); // :usr/worker/:ID
                 } catch (JSONException e) {
-                    onError("Update worker to JSON failed");
+                    onError("Hazel.Execute: Update worker to JSON failed");
                 }
                 break;
 
             case DELETE_WORKER:
-                Log.i("##### POST", jsonData.toString());
-                http.POST("user", jsonData);
+                Log.i("##### DELETE", "worker position: " + deleteWorkerPosition);
+                http.DELETE("worker/" + Integer.parseInt(workers.get(deleteWorkerPosition).id));
                 break;
 
             case DOWNLOAD_WORKERS:
@@ -262,9 +272,11 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void delete_qualification(int position){
-        qualifications.remove(position);
-        adapter_qualifications.notifyDataSetChanged();
-        workers_are_invalid = true; //Workers are now not valid since one could contain the deleted qualification
+        qualification_position_to_be_deleted = position;
+        execute(HazelCommand.DELETE_QUALIFICATION,null);
+//        qualifications.remove(position);
+//        adapter_qualifications.notifyDataSetChanged();
+//        workers_are_invalid = true; //Workers are now not valid since one could contain the deleted qualification
     }
 
     public void update_qualification(int position, String new_title){
@@ -313,11 +325,11 @@ public class Hazel extends Application implements Http_Events {
         }
     }
 
-    private void refresh_qualifications(){
-        qualifications.clear();
-        no_worker_download = true;
-        execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
-    }
+//    private void refresh_qualifications(){
+//        qualifications.clear();
+//        no_worker_download = true;
+//        execute(HazelCommand.DOWNLOAD_QUALIFICATIONS, null);
+//    }
 
     public void download_workers(){ //This will download qualifications if not already downloaded.
         if (workers == null){
@@ -344,14 +356,20 @@ public class Hazel extends Application implements Http_Events {
         execute(HazelCommand.ADD_WORKER, new_worker.getJSON(client));
     }
 
-    public void delete_worker(int position){
-        workers.remove(position);
-        adapter_workers.notifyDataSetChanged();
+    public void update_worker(int position) {
+        execute(HazelCommand.UPDATE_WORKER, workers.get(position).getJSONUpdate(client));
     }
 
-    public void update_worker_list(){
-        adapter_workers.notifyDataSetChanged();
+    public void delete_worker(int position){
+        deleteWorkerPosition =  position;
+        execute(HazelCommand.DELETE_WORKER, null);
+//        workers.remove(position);
+//        adapter_workers.notifyDataSetChanged();
     }
+
+//    public void update_worker_list(){
+//        adapter_workers.notifyDataSetChanged();
+//    }
 
     public Object_Worker get_worker(int position){
         return workers.get(position);
@@ -442,7 +460,7 @@ public class Hazel extends Application implements Http_Events {
                         connectionStatus = ConnectionStatus.NOT_CONNECTED;
                     }
                 } catch (JSONException e) {
-                    onError("parsing login reponse: " + e.getMessage());
+                    onError("onData.onData: parsing login reponse: " + e.getMessage());
                 }
                 break;
 
@@ -450,6 +468,12 @@ public class Hazel extends Application implements Http_Events {
                 //Does not need to do anything
                 break;
 
+            case CANCEL:
+                break;
+            case DOWNLOAD_USER_SCHEDULE:
+                break;
+            case DOWNLOAD_STAFF_SCHEDULE:
+                break;
             case ADD_QUALIFICATION:
                 try {
                     JSONObject jo = new JSONObject(data);
@@ -470,12 +494,28 @@ public class Hazel extends Application implements Http_Events {
                             qualifications.get(qualification_update_waiting).confirm_update(); // Confirmed
                             adapter_qualifications.notifyDataSetChanged();
                             qualification_update_waiting = -1;
+                            Toast.makeText(parent,getString(R.string.qualification_updated), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (JSONException e) {
                     onError("Failed to update qualification");
                     qualification_update_waiting = -1;
                 }
+                break;
+
+            case DELETE_QUALIFICATION:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+                        qualifications.remove(qualification_position_to_be_deleted);
+                        adapter_qualifications.notifyDataSetChanged();
+                        Toast.makeText(parent, getString(R.string.qualification_deleted), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    onError("hazel.onData: Delete qualification failed -" + data);
+                }
+                break;
+
 
 
             case DOWNLOAD_QUALIFICATIONS:
@@ -523,11 +563,25 @@ public class Hazel extends Application implements Http_Events {
                 try {
                     JSONObject jo = new JSONObject(data);
                     if (jo.getString("message").equals("Ok")){
-                        eventListener.onWorkerAdded();
+                        Toast.makeText(parent, getString(R.string.worker_updated), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    onError("Add worker failed -" + data);
+                    onError("Update worker failed -" + data);
                 }
+                break;
+
+            case DELETE_WORKER:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+                        workers.remove(deleteWorkerPosition);
+                        adapter_workers.notifyDataSetChanged();
+                        Toast.makeText(parent, getString(R.string.worker_deleted), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    onError("hazel.onData: Delete worker failed -" + data);
+                }
+                break;
 
             case DOWNLOAD_WORKERS:
                 try {

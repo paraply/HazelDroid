@@ -25,34 +25,63 @@ public class Object_Worker {
 
     public Object_Worker(JSONObject jobj,Hazel hazel){ //Need hazel reference to get qualification from string
         this.hazel = hazel;
-            try {
-                id = jobj.getString("id");
-                firstName = jobj.getString("fstname");
-                lastName = jobj.getString("lstname");
-                position = jobj.getString("position");
-                mailAddress = jobj.getString("mail");
-                phoneNr = jobj.getString("phoneNr");
-                birthday = jobj.getString("birthday");
-                last4 = jobj.getString("last4");
+        try {
+            id = jobj.getString("id");
+            firstName = jobj.getString("fstname");
+            lastName = jobj.getString("lstname");
+            position = jobj.getString("position");
+            mailAddress = jobj.getString("mail");
+            phoneNr = jobj.getString("phoneNr");
+            birthday = jobj.getString("birthday");
+            last4 = jobj.getString("last4");
 
-                if (!jobj.isNull("minHours")) minhours = Integer.toString(jobj.getInt("minHours"));
-                if (!jobj.isNull("maxHours")) maxhours = Integer.toString(jobj.getInt("maxHours"));
+            if (!jobj.isNull("minHours")) minhours = Integer.toString(jobj.getInt("minHours"));
+            if (!jobj.isNull("maxHours")) maxhours = Integer.toString(jobj.getInt("maxHours"));
 
 
-                JSONArray jArr = jobj.getJSONArray("qualifications");
-                if (jArr != null){
-                    for (int i = 0; i < jArr.length(); i++){
-                        Object_Qualification q = hazel.get_qualification(jArr.getString(i));
-                        if (q != null){
-                            qualifications.add(q);
-                        }
+            JSONArray jArr = jobj.getJSONArray("qualifications");
+            if (jArr != null){
+                for (int i = 0; i < jArr.length(); i++){
+                    Object_Qualification q = hazel.get_qualification(jArr.getString(i));
+                    if (q != null){
+                        qualifications.add(q);
                     }
                 }
-
-            } catch (Exception e) {
-                hazel.onError("Worker parse JSON: " + e.getMessage());
             }
 
+        } catch (Exception e) {
+            hazel.onError("Worker parse JSON: " + e.getMessage());
+        }
+
+    }
+
+
+    public JSONObject getJSONUpdate(String client_name){
+        JSONObject jo = new JSONObject();
+        try {
+            JSONArray ja = new JSONArray();
+
+            jo.put("lstname",lastName);
+            jo.put("maxHours", maxhours == null || maxhours.isEmpty() ?  JSONObject.NULL : Integer.parseInt(maxhours));
+            jo.put("minHours", minhours == null || minhours.isEmpty() ?  JSONObject.NULL : Integer.parseInt(minhours));
+            jo.put("phoneNr", phoneNr);
+            jo.put("birthday", birthday);
+            for (Object_Qualification q : qualifications ){
+                ja.put(q.title);
+            }
+            jo.put("qualifications", ja);
+            jo.put("id", Integer.parseInt(id));
+            jo.put("fstname", firstName);
+            jo.put("last4", last4);
+             jo.put("client", client_name);
+            jo.put("mail", mailAddress);
+            jo.put("position", position);
+
+        } catch (JSONException e) {
+            if (hazel != null)  hazel.onError("Worker UPDATE to JSON: " + e.getMessage());
+        }
+
+        return jo;
     }
 
     public JSONObject getJSON(String client_name){
@@ -60,12 +89,15 @@ public class Object_Worker {
         JSONObject jo_inner = new JSONObject();
         JSONArray ja = new JSONArray();
         try {
+
             jo_outer.put("username", username);
             jo_outer.put("password", Base64.encodeToString((username + ":" + password).getBytes(), Base64.NO_WRAP)); //Encode as base64
             jo_outer.put("access_lvl", access_level);
             jo_outer.put("client", client_name);
             jo_outer.put("work_id", JSONObject.NULL); //Not my problem
 
+            jo_inner.put("maxHours", minhours == null ?  JSONObject.NULL : Integer.parseInt(maxhours));
+            jo_inner.put("minHours", minhours == null ?  JSONObject.NULL : Integer.parseInt(minhours));
             jo_inner.put("id", JSONObject.NULL); //Should never put ID..
             jo_inner.put("client", client_name);
             jo_inner.put("fstname", firstName);
@@ -90,6 +122,14 @@ public class Object_Worker {
         return jo_outer;
     }
 
+    public String getMinHours(){
+        return minhours == null ? "-" : minhours;
+    }
+
+    public String getMaxHours(){
+        return maxhours == null ? "-" : maxhours;
+    }
+
     public String get_fullName(){
         return  firstName + " " + lastName;
     }
@@ -103,7 +143,7 @@ public class Object_Worker {
     }
 
     public boolean has_qualifications(){
-            return qualifications != null && qualifications.size() != 0;
+        return qualifications != null && qualifications.size() != 0;
     }
 
     public boolean has_qualification(Object_Qualification q){
@@ -112,7 +152,7 @@ public class Object_Worker {
                 return true;
             }
         }
-            return false;
+        return false;
     }
 
 //    public void add_qualification(String new_q){

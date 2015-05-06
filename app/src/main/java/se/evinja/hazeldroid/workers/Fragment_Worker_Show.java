@@ -74,6 +74,8 @@ public class Fragment_Worker_Show extends Fragment{
         ((TextView) view.findViewById(R.id.show_worker_phone)).setText(w.phoneNr);
         ((TextView) view.findViewById(R.id.show_worker_personnr)).setText(w.get_personnumber());
         ((TextView) view.findViewById(R.id.show_worker_qualifications)).setText(w.get_qualificationstring(parent));
+        ((TextView) view.findViewById(R.id.show_worker_min_hours)).setText(w.getMinHours());
+        ((TextView) view.findViewById(R.id.show_worker_max_hours)).setText(w.getMaxHours());
         parent.set_title(w.firstName);
         return view;
     }
