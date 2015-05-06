@@ -117,4 +117,5 @@
     <string name="worker_deleted">Deleted</string>
     <string name="qualification_deleted">Qualification deleted</string>
     <string name="task_updated">Task updated</string>
+    <string name="task_deleted">Task deleted</string>
 </resources>

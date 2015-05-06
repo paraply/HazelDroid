@@ -39,6 +39,7 @@ public class Hazel extends Application implements Http_Events {
         DOWNLOAD_WORKERS,
         ADD_TASK,
         UPDATE_TASK,
+        DELETE_TASK,
         DOWNLOAD_TASKS
     }
     HazelCommand currentCommand,commandBefore;
@@ -75,6 +76,7 @@ public class Hazel extends Application implements Http_Events {
     private Adapter_Tasks adapter_tasks;
     public Object_Task task_waiting_to_be_added;
     private int task_waiting_to_be_updated;
+    private int task_waiting_to_be_deleted;
 
     public Activity parent;
     public String client;
@@ -256,6 +258,9 @@ public class Hazel extends Application implements Http_Events {
                 http.GET("task");
                 break;
 
+            case DELETE_TASK:
+                http.DELETE("task/" + tasks.get(task_waiting_to_be_deleted).id );
+                break;
             default:
                 return;
         }
@@ -388,8 +393,10 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void delete_task(int position){
-        tasks.remove(position);
-        adapter_tasks.notifyDataSetChanged();
+        task_waiting_to_be_deleted = position;
+        execute(HazelCommand.DELETE_TASK,null);
+//        tasks.remove(position);
+//        adapter_tasks.notifyDataSetChanged();
     }
 
     public void download_tasks(){
@@ -654,7 +661,6 @@ public class Hazel extends Application implements Http_Events {
                 try {
                     JSONObject jo = new JSONObject(data);
                     if (jo.getString("message").equals("Ok")){
-//                            tasks.get(qualification_update_waiting).confirm_update(); // Confirmed
                             adapter_tasks.notifyDataSetChanged();
                             Toast.makeText(parent,getString(R.string.task_updated), Toast.LENGTH_SHORT).show();
                     }
@@ -663,6 +669,18 @@ public class Hazel extends Application implements Http_Events {
                 }
                 break;
 
+            case DELETE_TASK:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+                        tasks.remove(task_waiting_to_be_deleted);
+                        adapter_tasks.notifyDataSetChanged();
+                        Toast.makeText(parent, getString(R.string.task_deleted), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    onError("hazel.onData: Delete task failed -" + data);
+                }
+                break;
 
             default:
                 onError("Received data on no command");
