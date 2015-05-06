@@ -68,11 +68,13 @@ public class Hazel extends Application implements Http_Events {
     private Adapter_Workers adapter_workers;
     private boolean no_worker_download = false;
     private boolean workers_are_invalid;
-    public Object_Task task_waiting_to_be_added;
     private int deleteWorkerPosition;
-
     private List<Object_Task> tasks;
+
+
     private Adapter_Tasks adapter_tasks;
+    public Object_Task task_waiting_to_be_added;
+    private int task_waiting_to_be_updated;
 
     public Activity parent;
     public String client;
@@ -211,7 +213,7 @@ public class Hazel extends Application implements Http_Events {
 
             case DELETE_QUALIFICATION:
                 Log.i("##### DELETE", "qualification position: " + qualification_position_to_be_deleted);
-                http.DELETE("qual/" + qualifications.get(qualification_position_to_be_deleted).title );
+                http.DELETE("qual/" + qualifications.get(qualification_position_to_be_deleted).title);
                 break;
 
             case ADD_WORKER:
@@ -242,6 +244,11 @@ public class Hazel extends Application implements Http_Events {
             case ADD_TASK:
                 Log.i("##### POST", jsonData.toString());
                 http.POST("task", jsonData);
+                break;
+
+            case UPDATE_TASK:
+                Log.i("##### PUT", jsonData.toString());
+                http.PUT("task/" + tasks.get(task_waiting_to_be_updated).id , jsonData);
                 break;
 
             case DOWNLOAD_TASKS:
@@ -401,9 +408,14 @@ public class Hazel extends Application implements Http_Events {
         return adapter_tasks;
     }
 
-    public void update_task_list(){
-        adapter_tasks.notifyDataSetChanged();
+    public void update_task(int position){
+        task_waiting_to_be_updated = position;
+        execute(HazelCommand.UPDATE_TASK, tasks.get(position).toJSON(client));
     }
+
+//    public void update_task_list(){
+//        adapter_tasks.notifyDataSetChanged();
+//    }
 
     public Object_Task get_task(int position){
         return tasks.get(position);
@@ -636,6 +648,19 @@ public class Hazel extends Application implements Http_Events {
                     onError("parsing workers: " + e.getMessage());
                 }
                 eventListener.onTasksDownloaded();
+                break;
+
+            case UPDATE_TASK:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getString("message").equals("Ok")){
+//                            tasks.get(qualification_update_waiting).confirm_update(); // Confirmed
+                            adapter_tasks.notifyDataSetChanged();
+                            Toast.makeText(parent,getString(R.string.task_updated), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    onError("Failed to update TASK");
+                }
                 break;
 
 

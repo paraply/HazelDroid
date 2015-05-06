@@ -3,7 +3,6 @@ package se.evinja.hazeldroid.workers;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;

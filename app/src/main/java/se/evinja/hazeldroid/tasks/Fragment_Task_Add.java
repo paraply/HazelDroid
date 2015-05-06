@@ -315,7 +315,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         if (getArguments() == null) { // In ADD mode
             hazel.add_task(t);
         }else{
-            hazel.update_task_list();
+            hazel.update_task(getArguments().getInt("edit_position"));
         }
         parent.onBackPressed();
     }

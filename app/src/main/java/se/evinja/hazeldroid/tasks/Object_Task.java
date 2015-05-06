@@ -116,7 +116,7 @@ public class Object_Task {
             j.put("minW", Integer.parseInt(min_workers));
             j.put("maxW", Integer.parseInt(max_workers));
         } catch (Exception e) {
-            if (hazel != null) hazel.onError("Task to JSON: " + e.getMessage());
+            if (hazel != null) hazel.onError("Object_Task.toJSON: " + e.getMessage());
         }
 
         return j;
