@@ -158,10 +158,11 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         repeat = (TextView) view.findViewById(R.id.task_add_repeat);
         repeat.setText(rpt_dialog.getString(parent));
         rpt_dialog.init(this);
+        rpt_dialog.repeat_month_date = new SimpleDateFormat("d").format(start.getTime());
         repeat.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                rpt_dialog.repeat_month_date = new SimpleDateFormat("d").format(start.getTime());
                 rpt_dialog.show(getFragmentManager(), "Repeat dialog");
             }
         });
@@ -210,7 +211,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         infinitely = (RadioButton) view.findViewById(R.id.task_add_infinitely);
         until = (RadioButton) view.findViewById(R.id.task_add_repeat_until);
 
-        infinitely.setOnClickListener(new RadioButton.OnClickListener(){
+        infinitely.setOnClickListener(new RadioButton.OnClickListener() {
             @Override
             public void onClick(View v) {
                 until.setChecked(false);
@@ -220,11 +221,11 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
 
 
 
-        until.setOnClickListener(new RadioButton.OnClickListener(){
+        until.setOnClickListener(new RadioButton.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (repeat_until == null){
+                if (repeat_until == null) {
                     until.setChecked(false); //Do not set as check yet, user may cancel the date dialog
                     repeat_until = Calendar.getInstance();
                 }
@@ -250,6 +251,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
 
 
         fix_radio_buttons();
+
+
         return view;
     }
 

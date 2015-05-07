@@ -212,6 +212,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/on_this_date"
             android:layout_below="@id/repeat_monthly_month"
+            android:visibility="gone"
             android:paddingRight="10dp"
             />
 
@@ -219,6 +220,7 @@
             android:id="@+id/repeat_monthly_date"
             android:inputType="number"
             android:layout_width="40dp"
+            android:visibility="gone"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:text="1"

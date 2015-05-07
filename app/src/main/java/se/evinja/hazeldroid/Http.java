@@ -1,5 +1,6 @@
 package se.evinja.hazeldroid;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class Http {
     private HttpClient httpClient = new DefaultHttpClient();
@@ -82,7 +84,7 @@ public class Http {
 
         }
         Http_Getter get = new Http_Getter(); // Must be after the class
-        get.execute(BASE_PATH + username + "/" +  server_path, username, password);
+        get.execute(BASE_PATH + username + "/" +  server_path, username, password); //TODO ENCODE
 
     }
 
@@ -109,8 +111,8 @@ public class Http {
                 HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
                 HttpConnectionParams.setSoTimeout(httpParams, CONNECTION_TIMEOUT);
                 HttpClient client = new DefaultHttpClient(httpParams);
-                spath = BASE_PATH +  serverPath;
-                HttpPut request = new HttpPut(BASE_PATH +  serverPath);
+                spath = (BASE_PATH +  serverPath).replaceAll(" ", "%20");
+                HttpPut request = new HttpPut(spath);
                 request.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(postUser, postPwd), "UTF-8", false));
                 request.setHeader( "Content-Type", "application/json" );
 
@@ -182,8 +184,9 @@ public class Http {
                 HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
                 HttpConnectionParams.setSoTimeout(httpParams, CONNECTION_TIMEOUT);
                 HttpClient client = new DefaultHttpClient(httpParams);
-                spath = BASE_PATH +  serverPath;
-                HttpDelete request = new HttpDelete(BASE_PATH +  serverPath);
+//                spath = Uri.encode(BASE_PATH +  serverPath);
+                spath = (BASE_PATH +  serverPath).replaceAll(" ", "%20");
+                HttpDelete request = new HttpDelete(spath);
                 request.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(postUser, postPwd), "UTF-8", false));
                 request.setHeader( "Content-Type", "application/json" );
 
@@ -256,7 +259,8 @@ public class Http {
                 HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
                 HttpConnectionParams.setSoTimeout(httpParams, CONNECTION_TIMEOUT);
                 HttpClient client = new DefaultHttpClient(httpParams);
-                spath = BASE_PATH +  serverPath;
+//                spath = Uri.encode(BASE_PATH +  serverPath); //TODO
+
                 HttpPost request = new HttpPost(BASE_PATH +  serverPath);
                 request.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(postUser, postPwd), "UTF-8", false));
                 request.setHeader( "Content-Type", "application/json" );
