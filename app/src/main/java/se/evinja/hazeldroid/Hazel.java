@@ -10,10 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import se.evinja.hazeldroid.qualifications.Adapter_Qualifications;
+import se.evinja.hazeldroid.schedules.Object_Schedule;
 import se.evinja.hazeldroid.tasks.Adapter_Tasks;
 import se.evinja.hazeldroid.tasks.Object_Task;
 import se.evinja.hazeldroid.workers.Adapter_Workers;
@@ -27,8 +30,6 @@ public class Hazel extends Application implements Http_Events {
         LOGIN,
         LOGOUT,
         CANCEL,
-        DOWNLOAD_USER_SCHEDULE,
-        DOWNLOAD_STAFF_SCHEDULE,
         ADD_QUALIFICATION,
         UPDATE_QUALIFICATION,
         DOWNLOAD_QUALIFICATIONS,
@@ -85,6 +86,8 @@ public class Hazel extends Application implements Http_Events {
     private Object_Worker worker_logged_in;
     private JSONObject worker_logged_in_JSON; //Store the currenly logged in user as JSON since we need to download qualifications first to be able to create the Object_worker worker_logged_in
 
+    public List<Object_Schedule> workplace_schedule;
+    public List<Object_Schedule> user_schedule;
 
     public void login(String username, String password){
         access = AccessStatus.USER; //Reset before login
@@ -126,6 +129,9 @@ public class Hazel extends Application implements Http_Events {
 
         tasks = null;
         adapter_tasks = null;
+
+        workplace_schedule = null;
+        user_schedule = null;
     }
 
     public String get_navigation_title(){
@@ -142,20 +148,6 @@ public class Hazel extends Application implements Http_Events {
             str += " (" +  access.toString().toLowerCase() + ")";
         }
         return str;
-    }
-
-    public void download_user_schedule(){
-        execute(HazelCommand.DOWNLOAD_USER_SCHEDULE, null);
-        eventListener.onUserSchedule(); //TODO MOVE
-//        if (on_login_download_all){
-//            download_staff_schedule();
-//        }
-    }
-
-    public void download_staff_schedule(){
-        execute(HazelCommand.DOWNLOAD_STAFF_SCHEDULE, null);
-        eventListener.onStaffSchedule();
-//        on_login_download_all = false; // Login procedure finished
     }
 
     public boolean user_has_logged_out(){
@@ -266,7 +258,7 @@ public class Hazel extends Application implements Http_Events {
 
             case WORKPLACE_SCHEDULE:
                 Log.i("##### PUT", jsonData.toString());
-                http.PUT("schedule/workplace", jsonData);
+                http.PUT("schedule", jsonData);
             default:
                 return;
         }
@@ -434,7 +426,7 @@ public class Hazel extends Application implements Http_Events {
         return tasks.get(position);
     }
 
-    public void getWorkplaceSchedule(String start, String end){
+    public void download_staff_schedule(String start, String end){
         JSONObject jo = new JSONObject();
         try {
             jo.put("startDate", start);
@@ -442,7 +434,17 @@ public class Hazel extends Application implements Http_Events {
         } catch (JSONException e) {
             onError("getWorkplaceSchedule format JSON");
         }
+
         execute(HazelCommand.WORKPLACE_SCHEDULE, jo);
+    }
+
+    public Object_Schedule getWorkSchedFromID(int id){
+        for (Object_Schedule os : workplace_schedule){
+            if (os.id == id){
+                return os;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -504,10 +506,6 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case CANCEL:
-                break;
-            case DOWNLOAD_USER_SCHEDULE:
-                break;
-            case DOWNLOAD_STAFF_SCHEDULE:
                 break;
             case ADD_QUALIFICATION:
                 try {
@@ -667,10 +665,21 @@ public class Hazel extends Application implements Http_Events {
                     }
 
 
+
                 } catch (Exception e) {
-                    onError("parsing workers: " + e.getMessage());
+                    onError("hazel.onData:Download_tasks: " + e.getMessage());
                 }
                 eventListener.onTasksDownloaded();
+                if (on_login_download_all){
+
+                    Calendar start = Calendar.getInstance();
+                    start.add(Calendar.MONTH, -1);
+                    start.set(Calendar.DAY_OF_MONTH, 1);
+                    Calendar end = Calendar.getInstance();
+                    end.add(Calendar.MONTH, 1);
+                    end.set(Calendar.DAY_OF_MONTH, start.getActualMaximum(Calendar.DAY_OF_MONTH));
+                    download_staff_schedule(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(start.getTime()), new SimpleDateFormat("yyyy-MM-dd 23:59:00").format(end.getTime()));
+                }
                 break;
 
             case UPDATE_TASK:
@@ -698,7 +707,58 @@ public class Hazel extends Application implements Http_Events {
                 }
                 break;
             case WORKPLACE_SCHEDULE:
-                Toast.makeText(parent, "Wieee", Toast.LENGTH_LONG).show();
+                workplace_schedule = new ArrayList<>();
+                eventListener.onStaffSchedule(); //TODO only if really...
+                try {
+                    JSONObject jo = new JSONObject();
+                    JSONArray ja = new JSONArray();
+                    jo.put("startTime", "2015-05-09 10:00:00 UTC");
+                    jo.put("taskID", 499);
+                    jo.put("scheduled", false);
+                    jo.put("endTime", "2015-05-09 17:00:00 UTC");
+                    jo.put("workers", ja);
+                    jo.put("client", "Hazel Inc");
+                    jo.put("name", "Bli tjock");
+
+                    Object_Schedule os = new Object_Schedule(jo, this);
+                    workplace_schedule.add(os);
+                    os.workers.add(workers.get(0));
+                    os.workers.add(workers.get(1));
+
+                    JSONObject jo2 = new JSONObject();
+                    JSONArray ja2 = new JSONArray();
+                    jo2.put("startTime", "2015-05-08 12:00:00 UTC");
+                    jo2.put("taskID", 500);
+                    jo2.put("scheduled", true);
+                    jo2.put("endTime", "2015-05-08 20:00:00 UTC");
+                    jo2.put("workers", ja2);
+                    jo2.put("client", "Hazel Inc");
+                    jo2.put("name", "Ät smör");
+                    Object_Schedule os2 = new Object_Schedule(jo2, this);
+                    workplace_schedule.add(os2);
+                    os2.workers.add(workers.get(2));
+                    os2.workers.add(workers.get(3));
+
+                    JSONObject jo3 = new JSONObject();
+                    jo3.put("startTime", "2015-05-08 7:00:00 UTC");
+                    jo3.put("taskID", 501);
+                    jo3.put("scheduled", false);
+                    jo3.put("endTime", "2015-05-08 14:00:00 UTC");
+                    jo3.put("client", "Hazel Inc");
+                    jo3.put("name", "Drick olja");
+
+                    Object_Schedule os3 = new Object_Schedule(jo3, this);
+                    workplace_schedule.add(os3);
+                    os3.workers.add(workers.get(4));
+                    os3.workers.add(workers.get(5));
+
+
+
+
+                } catch (JSONException e) {
+                    onError("Hazel.onData:Workplace Schedule - Bad self created json slarver");
+                }
+
                 break;
 
             default:

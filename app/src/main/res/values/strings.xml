@@ -118,4 +118,6 @@
     <string name="qualification_deleted">Qualification deleted</string>
     <string name="task_updated">Task updated</string>
     <string name="task_deleted">Task deleted</string>
+    <string name="downloading_workplace_schedule">Downloading workplace schedule</string>
+    <string name="downloading_my_schedule">Downloading my schedule</string>
 </resources>

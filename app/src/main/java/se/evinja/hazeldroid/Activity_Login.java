@@ -36,7 +36,7 @@ public class Activity_Login extends ActionBarActivity implements Callback_Hazel 
         sharedPref = getPreferences(Context.MODE_PRIVATE);
         String username = sharedPref.getString("username", null);
         login_username.setText(username);
-        String password = sharedPref.getString("password",null);
+        String password = sharedPref.getString("password", null);
         login_password.setText(password);
 
         if (!(username == null) || !(password == null)){ //If has stored preferences
@@ -99,15 +99,19 @@ public class Activity_Login extends ActionBarActivity implements Callback_Hazel 
         switch (duringCommand){
             case LOGIN:
                 Toast.makeText(this, getString(R.string.connection_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
+//                restoreUI();
                 break;
             case DOWNLOAD_WORKERS:
                 Toast.makeText(this, getString(R.string.download_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
+//                restoreUI();
                 break;
-            case DOWNLOAD_USER_SCHEDULE:
+            case MY_SCHEDULE:
                 Toast.makeText(this, getString(R.string.download_user_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
+//                restoreUI();
                 break;
-            case DOWNLOAD_STAFF_SCHEDULE:
+            case WORKPLACE_SCHEDULE:
                 Toast.makeText(this, getString(R.string.download_staff_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
+//                restoreUI();
                 break;
         }
         restoreUI();
@@ -127,12 +131,16 @@ public class Activity_Login extends ActionBarActivity implements Callback_Hazel 
             editor.remove("password");
             editor.apply();
         }
-        progress.setMessage(getString(R.string.downloading_qualifications));
+            progress.setMessage(getString(R.string.downloading_qualifications));
     }
 
     @Override
     public void onStaffDownloaded() {
-        progress.setMessage(getString(R.string.downloading_tasks));
+//        if (hazel.access_userlevel()){
+//            progress.setMessage(getString(R.string.downloading_personnel));
+//        }else{
+            progress.setMessage(getString(R.string.downloading_tasks));
+//        }
     }
 
     @Override
@@ -141,25 +149,22 @@ public class Activity_Login extends ActionBarActivity implements Callback_Hazel 
     }
 
     @Override
-    public void onWorkerAdded() {
-//        Toast.makeText(this, getString(R.string.worker_added_successfully), Toast.LENGTH_LONG ).show();
+    public void onWorkerAdded() {}
+
+    @Override
+    public void onUserSchedule() { //Everything is downloaded for USER now, proceed to next activity
+        progress.setMessage(getString(R.string.downloading_workplace_schedule));
     }
 
     @Override
-    public void onUserSchedule() {}
-
-    @Override
-    public void onStaffSchedule() { //Everything is downloaded now, proceed to next activity
-//        restoreUI();
-//        Intent intent = new Intent(this,Activity_Main.class);
-//        startActivity(intent);
-//        finish();
+    public void onStaffSchedule() { //Everything is downloaded for ADMIN now, proceed to next activity
+//        progress.setMessage(getString(R.string.downloading_my_schedule));
+        proceedToMain();
     }
 
     @Override
     public void onTasksDownloaded() {
-        proceedToMain();
-
+        progress.setMessage(getString(R.string.downloading_workplace_schedule));
     }
 
     private void proceedToMain(){
