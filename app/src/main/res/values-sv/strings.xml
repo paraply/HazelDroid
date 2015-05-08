@@ -114,4 +114,13 @@
     <string name="task_ends">Slutar</string>
     <string name="worker_updated">Uppdateringen lyckades</string>
     <string name="qualification_updated">Kvalifikation uppdaterad</string>
+    <string name="worker_deleted">Raderad</string>
+    <string name="qualification_deleted">Kvalifikation raderad</string>
+    <string name="task_updated">Uppgift uppdaterad</string>
+    <string name="task_deleted">Uppgift raderad</string>
+    <string name="downloading_workplace_schedule">Laddar ner arbetsplatsens schema</string>
+    <string name="downloading_my_schedule">Laddar ner mitt schema</string>
+    <string name="user_schedule">Mitt schema</string>
+    <string name="want_to_work">Vill jobba</string>
+    <string name="do_not_want_to_work">Vill inte jobba</string>
 </resources>
