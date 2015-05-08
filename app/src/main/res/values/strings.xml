@@ -120,4 +120,7 @@
     <string name="task_deleted">Task deleted</string>
     <string name="downloading_workplace_schedule">Downloading workplace schedule</string>
     <string name="downloading_my_schedule">Downloading my schedule</string>
+    <string name="user_schedule">My schedule</string>
+    <string name="want_to_work">Want to work</string>
+    <string name="do_not_want_to_work">Do not want to work</string>
 </resources>

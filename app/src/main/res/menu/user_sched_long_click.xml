@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/user_sched_want_to_work"
+        android:title="@string/want_to_work"
+        />
+    <item android:id="@+id/user_sched_hate_work"
+        android:title="@string/do_not_want_to_work"
+        />
+</menu>

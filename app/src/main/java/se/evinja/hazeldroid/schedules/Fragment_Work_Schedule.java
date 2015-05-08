@@ -108,6 +108,6 @@ public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthCh
 
     @Override
     public void onEventLongPress(WeekViewEvent weekViewEvent, RectF rectF) {
-        Toast.makeText(parent, "LONGClicked " + weekViewEvent.getName(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(parent, "LONGClicked " + weekViewEvent.getName(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -136,11 +136,11 @@ public class Activity_Login extends ActionBarActivity implements Callback_Hazel 
 
     @Override
     public void onStaffDownloaded() {
-//        if (hazel.access_userlevel()){
-//            progress.setMessage(getString(R.string.downloading_personnel));
-//        }else{
+        if (hazel.access_userlevel()){
+            progress.setMessage(getString(R.string.downloading_workplace_schedule));
+        }else{
             progress.setMessage(getString(R.string.downloading_tasks));
-//        }
+        }
     }
 
     @Override
@@ -153,13 +153,16 @@ public class Activity_Login extends ActionBarActivity implements Callback_Hazel 
 
     @Override
     public void onUserSchedule() { //Everything is downloaded for USER now, proceed to next activity
-        progress.setMessage(getString(R.string.downloading_workplace_schedule));
+        proceedToMain();
     }
 
     @Override
     public void onStaffSchedule() { //Everything is downloaded for ADMIN now, proceed to next activity
-//        progress.setMessage(getString(R.string.downloading_my_schedule));
-        proceedToMain();
+        if (hazel.access_userlevel()){
+            progress.setMessage(getString(R.string.downloading_my_schedule));
+        }else{
+            proceedToMain();
+        }
     }
 
     @Override
