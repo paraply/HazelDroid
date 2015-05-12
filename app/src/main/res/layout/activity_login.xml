@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_marginBottom="30dp"
+        android:paddingTop="70dp"
+        android:paddingLeft="45dp"
+        android:paddingRight="45dp"
         android:layout_above="@+id/login_text_username"
         android:layout_centerHorizontal="true"
         android:src="@drawable/hazellogo" />

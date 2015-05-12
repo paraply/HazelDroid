@@ -101,6 +101,8 @@ public class Fragment_Worker_Edit extends Fragment implements DialogInterface.On
         mail.setText(worker.mailAddress);
         birthdate.setText(worker.birthday);
         last4.setText(worker.last4);
+        minhours.setText(worker.getMinHours());
+        maxhours.setText(worker.getMaxHours());
 
         return view;
     }
@@ -127,10 +129,11 @@ public class Fragment_Worker_Edit extends Fragment implements DialogInterface.On
         worker.mailAddress = mail.getText().toString();
         worker.birthday = birthdate.getText().toString();
         worker.last4 = last4.getText().toString();
-        hazel.update_worker(getArguments().getInt("worker_position"));
 
-        worker.minhours = minhours.getText().toString().isEmpty() ? null : minhours.getText().toString();
-        worker.maxhours = maxhours.getText().toString().isEmpty() ? null : maxhours.getText().toString();
+        worker.minhours = minhours.getText().toString();
+        worker.maxhours = maxhours.getText().toString();
+
+        hazel.update_worker(getArguments().getInt("worker_position"));
 
         parent.onBackPressed();
     }

@@ -292,6 +292,7 @@
             android:layout_alignEnd="@+id/task_add_qualifications" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/task_add_lbl_req_workers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -303,6 +304,7 @@
             />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/task_add_workers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

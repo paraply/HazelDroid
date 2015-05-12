@@ -43,7 +43,8 @@ public class Hazel extends Application implements Http_Events {
         DELETE_TASK,
         DOWNLOAD_TASKS,
         MY_SCHEDULE,
-        WORKPLACE_SCHEDULE
+        WORKPLACE_SCHEDULE,
+        SET_SCHEDULE
     }
     HazelCommand currentCommand,commandBefore;
 
@@ -57,7 +58,9 @@ public class Hazel extends Application implements Http_Events {
     }
     ConnectionStatus connectionStatus;
 
-    private boolean user_logged_out, on_login_download_all;
+    private boolean user_logged_out;
+    private boolean in_login_mode = false;
+//    private boolean on_login_download_all;
     private String username, password;
     private Callback_Hazel eventListener;
     private Http http;
@@ -70,12 +73,11 @@ public class Hazel extends Application implements Http_Events {
 
     public List<Object_Worker> workers;
     private Adapter_Workers adapter_workers;
-    private boolean no_worker_download = false;
+    private Object_Worker worker_to_be_added;
     private boolean workers_are_invalid;
     private int deleteWorkerPosition;
+
     private List<Object_Task> tasks;
-
-
     private Adapter_Tasks adapter_tasks;
     public Object_Task task_waiting_to_be_added;
     private int task_waiting_to_be_updated;
@@ -91,7 +93,7 @@ public class Hazel extends Application implements Http_Events {
 
     public void login(String username, String password){
         access = AccessStatus.USER; //Reset before login
-        on_login_download_all = true; // downloads needs to know that we are in login mode
+//        on_login_download_all = true; // downloads needs to know that we are in login mode
         this.username = username;
         this.password = password;
         http = new Http(this, username,password);
@@ -115,7 +117,8 @@ public class Hazel extends Application implements Http_Events {
 
         username = null;
         password = null;
-        on_login_download_all = false;
+        in_login_mode = false;
+//        on_login_download_all = false;
 
         qualifications = null;
         adapter_qualifications = null;
@@ -169,7 +172,7 @@ public class Hazel extends Application implements Http_Events {
     }
 
     private void execute(HazelCommand cmd, JSONObject jsonData){
-        Log.i("###### EXECUTE", cmd.toString());
+        Log.i("### EXECUTE", cmd.toString());
         commandBefore = currentCommand;
         currentCommand = cmd;
         switch (cmd){
@@ -188,18 +191,18 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case CANCEL:
-                if (on_login_download_all){
-                    logout();
-                }
+//                if (on_login_download_all){
+//                    logout();
+//                }
                 break;
 
             case ADD_QUALIFICATION:
-                Log.i("##### POST", jsonData.toString());
+//                Log.i("##### POST", jsonData.toString());
                 http.POST("qual", jsonData);
                 break;
 
             case UPDATE_QUALIFICATION:
-                Log.i("##### PUT", jsonData.toString());
+//                Log.i("##### PUT", jsonData.toString());
                 http.PUT("qual", jsonData);
                 break;
 
@@ -208,12 +211,12 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case DELETE_QUALIFICATION:
-                Log.i("##### DELETE", "qualification position: " + qualification_position_to_be_deleted);
+                Log.i("### DELETE", "qualification position: " + qualification_position_to_be_deleted);
                 http.DELETE("qual/" + qualifications.get(qualification_position_to_be_deleted).title);
                 break;
 
             case ADD_WORKER:
-                Log.i("##### POST", jsonData.toString());
+//                Log.i("##### POST", jsonData.toString());
                 http.POST("user", jsonData);
                 break;
 
@@ -228,41 +231,47 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case DELETE_WORKER:
-                Log.i("##### DELETE", "worker position: " + deleteWorkerPosition);
+                Log.i("### DELETE", "worker position: " + deleteWorkerPosition);
                 http.DELETE("worker/" + Integer.parseInt(workers.get(deleteWorkerPosition).id));
                 break;
 
             case DOWNLOAD_WORKERS:
-                Log.i("##### GET","worker");
+//                Log.i("##### GET","worker");
                 http.GET("worker");
                 break;
 
             case ADD_TASK:
-                Log.i("##### POST", jsonData.toString());
+//                Log.i("##### POST", jsonData.toString());
                 http.POST("task", jsonData);
                 break;
 
             case UPDATE_TASK:
-                Log.i("##### PUT", jsonData.toString());
+//                Log.i("##### PUT", jsonData.toString());
                 http.PUT("task/" + tasks.get(task_waiting_to_be_updated).id, jsonData);
                 break;
 
             case DOWNLOAD_TASKS:
-                Log.i("##### GET","task");
+//                Log.i("##### GET","task");
                 http.GET("task");
                 break;
 
             case DELETE_TASK:
+                Log.i("### Delete task", "ID" + tasks.get(task_waiting_to_be_deleted).id);
                 http.DELETE("task/" + tasks.get(task_waiting_to_be_deleted).id);
                 break;
 
             case WORKPLACE_SCHEDULE:
-                Log.i("##### PUT", jsonData.toString());
-                http.PUT("schedule", jsonData);
+                http.PUT("schedule/workplace", jsonData);
+                break;
 
             case MY_SCHEDULE:
-                Log.i("##### PUT", jsonData.toString());
-                http.PUT("schedule", jsonData);
+                http.PUT("schedule/personal", jsonData);
+                break;
+
+            case SET_SCHEDULE:
+                http.PUT("schedule/new", jsonData);
+
+                break;
 
             default:
                 return;
@@ -368,6 +377,7 @@ public class Hazel extends Application implements Http_Events {
     }
 
     public void add_worker(Object_Worker new_worker){
+        worker_to_be_added = new_worker;
         execute(HazelCommand.ADD_WORKER, new_worker.getJSON(client));
     }
 
@@ -440,13 +450,15 @@ public class Hazel extends Application implements Http_Events {
         end.add(Calendar.MONTH, 1);
         end.set(Calendar.DAY_OF_MONTH, start.getActualMaximum(Calendar.DAY_OF_MONTH));
         starts = new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(start.getTime());
+
         ends = new SimpleDateFormat("yyyy-MM-dd 23:59:00").format(end.getTime());
+//        ends = "2015-08-25 23:59:00";
         JSONObject jo = new JSONObject();
         try {
             jo.put("startDate", starts);
             jo.put("endDate", ends);
         } catch (JSONException e) {
-            onError("getWorkplaceSchedule format JSON");
+            onError("hazel.download_staff_schedule format JSON");
         }
 
         execute(HazelCommand.WORKPLACE_SCHEDULE, jo);
@@ -467,7 +479,7 @@ public class Hazel extends Application implements Http_Events {
             jo.put("startDate", starts);
             jo.put("endDate", ends );
         } catch (JSONException e) {
-            onError("getWorkplaceSchedule format JSON");
+            onError("hazel.download_user_schedule format JSON");
         }
 
         execute(HazelCommand.MY_SCHEDULE, jo);
@@ -491,6 +503,25 @@ public class Hazel extends Application implements Http_Events {
         return null;
     }
 
+    public String get_worker_name_from_id(int id){
+        for (Object_Worker w : workers ){
+            if (Integer.parseInt(w.id) == id){
+                return w.get_fullName();
+            }
+        }
+        return  "";
+    }
+
+    public Object_Worker get_worker_from_id(int id){
+        for (Object_Worker w : workers ){
+            if (Integer.parseInt(w.id) == id){
+                return w;
+            }
+        }
+        return null;
+    }
+
+
     public void want_work(int schedID){
         Toast.makeText(parent,"Not implemented yet", Toast.LENGTH_SHORT).show();
     }
@@ -499,9 +530,21 @@ public class Hazel extends Application implements Http_Events {
         Toast.makeText(parent,"Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
+    public void set_schedule(Calendar set_from, Calendar set_to){
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("startDate", new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(set_from.getTime()));
+            jo.put("endDate", new SimpleDateFormat("yyyy-MM-dd 23:59:00").format(set_to.getTime()));
+            execute(HazelCommand.SET_SCHEDULE, jo);
+        } catch (JSONException e) {
+            onError("set schedule to JSON");
+        }
+
+    }
+
     @Override
     public void onError(String error_msg) {
-        Log.i("###### ERROR", currentCommand.toString() + " - " + error_msg);
+        Log.i("### ERROR", currentCommand.toString() + " - " + error_msg);
         eventListener.onError(currentCommand, error_msg);
     }
 
@@ -511,7 +554,7 @@ public class Hazel extends Application implements Http_Events {
             onError("Got null data");
             return;
         }
-        Log.i("###### GOT DATA", data);
+        Log.i("### Hazel.onData", data + " During command: " + currentCommand);
         switch (currentCommand){
             case LOGIN:
                 try {
@@ -520,8 +563,7 @@ public class Hazel extends Application implements Http_Events {
                         client = jo.getString("client");
                         String level = jo.getString("access_lvl");
                         if (!jo.isNull("worker")) {
-                            worker_logged_in_JSON = jo.getJSONObject("worker");
-//                            worker_logged_in = new Object_Worker(jo.getJSONObject("worker"), this);
+                            worker_logged_in_JSON = jo.getJSONObject("worker"); //Cannot create worker object yet, has no qualifications downloaded
                         }
                         if (level.equals("1")){
                             access = AccessStatus.USER;
@@ -535,12 +577,17 @@ public class Hazel extends Application implements Http_Events {
                         connectionStatus = ConnectionStatus.CONNECTED;
                         user_logged_out = false;
                         eventListener.onConnected();
-                        if (on_login_download_all){
+                        Log.i("### LOGIN OK", "Now downloading qualifications");
+                        in_login_mode = true; //This makes hazel download all data when the app starts
+                        download_qualifications();
+
+
+//                        if (on_login_download_all){
                             //Download qualifications first since:
                             //workers needs qualifications objects
                             //tasks needs worker objects and qualification objects
-                            download_qualifications();
-                        }
+//                            download_qualifications();
+//                        }
                     }else if (jo.getString("status_code").equals("404")){
                         onError("Bad username");
                         connectionStatus = ConnectionStatus.NOT_CONNECTED;
@@ -562,8 +609,9 @@ public class Hazel extends Application implements Http_Events {
             case ADD_QUALIFICATION:
                 try {
                     JSONObject jo = new JSONObject(data);
-                    if (jo.getString("message").equals("Okidoki")){
+                    if (jo.getString("message").equals("Ok")){
                         qualifications.add(qualification_waiting_to_be_added);
+                        adapter_qualifications.notifyDataSetChanged();
                         Toast.makeText(parent,getString(R.string.qualification_added), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -614,17 +662,26 @@ public class Hazel extends Application implements Http_Events {
                     if (adapter_qualifications != null){ //It is null when on_login_download_all
                         adapter_qualifications.notifyDataSetChanged();
                     }
+
                     eventListener.onQualificationsDownloaded();
-                    if (on_login_download_all){ //if is in login procedure
-                        if (worker_logged_in_JSON != null) worker_logged_in = new Object_Worker(worker_logged_in_JSON, this); //Now we can create our object since we have a list of qualifications
+
+                    if (in_login_mode){
+                        Log.i("### DWNL QUAL OK", "Now downloading workers");
                         download_workers();
-                    }else {
-                        if (!no_worker_download) {
-                            download_workers(); //Download workers when qualifications has been downloaded. NOT THE OTHER WAY AROUND. Workers need qualifications to generate objects.
-                        } else {
-                            no_worker_download = false;
-                        }
                     }
+
+
+
+//                    if (on_login_download_all){ //if is in login procedure
+//                        if (worker_logged_in_JSON != null) worker_logged_in = new Object_Worker(worker_logged_in_JSON, this); //Now we can create our object since we have a list of qualifications
+//                        download_workers();
+//                    }else {
+//                        if (!no_worker_download) {
+//                            download_workers(); //Download workers when qualifications has been downloaded. NOT THE OTHER WAY AROUND. Workers need qualifications to generate objects.
+//                        } else {
+//                            no_worker_download = false;
+//                        }
+//                    }
                 } catch (JSONException e) {
                     onError("parsing qualifications");
                 }
@@ -633,15 +690,17 @@ public class Hazel extends Application implements Http_Events {
             case ADD_WORKER: //{"message":"Ok","status_code":200}
                 try {
                     JSONObject jo = new JSONObject(data);
-                    if (jo.getString("message").equals("Ok")){
+                    if (jo.getInt("status_code") == 200){
+                        worker_to_be_added.id = Integer.toString(jo.getInt("id"));
+                        workers.add(worker_to_be_added);
+                        adapter_workers.notifyDataSetChanged();
                         eventListener.onWorkerAdded();
+                    }else{
+                        onError("Add worker failed");
                     }
                 } catch (JSONException e) {
                     onError("Add worker failed -" + data);
                 }
-                //TODO ADD_WORKER SHOULD RETURN ID, WONT HAVE TO DOWNLOAD LIST AGAIN..
-                workers.clear();            //TODO REMOVE PROBABLY
-                download_workers(); //TODO REMOVE PROBABLY
                 break;
 
             case UPDATE_WORKER:
@@ -679,13 +738,24 @@ public class Hazel extends Application implements Http_Events {
                     if (adapter_workers != null){ //It is null when on_login_download_all
                         adapter_workers.notifyDataSetChanged();
                     }
-                    if (on_login_download_all){
+                    eventListener.onStaffDownloaded();
+                    if (in_login_mode){
                         if (access_userlevel()){
+                            Log.i("### WRKS Downloaded", "Is User now Downloading staff schedule");
                             download_staff_schedule();
                         }else{
+                            Log.i("### WRKS Downloaded", "Is ADMIN Now Downloading tasks");
                             download_tasks();
                         }
                     }
+
+//                    if (on_login_download_all){
+//                        if (access_userlevel()){
+//                            download_staff_schedule();
+//                        }else{
+//                            download_tasks();
+//                        }
+//                    }
 
 
                 } catch (JSONException e) {
@@ -697,10 +767,12 @@ public class Hazel extends Application implements Http_Events {
             case ADD_TASK:
                 try {
                     JSONObject jo = new JSONObject(data);
-                    if (jo.getString("message").equals("Ok")){
+                    if (jo.getInt("status_code") == 200){
+                        task_waiting_to_be_added.id = jo.getInt("id");
                         tasks.add(task_waiting_to_be_added);
                         adapter_tasks.notifyDataSetChanged();
                         Toast.makeText(parent, "Added task ok", Toast.LENGTH_LONG).show();
+                        download_staff_schedule(); //Need to download again since invalid now
                     }
                 } catch (JSONException e) {
                     onError("parsing add task: " + data);
@@ -726,7 +798,7 @@ public class Hazel extends Application implements Http_Events {
                     onError("hazel.onData:Download_tasks: " + e.getMessage());
                 }
                 eventListener.onTasksDownloaded();
-                if (on_login_download_all){
+                if (in_login_mode){
                     download_staff_schedule();
                 }
                 break;
@@ -737,6 +809,7 @@ public class Hazel extends Application implements Http_Events {
                     if (jo.getString("message").equals("Ok")){
                             adapter_tasks.notifyDataSetChanged();
                             Toast.makeText(parent,getString(R.string.task_updated), Toast.LENGTH_SHORT).show();
+                        download_staff_schedule(); //Need to download again since invalid now
                     }
                 } catch (JSONException e) {
                     onError("Failed to update TASK");
@@ -750,122 +823,96 @@ public class Hazel extends Application implements Http_Events {
                         tasks.remove(task_waiting_to_be_deleted);
                         adapter_tasks.notifyDataSetChanged();
                         Toast.makeText(parent, getString(R.string.task_deleted), Toast.LENGTH_SHORT).show();
+                        download_staff_schedule(); //Need to download again since invalid now
                     }
                 } catch (JSONException e) {
                     onError("hazel.onData: Delete task failed -" + data);
                 }
                 break;
+
             case WORKPLACE_SCHEDULE:
+                if (data.equals("<h1>404: File Not Found!</h1>")){
+                    Log.i("### No wrk sched", "will not try to parse");
+                    return;
+                }
+
+                eventListener.onStaffSchedule(); //TODO only if really...
                 workplace_schedule = new ArrayList<>();
-
                 try {
-                    JSONObject jo = new JSONObject();
-                    JSONArray ja = new JSONArray();
-                    jo.put("startTime", "2015-05-09 10:00:00 UTC");
-                    jo.put("taskID", 499);
-                    jo.put("scheduled", false);
-                    jo.put("endTime", "2015-05-09 17:00:00 UTC");
-                    jo.put("workers", ja);
-                    jo.put("client", "Hazel Inc");
-                    jo.put("name", "Bli tjock");
+                    JSONArray ja = new JSONArray(data);
+                    for (int i = 0; i < ja.length(); i++){
+                        JSONObject jo = ja.getJSONObject(i);
 
-                    Object_Schedule os = new Object_Schedule(jo, this);
-                    workplace_schedule.add(os);
-                    os.workers.add(workers.get(0));
-                    os.workers.add(workers.get(1));
-
-                    JSONObject jo2 = new JSONObject();
-                    JSONArray ja2 = new JSONArray();
-                    jo2.put("startTime", "2015-05-08 12:00:00 UTC");
-                    jo2.put("taskID", 500);
-                    jo2.put("scheduled", true);
-                    jo2.put("endTime", "2015-05-08 20:00:00 UTC");
-                    jo2.put("workers", ja2);
-                    jo2.put("client", "Hazel Inc");
-                    jo2.put("name", "Ät smör");
-                    Object_Schedule os2 = new Object_Schedule(jo2, this);
-                    workplace_schedule.add(os2);
-                    os2.workers.add(workers.get(2));
-                    os2.workers.add(workers.get(3));
-
-                    JSONObject jo3 = new JSONObject();
-                    jo3.put("startTime", "2015-05-08 7:00:00 UTC");
-                    jo3.put("taskID", 501);
-                    jo3.put("scheduled", false);
-                    jo3.put("endTime", "2015-05-08 14:00:00 UTC");
-                    jo3.put("client", "Hazel Inc");
-                    jo3.put("name", "Drick olja");
-
-                    Object_Schedule os3 = new Object_Schedule(jo3, this);
-                    workplace_schedule.add(os3);
-                    os3.workers.add(workers.get(4));
-                    os3.workers.add(workers.get(5));
-
-                    eventListener.onStaffSchedule(); //TODO only if really...
-
-                    if (on_login_download_all){
-                        download_user_schedule();
+                        Object_Schedule os = new Object_Schedule(jo, this);
+                        workplace_schedule.add(os);
+                        Log.i("### ADD WRK EVENT", jo.toString());
                     }
 
 
+                    if (in_login_mode){
+                        if (access_userlevel()){
+                            Log.i("### DWNL WRK SCHED OK", "IS USER Downloading user schedule now");
+                            download_user_schedule();
+                        }else{
+                            in_login_mode = false;
+                        }
+                    }
+
+//                    if (on_login_download_all){
+//                        if (access_userlevel()){
+//                            download_user_schedule();
+//                        }
+//                    }
+
+
                 } catch (JSONException e) {
-                    onError("Hazel.onData:Workplace Schedule - Bad self created json slarver");
+//                    onError("Hazel.onData:Workplace Schedule - " + e.getMessage());
                 }
 
                 break;
 
             case MY_SCHEDULE:
+                if (data.equals("<h1>404: File Not Found!</h1>")){
+                    Log.i("### No user sched", "will not try to parse");
+                    return;
+                }
                 user_schedule = new ArrayList<>();
                 eventListener.onUserSchedule(); //TODO only if really...
                 try {
-                    JSONObject jo = new JSONObject();
-                    JSONArray ja = new JSONArray();
-                    jo.put("startTime", "2015-05-09 10:00:00 UTC");
-                    jo.put("taskID", 499);
-                    jo.put("scheduled", false);
-                    jo.put("endTime", "2015-05-09 17:00:00 UTC");
-                    jo.put("workers", ja);
-                    jo.put("client", "Hazel Inc");
-                    jo.put("name", "Apa");
 
-                    Object_Schedule os = new Object_Schedule(jo, this);
-                    user_schedule.add(os);
-                    os.workers.add(workers.get(0));
-                    os.workers.add(workers.get(1));
+                    JSONArray ja = new JSONArray(data);
+                    for (int i = 0; i < ja.length(); i++){
+                        JSONObject jo = ja.getJSONObject(i);
 
-                    JSONObject jo2 = new JSONObject();
-                    JSONArray ja2 = new JSONArray();
-                    jo2.put("startTime", "2015-05-08 12:00:00 UTC");
-                    jo2.put("taskID", 500);
-                    jo2.put("scheduled", true);
-                    jo2.put("endTime", "2015-05-08 20:00:00 UTC");
-                    jo2.put("workers", ja2);
-                    jo2.put("client", "Hazel Inc");
-                    jo2.put("name", "Bepa");
-                    Object_Schedule os2 = new Object_Schedule(jo2, this);
-                    user_schedule.add(os2);
-                    os2.workers.add(workers.get(2));
-                    os2.workers.add(workers.get(3));
-
-                    JSONObject jo3 = new JSONObject();
-                    jo3.put("startTime", "2015-05-08 7:00:00 UTC");
-                    jo3.put("taskID", 501);
-                    jo3.put("scheduled", false);
-                    jo3.put("endTime", "2015-05-08 14:00:00 UTC");
-                    jo3.put("client", "Hazel Inc");
-                    jo3.put("name", "Cepa");
-
-                    Object_Schedule os3 = new Object_Schedule(jo3, this);
-                    user_schedule.add(os3);
-                    os3.workers.add(workers.get(4));
-                    os3.workers.add(workers.get(5));
+                        Object_Schedule os = new Object_Schedule(jo, this);
+                        user_schedule.add(os);
+                        Log.i("###### USR SCHED", jo.toString());
+                    }
+                    in_login_mode = false;
 
 
-
+                    eventListener.onUserSchedule();
 
                 } catch (JSONException e) {
-                    onError("Hazel.onData:Workplace Schedule - Bad self created json slarver");
+//                    onError("User has no schedule");
+//                    onError("Hazel.onData:USER Schedule - " + e.getMessage());
                 }
+
+                break;
+
+            case SET_SCHEDULE:
+                try {
+                    JSONObject jo = new JSONObject(data);
+                    if (jo.getInt("status_code") == 500){
+                        Toast.makeText(parent, "Schedule was impossible to set", Toast.LENGTH_LONG).show();
+                    }else{
+                        //We need to download the new schedule
+                        download_staff_schedule();
+                    }
+                } catch (JSONException e) {
+                    onError("Parse set_schedule JSON response");
+                }
+
 
                 break;
 

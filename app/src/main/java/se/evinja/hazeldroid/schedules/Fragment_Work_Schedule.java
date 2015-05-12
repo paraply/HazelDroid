@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,11 +31,12 @@ import se.evinja.hazeldroid.Activity_Main;
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
 
-public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthChangeListener, WeekView.EventClickListener, WeekView.EventLongPressListener {
+public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthChangeListener, WeekView.EventClickListener, WeekView.EventLongPressListener, DialogInterface.OnClickListener {
     private Hazel hazel;
     private Activity_Main parent;
     private WeekView weekView;
 
+    private Dialog_Schedule dialog = new Dialog_Schedule();
 
     public Fragment_Work_Schedule(){};
 
@@ -44,6 +49,32 @@ public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthCh
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!((Activity_Main) getActivity()).navigation_open()) {
+            if (hazel.access_adminlevel()) {
+                inflater.inflate(R.menu.schedule, menu);
+            }
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_schedule){
+            show_schedule_dialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void show_schedule_dialog(){
+        dialog.init(this, hazel);
+        dialog.show(getFragmentManager(), "Schedule");
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -75,7 +106,7 @@ public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthCh
         List<WeekViewEvent> events = new ArrayList<>();
         for (Object_Schedule os : hazel.workplace_schedule){
             if (os.getMonth() == newMonth){
-                Log.i("### EVENT ADD", os.name);
+                Log.i("### WRK EVENT ADD", os.name + " start:" + os.startTime.getTime().toString() + " end:" + os.endTime.getTime().toString());
                 WeekViewEvent event = new WeekViewEvent(os.id, os.name, os.startTime, os.endTime);
                 if (os.scheduled){
                     event.setColor(getResources().getColor(R.color.event_color_green));
@@ -109,5 +140,10 @@ public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthCh
     @Override
     public void onEventLongPress(WeekViewEvent weekViewEvent, RectF rectF) {
 //        Toast.makeText(parent, "LONGClicked " + weekViewEvent.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
     }
 }

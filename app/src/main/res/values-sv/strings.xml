@@ -93,14 +93,13 @@
     <string name="error_message">" meddelande: "</string>
     <string name="description">Beskrivning</string>
     <string name="required_amount_of_workers">Antal personer som krävs</string>
-    <string name="days">dag</string>
-    <string name="weeks">vecka</string>
-    <string name="months">månad</string>
+    <string name="days">dagar</string>
+    <string name="weeks">veckor</string>
+    <string name="months">månader</string>
     <string name="on_this_date">På detta datum</string>
     <string name="no_description">Ingen beskrivning</string>
     <string name="downloading_qualifications">Laddar ner kvalifikationer</string>
     <string name="downloading_tasks">Laddar ner uppgifter</string>
-    <string name="none">Inga</string>
     <string name="qualification_added">Kvalifikation tillagd</string>
     <string name="working_hours_per_week">Timmar per vecka</string>
     <string name="access_level">Åtkomstnivå</string>
@@ -123,4 +122,7 @@
     <string name="user_schedule">Mitt schema</string>
     <string name="want_to_work">Vill jobba</string>
     <string name="do_not_want_to_work">Vill inte jobba</string>
+    <string name="schedule">Schemalägg</string>
+    <string name="schedule_starts">Från</string>
+    <string name="schedule_ends">Till</string>
 </resources>

@@ -39,7 +39,7 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
     private Calendar repeat_until;
     private Calendar start, end;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private Dialog_Workers wrk_dialog;
     private Dialog_Qualifications qual_dialog;
@@ -76,6 +76,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         max_w = (EditText) view.findViewById(R.id.task_add_max_work);
 
         start = Calendar.getInstance();
+        start.add(Calendar.HOUR_OF_DAY, 1);
+        start.set(Calendar.MINUTE, 0);
         start_d = (TextView) view.findViewById(R.id.task_add_start_date);
         start_d.setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -117,7 +119,8 @@ public class Fragment_Task_Add extends Fragment implements DialogInterface.OnCli
         start_t.setText(timeFormat.format(start.getTime()));
 
         end = Calendar.getInstance();
-        end.add(Calendar.HOUR_OF_DAY, 8);
+        end.add(Calendar.HOUR_OF_DAY, 9);
+        end.set(Calendar.MINUTE,0);
         end_d = (TextView) view.findViewById(R.id.task_add_end_date);
         end_d.setOnClickListener(new TextView.OnClickListener() {
             @Override

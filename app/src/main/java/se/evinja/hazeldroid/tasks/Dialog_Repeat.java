@@ -48,9 +48,9 @@ public class Dialog_Repeat extends DialogFragment{
         if (repeat == Repeat_Types.Once) {
             str = parent.getString(R.string.only_once);
         }else if (repeat == Repeat_Types.Daily){
-            str =  repeat_interval.equals("1") ? parent.getString(R.string.every_day) : parent.getString(R.string.every) + repeat_interval + " " + parent.getString(R.string.day);
+            str =  repeat_interval.equals("1") ? parent.getString(R.string.every_day) : parent.getString(R.string.every) + repeat_interval + " " + parent.getString(R.string.days);
         }else if (repeat == Repeat_Types.Weekly){
-            str = repeat_interval.equals("1") ? parent.getString(R.string.every_week) : parent.getString(R.string.every) + repeat_interval  + parent.getString(R.string.week) ;
+            str = repeat_interval.equals("1") ? parent.getString(R.string.every_week) : parent.getString(R.string.every) + repeat_interval + " " + parent.getString(R.string.weeks) ;
 
             //Could use locale to get translated weekday names and get first day of the week.
             str += " ";

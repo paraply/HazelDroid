@@ -2,6 +2,7 @@ package se.evinja.hazeldroid.schedules;
 
 import android.app.Activity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 import se.evinja.hazeldroid.Hazel;
 import se.evinja.hazeldroid.R;
+import se.evinja.hazeldroid.qualifications.Object_Qualification;
 import se.evinja.hazeldroid.workers.Object_Worker;
 
 public class Object_Schedule {
@@ -21,7 +23,7 @@ public class Object_Schedule {
     public boolean scheduled;
     public String name;
     public List<Object_Worker> workers = new ArrayList<>();
-    private SimpleDateFormat hazelformat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+    private SimpleDateFormat hazelformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Object_Schedule(){}
 
@@ -35,7 +37,18 @@ public class Object_Schedule {
             scheduled = jo.getBoolean("scheduled");
             //client do not care about...
             id = jo.getInt("taskID");
-            //workers do not care about yet...
+
+            JSONArray jArr = jo.getJSONArray("workers"); //Would rather want array of worker ID's
+            if (jArr != null) {
+                for (int i = 0; i < jArr.length(); i++) {
+                    JSONObject jw = jArr.getJSONObject(i);
+                    Object_Worker w = new Object_Worker(jw, hazel);
+                    if (w != null) {
+                        workers.add(w);
+                    }
+                }
+            }
+
         } catch (Exception e) {
             hazel.onError("Object.Schedule constructor parse JSON: " + e.getMessage());
         }

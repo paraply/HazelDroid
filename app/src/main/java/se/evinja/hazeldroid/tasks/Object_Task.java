@@ -31,7 +31,7 @@ public class Object_Task {
     public Calendar nextrun = Calendar.getInstance();
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeformat = new SimpleDateFormat("kk:mm");
-    private SimpleDateFormat hazelformat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+    private SimpleDateFormat hazelformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Hazel hazel;
 
     public Repeat_Types repeat;

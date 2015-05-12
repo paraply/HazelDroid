@@ -99,19 +99,15 @@ public class Activity_Login extends ActionBarActivity implements Callback_Hazel 
         switch (duringCommand){
             case LOGIN:
                 Toast.makeText(this, getString(R.string.connection_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
-//                restoreUI();
                 break;
             case DOWNLOAD_WORKERS:
                 Toast.makeText(this, getString(R.string.download_failed) + ": " + errorMsg, Toast.LENGTH_LONG).show();
-//                restoreUI();
                 break;
             case MY_SCHEDULE:
                 Toast.makeText(this, getString(R.string.download_user_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
-//                restoreUI();
                 break;
             case WORKPLACE_SCHEDULE:
                 Toast.makeText(this, getString(R.string.download_staff_schedule_fail) + ": " + errorMsg, Toast.LENGTH_LONG).show();
-//                restoreUI();
                 break;
         }
         restoreUI();

@@ -3,6 +3,7 @@ package se.evinja.hazeldroid.workers;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +23,7 @@ public class Object_Worker {
     private Hazel hazel;
     public Object_Worker(){}
 
-    public Object_Worker(JSONObject jobj,Hazel hazel){ //Need hazel reference to get qualification from string
+    public Object_Worker(JSONObject jobj, Hazel hazel){ //Need hazel reference to get qualification from string
         this.hazel = hazel;
         try {
             id = jobj.getString("id");
@@ -60,9 +61,9 @@ public class Object_Worker {
         try {
             JSONArray ja = new JSONArray();
 
-            jo.put("lstname",lastName);
-            jo.put("maxHours", maxhours == null || maxhours.isEmpty() ?  JSONObject.NULL : Integer.parseInt(maxhours));
-            jo.put("minHours", minhours == null || minhours.isEmpty() ?  JSONObject.NULL : Integer.parseInt(minhours));
+            jo.put("lstname", lastName);
+            jo.put("maxHours", maxhours.isEmpty() ?  JSONObject.NULL : Integer.parseInt(maxhours));
+            jo.put("minHours", minhours.isEmpty() ? JSONObject.NULL : Integer.parseInt(minhours));
             jo.put("phoneNr", phoneNr);
             jo.put("birthday", birthday);
             for (Object_Qualification q : qualifications ){
@@ -95,8 +96,8 @@ public class Object_Worker {
             jo_outer.put("client", client_name);
             jo_outer.put("work_id", JSONObject.NULL); //Not my problem
 
-            jo_inner.put("maxHours", minhours == null ?  JSONObject.NULL : Integer.parseInt(maxhours));
-            jo_inner.put("minHours", minhours == null ?  JSONObject.NULL : Integer.parseInt(minhours));
+            jo_inner.put("maxHours", minhours.isEmpty() ?  JSONObject.NULL : Integer.parseInt(maxhours));
+            jo_inner.put("minHours", minhours.isEmpty() ?  JSONObject.NULL : Integer.parseInt(minhours));
             jo_inner.put("id", JSONObject.NULL); //Should never put ID..
             jo_inner.put("client", client_name);
             jo_inner.put("fstname", firstName);
@@ -122,11 +123,11 @@ public class Object_Worker {
     }
 
     public String getMinHours(){
-        return minhours == null ? "-" : minhours;
+        return minhours.isEmpty() ? "" : minhours;
     }
 
     public String getMaxHours(){
-        return maxhours == null ? "-" : maxhours;
+        return maxhours.isEmpty() ? "" : maxhours;
     }
 
     public String get_fullName(){

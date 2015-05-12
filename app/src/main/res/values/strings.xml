@@ -123,4 +123,7 @@
     <string name="user_schedule">My schedule</string>
     <string name="want_to_work">Want to work</string>
     <string name="do_not_want_to_work">Do not want to work</string>
+    <string name="schedule">Schedule</string>
+    <string name="schedule_starts">Schedule from</string>
+    <string name="schedule_ends">Schedule to</string>
 </resources>

@@ -64,7 +64,7 @@ public class Http {
                         return result;
 
                     }else{
-                        Log.i("###### GET GOT NULL", "");
+                        Log.i("### GET GOT NULL", "");
                     }
 
 
@@ -83,6 +83,8 @@ public class Http {
             }
 
         }
+        Log.i("### GET FROM", server_path);
+
         Http_Getter get = new Http_Getter(); // Must be after the class
         get.execute(BASE_PATH + username + "/" +  server_path, username, password); //TODO ENCODE
 
@@ -142,11 +144,11 @@ public class Http {
                         return;
                     }
                     if (result == null){
-                        Log.i("###### PUT GOT NULL", "");
+                        Log.i("### PUT GOT NULL", "");
                         return; //Should not come here. Maybe.
                     }
                     try {
-                        Log.i("###### PUT GOT DATA", result);
+                        Log.i("### PUT GOT DATA", result);
                         eventListener.onData(result);
 
                     } catch (Exception e) {
@@ -158,6 +160,7 @@ public class Http {
             }
 
         }
+        Log.i("### PUT FROM", server_path + " DATA: "+ jsonData.toString());
         Http_poster sendPostReqAsyncTask = new Http_poster(server_path, username, password, jsonData);
         sendPostReqAsyncTask.execute();
     }
@@ -232,6 +235,7 @@ public class Http {
             }
 
         }
+        Log.i("### DELETE TO", server_path);
         Http_poster sendPostReqAsyncTask = new Http_poster(server_path, username, password);
         sendPostReqAsyncTask.execute();
     }
@@ -291,11 +295,11 @@ public class Http {
                         return;
                     }
                     if (result == null){
-                        Log.i("###### POST GOT NULL", "");
+                        Log.i("### POST GOT NULL", "");
                         return; //Should not come here. Maybe.
                     }
                     try {
-                        Log.i("###### POST GOT DATA", result);
+                        Log.i("### POST GOT DATA", result);
                         eventListener.onData(result);
 
                     } catch (Exception e) {
@@ -307,6 +311,7 @@ public class Http {
             }
 
         }
+        Log.i("### POST TO", server_path + " DATA: "+ jsonData.toString());
         Http_poster sendPostReqAsyncTask = new Http_poster(server_path, username, password, jsonData);
         sendPostReqAsyncTask.execute();
     }
