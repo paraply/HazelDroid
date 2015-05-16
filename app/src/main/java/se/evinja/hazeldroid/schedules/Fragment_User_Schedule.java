@@ -78,19 +78,25 @@ public class Fragment_User_Schedule extends Fragment implements WeekView.MonthCh
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
         Log.i("##### WEEKV", "newyear " + newYear + " newmonth " + newMonth);
         List<WeekViewEvent> events = new ArrayList<>();
-        for (Object_Schedule os : hazel.user_schedule){
-            if (os.getMonth() == newMonth){
-                Log.i("### EVENT ADD", os.name);
-                WeekViewEvent event = new WeekViewEvent(os.id, os.name, os.startTime, os.endTime);
-                if (os.scheduled){
-                    event.setColor(getResources().getColor(R.color.event_color_green));
-                }else{
-                    event.setColor(getResources().getColor(R.color.event_color_red));
+        if (hazel.user_schedule != null) {
+            for (Object_Schedule os : hazel.user_schedule) {
+                if (os.getMonth() == newMonth) {
+                    Log.i("### EVENT ADD", os.name);
+                    WeekViewEvent event = new WeekViewEvent(os.id, os.name, os.startTime, os.endTime);
+                    if (os.scheduled) {
+                        event.setColor(getResources().getColor(R.color.event_color_green));
+                    } else {
+                        event.setColor(getResources().getColor(R.color.event_color_red));
+                    }
+                    events.add(event);
                 }
-                events.add(event);
             }
         }
         return events;
+    }
+
+    public void refreshSchedule(){
+        weekView.refreshDrawableState();
     }
 
     @Override

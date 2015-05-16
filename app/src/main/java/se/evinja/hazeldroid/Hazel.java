@@ -5,6 +5,9 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alamkanak.weekview.WeekView;
+import com.alamkanak.weekview.WeekViewEvent;
+
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,6 +92,7 @@ public class Hazel extends Application implements Http_Events {
     private JSONObject worker_logged_in_JSON; //Store the currenly logged in user as JSON since we need to download qualifications first to be able to create the Object_worker worker_logged_in
 
     public List<Object_Schedule> workplace_schedule;
+    private WeekView weekViewToRefresh;
     public List<Object_Schedule> user_schedule;
 
     public void login(String username, String password){
@@ -135,6 +139,7 @@ public class Hazel extends Application implements Http_Events {
 
         workplace_schedule = null;
         user_schedule = null;
+        weekViewToRefresh = null;
     }
 
     public String get_navigation_title(){
@@ -530,8 +535,9 @@ public class Hazel extends Application implements Http_Events {
         Toast.makeText(parent,"Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
-    public void set_schedule(Calendar set_from, Calendar set_to){
+    public void set_schedule(Calendar set_from, Calendar set_to, WeekView weekView){
         JSONObject jo = new JSONObject();
+        weekViewToRefresh = weekView;
         try {
             jo.put("startDate", new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(set_from.getTime()));
             jo.put("endDate", new SimpleDateFormat("yyyy-MM-dd 23:59:00").format(set_to.getTime()));
@@ -596,7 +602,7 @@ public class Hazel extends Application implements Http_Events {
                         connectionStatus = ConnectionStatus.NOT_CONNECTED;
                     }
                 } catch (JSONException e) {
-                    onError("onData.onData: parsing login reponse: " + e.getMessage());
+                    onError("onData.onData: parsing login response: " + e.getMessage());
                 }
                 break;
 
@@ -831,44 +837,42 @@ public class Hazel extends Application implements Http_Events {
                 break;
 
             case WORKPLACE_SCHEDULE:
+
                 if (data.equals("<h1>404: File Not Found!</h1>")){
                     Log.i("### No wrk sched", "will not try to parse");
-                    return;
-                }
-
-                eventListener.onStaffSchedule(); //TODO only if really...
-                workplace_schedule = new ArrayList<>();
-                try {
-                    JSONArray ja = new JSONArray(data);
-                    for (int i = 0; i < ja.length(); i++){
-                        JSONObject jo = ja.getJSONObject(i);
-
-                        Object_Schedule os = new Object_Schedule(jo, this);
-                        workplace_schedule.add(os);
-                        Log.i("### ADD WRK EVENT", jo.toString());
-                    }
+                }else {
 
 
-                    if (in_login_mode){
-                        if (access_userlevel()){
-                            Log.i("### DWNL WRK SCHED OK", "IS USER Downloading user schedule now");
-                            download_user_schedule();
-                        }else{
-                            in_login_mode = false;
+                    workplace_schedule = new ArrayList<>();
+                    try {
+                        JSONArray ja = new JSONArray(data);
+                        for (int i = 0; i < ja.length(); i++) {
+                            JSONObject jo = ja.getJSONObject(i);
+                            Log.i("### W EVENT", jo.toString());
+                            final Object_Schedule os = new Object_Schedule(jo, this);
+                            workplace_schedule.add(os);
                         }
+
+
+                        if (in_login_mode) {
+                            if (access_userlevel()) {
+                                Log.i("### DWNL WRK SCHED OK", "IS USER Downloading user schedule now");
+                                download_user_schedule();
+                            } else {
+                                in_login_mode = false;
+                            }
+                        }else{
+                            if (weekViewToRefresh != null){
+                                weekViewToRefresh.notifyDatasetChanged();
+                            }
+                        }
+
+
+                    } catch (JSONException e) {
+                        Log.i("### ERROR WRK SCHED", e.getMessage());
                     }
-
-//                    if (on_login_download_all){
-//                        if (access_userlevel()){
-//                            download_user_schedule();
-//                        }
-//                    }
-
-
-                } catch (JSONException e) {
-//                    onError("Hazel.onData:Workplace Schedule - " + e.getMessage());
                 }
-
+                eventListener.onStaffSchedule(); //Fire event even if no data has downloaded since login-activity relies on it.
                 break;
 
             case MY_SCHEDULE:
@@ -894,6 +898,7 @@ public class Hazel extends Application implements Http_Events {
                     eventListener.onUserSchedule();
 
                 } catch (JSONException e) {
+                    Log.i("### USR SCHED", e.getMessage());
 //                    onError("User has no schedule");
 //                    onError("Hazel.onData:USER Schedule - " + e.getMessage());
                 }

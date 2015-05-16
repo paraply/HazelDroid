@@ -1,6 +1,7 @@
 package se.evinja.hazeldroid.schedules;
 
 import android.app.Activity;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,10 +23,14 @@ public class Object_Schedule {
     public int id;
     public boolean scheduled;
     public String name;
-    public List<Object_Worker> workers = new ArrayList<>();
+    private List<String>  workers = new ArrayList<>();
+    private String workerlist;
     private SimpleDateFormat hazelformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public Object_Schedule(){}
+
+    public String getWorkerList(){
+        return workerlist;
+    }
 
     public Object_Schedule(JSONObject jo, Hazel hazel){
         try {
@@ -35,22 +40,30 @@ public class Object_Schedule {
             endTime.setTime(hazelformat.parse(jo.getString("endTime")));
             name = jo.getString("name");
             scheduled = jo.getBoolean("scheduled");
+
+            JSONArray jo2 = jo.getJSONArray("workers");
+            workerlist  = "";
+            for (int x = 0; x < jo2.length(); x++){
+                JSONObject w = jo2.getJSONObject(x);
+                workerlist += w.getString("fstname") + " " + w.getString("lstname") + "\n";
+            }
             //client do not care about...
             id = jo.getInt("taskID");
 
-            JSONArray jArr = jo.getJSONArray("workers"); //Would rather want array of worker ID's
-            if (jArr != null) {
-                for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject jw = jArr.getJSONObject(i);
-                    Object_Worker w = new Object_Worker(jw, hazel);
-                    if (w != null) {
-                        workers.add(w);
-                    }
-                }
-            }
+//            JSONArray jArr = jo.getJSONArray("workers"); //Would rather want array of worker ID's
+//            workerlist = jArr.toString();
+//            for (int i = 0; i < jArr.length(); i++) {
+//
+//                JSONObject jw = jArr.getJSONObject(i);
+//                Object_Worker w = new Object_Worker(jw, hazel);
+//                Log.i("### WORKER", w.get_fullName());
+//                workers.add(w.get_fullName().trim());
+//            }
 
-        } catch (Exception e) {
+        } catch (JSONException e) {
             hazel.onError("Object.Schedule constructor parse JSON: " + e.getMessage());
+        }catch (ParseException ex) {
+            hazel.onError("Object.Schedule constructor parse DATE: " + ex.getMessage());
         }
     }
 
@@ -70,17 +83,16 @@ public class Object_Schedule {
     public String getWorkers(Activity parent){
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
-
-        for (Object_Worker w : workers) {
+        for (String w : workers) {
             if (foundOne) {
-                sb.append("\n");
+                sb.append(",");
             }
             foundOne = true;
 
-            sb.append(w.get_fullName());
+            sb.append(w);
         }
         if (sb.toString().isEmpty()) sb.append(parent.getString(R.string.none));
-        return sb.toString();
+        return workerlist;
     }
 
 }

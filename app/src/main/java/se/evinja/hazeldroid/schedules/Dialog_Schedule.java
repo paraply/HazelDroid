@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.alamkanak.weekview.WeekView;
+
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
@@ -26,14 +28,15 @@ public class Dialog_Schedule  extends DialogFragment {
     public Calendar cal_start, cal_end;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private Hazel hazel;
+    private WeekView weekView;
 
-
-    public void init(DialogInterface.OnClickListener onItemClickListener, Hazel hazel){
+    public void init(DialogInterface.OnClickListener onItemClickListener, Hazel hazel, WeekView weekView){
         this.onItemClickListener = onItemClickListener;
         this.hazel = hazel;
         cal_start = Calendar.getInstance();
         cal_end = Calendar.getInstance();
         cal_end.add(Calendar.DAY_OF_MONTH, 28);
+        this.weekView = weekView;
     }
 
     @Override
@@ -92,7 +95,7 @@ public class Dialog_Schedule  extends DialogFragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        hazel.set_schedule(cal_start, cal_end);
+                        hazel.set_schedule(cal_start, cal_end, weekView);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)

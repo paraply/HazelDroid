@@ -32,7 +32,7 @@ public class Dialog_Repeat extends DialogFragment{
     private DialogInterface.OnClickListener onItemClickListener;
 
     public Repeat_Types repeat = Repeat_Types.Once;
-    public String repeat_interval = "2", repeat_month_date;
+    public String repeat_interval = "1", repeat_month_date;
 //    private boolean mo = true,tu,we,th,fr,sa,su;
 
     public boolean sel_weekdays[] = new boolean[7];

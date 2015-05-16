@@ -71,7 +71,7 @@ public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthCh
 
 
     private void show_schedule_dialog(){
-        dialog.init(this, hazel);
+        dialog.init(this, hazel, weekView);
         dialog.show(getFragmentManager(), "Schedule");
     }
 
@@ -106,7 +106,7 @@ public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthCh
         List<WeekViewEvent> events = new ArrayList<>();
         for (Object_Schedule os : hazel.workplace_schedule){
             if (os.getMonth() == newMonth){
-                Log.i("### WRK EVENT ADD", os.name + " start:" + os.startTime.getTime().toString() + " end:" + os.endTime.getTime().toString());
+//                Log.i("### WRK EVENT ADD", os.name + " start:" + os.startTime.getTime().toString() + " end:" + os.endTime.getTime().toString());
                 WeekViewEvent event = new WeekViewEvent(os.id, os.name, os.startTime, os.endTime);
                 if (os.scheduled){
                     event.setColor(getResources().getColor(R.color.event_color_green));
@@ -130,7 +130,7 @@ public class Fragment_Work_Schedule extends Fragment implements WeekView.MonthCh
             View view = inflater.inflate(R.layout.dialog_task_info, null);
             ((TextView) view.findViewById(R.id.sched_info_starts)).setText(os.getStart());
             ((TextView) view.findViewById(R.id.sched_info_ends)).setText(os.getEnd());
-            ((TextView) view.findViewById(R.id.sched_info_workers)).setText(os.getWorkers(parent));
+            ((TextView) view.findViewById(R.id.sched_info_workers)).setText(os.getWorkerList());
             dialog.setContentView(view);
 
             dialog.show();
